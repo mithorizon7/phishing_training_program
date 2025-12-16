@@ -1,0 +1,285 @@
+{
+  "common": {
+    "start": "Start",
+    "continue": "Continue",
+    "back": "Back",
+    "reset": "Reset",
+    "learnMore": "Learn more",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "close": "Close"
+  },
+  "app": {
+    "title": "Inbox Arena",
+    "tagline": "Phishing Training Platform"
+  },
+  "landing": {
+    "hero": {
+      "badge": "Phishing Training Platform",
+      "title": "Train Your Team to Spot Real Threats",
+      "subtitle": "Interactive simulations that teach your team to identify phishing, BEC scams, and social engineering attacks. Build the decision-making skills that protect your organization.",
+      "getStarted": "Get Started Free",
+      "signIn": "Sign In"
+    },
+    "whyTrainingFails": {
+      "title": "Why Traditional Training Fails",
+      "subtitle": "Most phishing training teaches you to spot \"sloppy fake emails.\" Real attackers win by exploiting urgent workflows — often without any suspicious links.",
+      "decisionBased": {
+        "title": "Decision-Based Learning",
+        "description": "Train the right behavior: \"What is the safest next action?\" — not just \"is this phishing?\""
+      },
+      "realistic": {
+        "title": "Realistic Scenarios",
+        "description": "Email, SMS, and call simulations covering BEC, pretexting, spoofing, and modern attack patterns."
+      },
+      "adaptive": {
+        "title": "Adaptive Difficulty",
+        "description": "NIST Phish Scale methodology ensures learners build skills progressively, not get overwhelmed."
+      }
+    },
+    "channels": {
+      "title": "Multi-Channel Training",
+      "subtitle": "Real threats arrive via multiple channels. Train across all of them.",
+      "email": {
+        "title": "Email",
+        "description": "Classic phishing, credential theft, malicious attachments, and BEC attacks"
+      },
+      "sms": {
+        "title": "SMS",
+        "description": "Smishing attacks, wrong-number scams, and urgent action requests"
+      },
+      "calls": {
+        "title": "Calls",
+        "description": "Vishing transcripts, tech support scams, and impersonation attempts"
+      }
+    },
+    "behaviors": {
+      "title": "Key Training Behaviors",
+      "subtitle": "Three skills that actually prevent breaches",
+      "pauseInspect": {
+        "title": "Pause + Inspect",
+        "description": "Break the \"21 seconds to click\" habit. Users click phishing links in seconds — training the pause reflex is critical."
+      },
+      "classify": {
+        "title": "Classify the Request",
+        "description": "Focus on what's being asked: money, credentials, access, permissions, or downloads. The request type determines the risk."
+      },
+      "verify": {
+        "title": "Verify via Known Channel",
+        "description": "Don't reply to suspicious emails asking \"is this real?\" Use a verified contact method, then report."
+      }
+    },
+    "cta": {
+      "title": "Ready to Train Smarter?",
+      "subtitle": "Start building real security awareness skills today. No credit card required.",
+      "button": "Start Training Now"
+    },
+    "footer": {
+      "tagline": "Training real security awareness, not trivia."
+    }
+  },
+  "header": {
+    "dashboard": "Dashboard",
+    "training": "Training",
+    "recover": "Incident Response",
+    "signOut": "Sign Out"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Track your progress and start training",
+    "startShift": "Start New Shift",
+    "securityScore": {
+      "title": "Security Score",
+      "description": "Measures your ability to detect and block malicious content",
+      "stopped": "Stopped {correct, number} of {total, number} threats"
+    },
+    "operationsScore": {
+      "title": "Operations Score", 
+      "description": "Measures your ability to keep legitimate work flowing",
+      "processed": "Processed {correct, number} of {total, number} legitimate correctly"
+    },
+    "stats": {
+      "detectionRate": "Detection Rate",
+      "detectionRateSubtitle": "{correct, number} of {total, number} threats handled safely",
+      "reportAccuracy": "Report Accuracy",
+      "reportAccuracySubtitle": "{total, number} total reports made",
+      "falsePositiveRate": "False Positive Rate",
+      "falsePositiveRateSubtitle": "{count, number} legitimate reported",
+      "currentStreak": "Current Streak",
+      "bestStreak": "Best: {count, number}"
+    },
+    "metrics": {
+      "title": "Key Performance Metrics",
+      "subtitle": "Balance security vigilance with operational efficiency",
+      "overallAccuracy": "Overall Accuracy",
+      "correctDecisions": "{count, number} correct decisions",
+      "unsafeActions": "Unsafe Actions",
+      "threatsAllowed": "Threats allowed through",
+      "compromised": "Compromised",
+      "securityBreaches": "Security breaches",
+      "highConfidenceErrors": "High-Confidence Errors",
+      "wrongWithConfidence": "Wrong with 85%+ confidence"
+    },
+    "badges": {
+      "title": "Skill Badges",
+      "subtitle": "Earn badges by demonstrating security awareness skills"
+    },
+    "areasToImprove": {
+      "title": "Areas to Improve",
+      "subtitle": "Most frequently missed cues",
+      "noData": "Complete some training shifts to see your improvement areas"
+    },
+    "riskMeter": {
+      "title": "Risk Meter",
+      "subtitle": "Your vulnerability profile based on training performance",
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High",
+      "critical": "Critical",
+      "lowRisk": "Low Risk",
+      "mediumRisk": "Medium Risk",
+      "highRisk": "High Risk",
+      "criticalRisk": "Critical Risk",
+      "score": "Score: {score, number}/100",
+      "messageLow": "Excellent threat awareness. You're catching attacks effectively.",
+      "messageMedium": "Some areas need attention. Focus on the patterns you're missing.",
+      "messageHigh": "Higher vulnerability detected. Review the attack patterns below.",
+      "messageCritical": "Critical: You're allowing too many threats through. Focus training needed.",
+      "messageNoData": "Complete some training to see your risk profile.",
+      "topVulnerabilities": "Top Vulnerabilities (missed cues)"
+    },
+    "trainingSummary": {
+      "title": "Training Summary",
+      "shifts": "Shifts",
+      "messages": "Messages",
+      "points": "Points"
+    },
+    "incidentResponse": {
+      "title": "Incident Response Training",
+      "subtitle": "Learn what to do when something goes wrong",
+      "button": "Practice Report & Recover"
+    }
+  },
+  "training": {
+    "inbox": {
+      "title": "Inbox",
+      "newMessage": "New Message",
+      "noMessages": "No messages in inbox"
+    },
+    "message": {
+      "from": "From",
+      "to": "To",
+      "subject": "Subject",
+      "date": "Date",
+      "phone": "Phone",
+      "selectMessage": "Select a message to view"
+    },
+    "actions": {
+      "report": "Report",
+      "delete": "Delete", 
+      "verify": "Verify",
+      "proceed": "Proceed",
+      "reportDescription": "Flag as suspicious and escalate to security team",
+      "deleteDescription": "Remove from inbox without reporting",
+      "verifyDescription": "Contact sender through a known channel to confirm",
+      "proceedDescription": "Take the requested action (click link, open attachment, etc.)"
+    },
+    "confidence": {
+      "title": "How confident are you?",
+      "low": "Not sure",
+      "medium": "Fairly confident",
+      "high": "Very confident"
+    },
+    "feedback": {
+      "correct": "Correct!",
+      "incorrect": "Incorrect",
+      "compromised": "Compromised!",
+      "falseAlarm": "False Alarm",
+      "points": "{points, number} points",
+      "nextMessage": "Next Message",
+      "finishShift": "Finish Shift",
+      "explanation": "Explanation",
+      "cuesMissed": "Cues you may have missed"
+    },
+    "lensTool": {
+      "title": "Inspection Checklist",
+      "subtitle": "Check at least 3 items before deciding",
+      "checkSender": "Check sender address",
+      "verifyLinks": "Verify link destinations",
+      "lookForUrgency": "Look for urgency/authority",
+      "checkRequests": "Check for unusual requests",
+      "verifyExpected": "Verify expected communication",
+      "checked": "{count, number} of {total, number} checked"
+    },
+    "shiftComplete": {
+      "title": "Shift Complete!",
+      "accuracy": "Accuracy",
+      "pointsEarned": "Points Earned",
+      "messagesProcessed": "Messages Processed",
+      "backToDashboard": "Back to Dashboard",
+      "startNewShift": "Start New Shift"
+    },
+    "progress": {
+      "message": "Message {current, number} of {total, number}",
+      "shiftProgress": "Shift Progress"
+    }
+  },
+  "recover": {
+    "title": "Report & Recover Drill",
+    "subtitle": "Practice incident response steps",
+    "intro": {
+      "title": "Incident Response Training",
+      "description": "You've just discovered a potential security incident. Practice the critical steps to report and recover.",
+      "startDrill": "Start Drill"
+    },
+    "stages": {
+      "detect": {
+        "title": "Stage 1: Detect & Document",
+        "description": "What did you observe? Document the incident details."
+      },
+      "contain": {
+        "title": "Stage 2: Contain",
+        "description": "Take immediate action to limit the damage."
+      },
+      "report": {
+        "title": "Stage 3: Report",
+        "description": "Notify the appropriate parties."
+      },
+      "recover": {
+        "title": "Stage 4: Recover",
+        "description": "Take steps to restore normal operations."
+      }
+    },
+    "complete": {
+      "title": "Drill Complete!",
+      "score": "Score: {score, number} points",
+      "feedback": "You completed all critical incident response steps.",
+      "backToDashboard": "Back to Dashboard",
+      "tryAgain": "Try Again"
+    }
+  },
+  "channels": {
+    "email": "Email",
+    "sms": "SMS", 
+    "call": "Call",
+    "teams": "Teams",
+    "slack": "Slack"
+  },
+  "legitimacy": {
+    "malicious": "Malicious",
+    "legitimate": "Legitimate",
+    "suspicious": "Suspicious"
+  },
+  "errors": {
+    "generic": "Something went wrong. Please try again.",
+    "networkError": "Network error. Please check your connection.",
+    "unauthorized": "Please sign in to continue.",
+    "notFound": "Page not found.",
+    "shiftFailed": "Failed to start a new shift. Please try again."
+  }
+}

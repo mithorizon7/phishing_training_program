@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { 
   DropdownMenu, 
@@ -9,6 +10,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Shield, LogOut, User, LayoutDashboard, PlayCircle, GraduationCap } from "lucide-react";
 import { ThemeToggle } from "./theme-toggle";
+import { LanguageSwitcher } from "./language-switcher";
 import { UserAvatar } from "./user-avatar";
 import type { User as UserType } from "@shared/models/auth";
 import { Link, useLocation } from "wouter";
@@ -20,6 +22,7 @@ interface HeaderProps {
 }
 
 export function Header({ user, verificationsRemaining, inShift }: HeaderProps) {
+  const { t } = useTranslation();
   const [location] = useLocation();
 
   return (
@@ -44,7 +47,7 @@ export function Header({ user, verificationsRemaining, inShift }: HeaderProps) {
               >
                 <Link href="/" data-testid="link-dashboard">
                   <LayoutDashboard className="w-4 h-4 mr-2" />
-                  Dashboard
+                  {t('header.dashboard')}
                 </Link>
               </Button>
               <Button 
@@ -54,7 +57,7 @@ export function Header({ user, verificationsRemaining, inShift }: HeaderProps) {
               >
                 <Link href="/training" data-testid="link-training">
                   <PlayCircle className="w-4 h-4 mr-2" />
-                  Training
+                  {t('header.training')}
                 </Link>
               </Button>
               {user.role === "instructor" && (
@@ -80,6 +83,7 @@ export function Header({ user, verificationsRemaining, inShift }: HeaderProps) {
             </Badge>
           )}
           
+          <LanguageSwitcher />
           <ThemeToggle />
 
           {user && (
@@ -100,13 +104,13 @@ export function Header({ user, verificationsRemaining, inShift }: HeaderProps) {
                 <DropdownMenuItem asChild>
                   <Link href="/" className="flex items-center gap-2 cursor-pointer">
                     <LayoutDashboard className="w-4 h-4" />
-                    Dashboard
+                    {t('header.dashboard')}
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href="/training" className="flex items-center gap-2 cursor-pointer">
                     <PlayCircle className="w-4 h-4" />
-                    Start Training
+                    {t('header.training')}
                   </Link>
                 </DropdownMenuItem>
                 {user.role === "instructor" && (
@@ -121,7 +125,7 @@ export function Header({ user, verificationsRemaining, inShift }: HeaderProps) {
                 <DropdownMenuItem asChild>
                   <a href="/api/logout" className="flex items-center gap-2 cursor-pointer text-destructive">
                     <LogOut className="w-4 h-4" />
-                    Sign Out
+                    {t('header.signOut')}
                   </a>
                 </DropdownMenuItem>
               </DropdownMenuContent>

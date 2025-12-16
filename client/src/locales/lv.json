@@ -1,0 +1,285 @@
+{
+  "common": {
+    "start": "Sākt",
+    "continue": "Turpināt",
+    "back": "Atpakaļ",
+    "reset": "Atiestatīt",
+    "learnMore": "Uzzināt vairāk",
+    "loading": "Ielādē...",
+    "error": "Kļūda",
+    "success": "Veiksmīgi",
+    "cancel": "Atcelt",
+    "save": "Saglabāt",
+    "delete": "Dzēst",
+    "confirm": "Apstiprināt",
+    "close": "Aizvērt"
+  },
+  "app": {
+    "title": "Inbox Arena",
+    "tagline": "Pikšķerēšanas apmācību platforma"
+  },
+  "landing": {
+    "hero": {
+      "badge": "Pikšķerēšanas apmācību platforma",
+      "title": "Apmāciet savu komandu atpazīt reālus draudus",
+      "subtitle": "Interaktīvas simulācijas, kas māca jūsu komandai identificēt pikšķerēšanu, BEC krāpšanu un sociālās inženierijas uzbrukumus. Veidojiet lēmumu pieņemšanas prasmes, kas aizsargā jūsu organizāciju.",
+      "getStarted": "Sākt bez maksas",
+      "signIn": "Ielogoties"
+    },
+    "whyTrainingFails": {
+      "title": "Kāpēc tradicionālā apmācība neizdodas",
+      "subtitle": "Lielākā daļa pikšķerēšanas apmācību māca atpazīt \"nekvalitatīvus viltotus e-pastus\". Īsti uzbrucēji uzvar, izmantojot steidzamas darba plūsmas — bieži bez aizdomīgām saitēm.",
+      "decisionBased": {
+        "title": "Uz lēmumiem balstīta mācīšanās",
+        "description": "Apmāciet pareizo uzvedību: \"Kāda ir drošākā nākamā darbība?\" — ne tikai \"vai šī ir pikšķerēšana?\""
+      },
+      "realistic": {
+        "title": "Reālistiski scenāriji",
+        "description": "E-pasta, SMS un zvanu simulācijas, kas aptver BEC, pretekstu veidošanu, viltošanu un mūsdienu uzbrukumu modeļus."
+      },
+      "adaptive": {
+        "title": "Adaptīva grūtības pakāpe",
+        "description": "NIST pikšķerēšanas skalas metodoloģija nodrošina, ka apmācāmie veido prasmes pakāpeniski, nevis tiek pārslogoti."
+      }
+    },
+    "channels": {
+      "title": "Daudzkanālu apmācība",
+      "subtitle": "Reāli draudi nāk pa vairākiem kanāliem. Apmācieties visos.",
+      "email": {
+        "title": "E-pasts",
+        "description": "Klasiska pikšķerēšana, akreditācijas datu zādzība, ļaunprātīgi pielikumi un BEC uzbrukumi"
+      },
+      "sms": {
+        "title": "SMS",
+        "description": "Smišinga uzbrukumi, nepareiza numura krāpšana un steidzami darbību pieprasījumi"
+      },
+      "calls": {
+        "title": "Zvani",
+        "description": "Višinga stenogrammas, tehniskā atbalsta krāpšana un uzdošanās mēģinājumi"
+      }
+    },
+    "behaviors": {
+      "title": "Galvenās apmācību uzvedības",
+      "subtitle": "Trīs prasmes, kas patiešām novērš drošības pārkāpumus",
+      "pauseInspect": {
+        "title": "Apstāties + pārbaudīt",
+        "description": "Pārtrauciet \"21 sekundes līdz klikšķim\" ieradumu. Lietotāji noklikšķina uz pikšķerēšanas saitēm sekundēs — pauzes refleksa apmācība ir kritiska."
+      },
+      "classify": {
+        "title": "Klasificēt pieprasījumu",
+        "description": "Koncentrējieties uz to, kas tiek prasīts: nauda, akreditācijas dati, piekļuve, atļaujas vai lejupielādes. Pieprasījuma veids nosaka risku."
+      },
+      "verify": {
+        "title": "Pārbaudīt caur zināmu kanālu",
+        "description": "Neatbildiet uz aizdomīgiem e-pastiem, jautājot \"vai tas ir īsts?\" Izmantojiet verificētu saziņas metodi, pēc tam ziņojiet."
+      }
+    },
+    "cta": {
+      "title": "Gatavi apmācīties gudrāk?",
+      "subtitle": "Sāciet veidot reālas drošības apziņas prasmes jau šodien. Kredītkarte nav nepieciešama.",
+      "button": "Sākt apmācību tagad"
+    },
+    "footer": {
+      "tagline": "Apmācām reālu drošības apziņu, nevis trivia."
+    }
+  },
+  "header": {
+    "dashboard": "Panelis",
+    "training": "Apmācība",
+    "recover": "Incidentu reaģēšana",
+    "signOut": "Izrakstīties"
+  },
+  "dashboard": {
+    "title": "Panelis",
+    "subtitle": "Sekojiet savam progresam un sāciet apmācību",
+    "startShift": "Sākt jaunu maiņu",
+    "securityScore": {
+      "title": "Drošības vērtējums",
+      "description": "Mēra jūsu spēju atklāt un bloķēt ļaunprātīgu saturu",
+      "stopped": "Apturēti {correct, number} no {total, number} draudiem"
+    },
+    "operationsScore": {
+      "title": "Darbības vērtējums",
+      "description": "Mēra jūsu spēju uzturēt likumīgo darbu plūsmu",
+      "processed": "Apstrādāti {correct, number} no {total, number} likumīgajiem pareizi"
+    },
+    "stats": {
+      "detectionRate": "Atklāšanas ātrums",
+      "detectionRateSubtitle": "{correct, number} no {total, number} draudiem apstrādāti droši",
+      "reportAccuracy": "Ziņojumu precizitāte",
+      "reportAccuracySubtitle": "{total, number} ziņojumi kopā",
+      "falsePositiveRate": "Viltus pozitīvu līmenis",
+      "falsePositiveRateSubtitle": "{count, number} likumīgie ziņoti",
+      "currentStreak": "Pašreizējā sērija",
+      "bestStreak": "Labākā: {count, number}"
+    },
+    "metrics": {
+      "title": "Galvenie veiktspējas rādītāji",
+      "subtitle": "Līdzsvarojiet drošības modrību ar darbības efektivitāti",
+      "overallAccuracy": "Kopējā precizitāte",
+      "correctDecisions": "{count, number} pareizi lēmumi",
+      "unsafeActions": "Nedrošas darbības",
+      "threatsAllowed": "Draudi, kas tika pielaisti",
+      "compromised": "Kompromitēti",
+      "securityBreaches": "Drošības pārkāpumi",
+      "highConfidenceErrors": "Augsta pārliecības kļūdas",
+      "wrongWithConfidence": "Nepareizi ar 85%+ pārliecību"
+    },
+    "badges": {
+      "title": "Prasmju nozīmītes",
+      "subtitle": "Nopelniet nozīmītes, demonstrējot drošības apziņas prasmes"
+    },
+    "areasToImprove": {
+      "title": "Uzlabojamās jomas",
+      "subtitle": "Visbiežāk nokavētās norādes",
+      "noData": "Pabeidziet dažas apmācību maiņas, lai redzētu uzlabojamās jomas"
+    },
+    "riskMeter": {
+      "title": "Riska mērītājs",
+      "subtitle": "Jūsu ievainojamības profils, pamatojoties uz apmācību veiktspēju",
+      "low": "Zems",
+      "medium": "Vidējs",
+      "high": "Augsts",
+      "critical": "Kritisks",
+      "lowRisk": "Zems risks",
+      "mediumRisk": "Vidējs risks",
+      "highRisk": "Augsts risks",
+      "criticalRisk": "Kritisks risks",
+      "score": "Vērtējums: {score, number}/100",
+      "messageLow": "Lieliska draudu apziņa. Jūs efektīvi tveŗat uzbrukumus.",
+      "messageMedium": "Dažas jomas prasa uzmanību. Koncentrējieties uz modeļiem, ko jūs palaidat garām.",
+      "messageHigh": "Atklāta augstāka ievainojamība. Pārskatiet tālāk norādītos uzbrukumu modeļus.",
+      "messageCritical": "Kritisks: Jūs pielaižat pārāk daudz draudu. Nepieciešama fokusēta apmācība.",
+      "messageNoData": "Pabeidziet apmācību, lai redzētu savu riska profilu.",
+      "topVulnerabilities": "Galvenās ievainojamības (nokavētās norādes)"
+    },
+    "trainingSummary": {
+      "title": "Apmācību kopsavilkums",
+      "shifts": "Maiņas",
+      "messages": "Ziņojumi",
+      "points": "Punkti"
+    },
+    "incidentResponse": {
+      "title": "Incidentu reaģēšanas apmācība",
+      "subtitle": "Uzziniet, ko darīt, kad kaut kas noiet greizi",
+      "button": "Praktizēt ziņošanu un atjaunošanu"
+    }
+  },
+  "training": {
+    "inbox": {
+      "title": "Iesūtne",
+      "newMessage": "Jauns ziņojums",
+      "noMessages": "Iesūtnē nav ziņojumu"
+    },
+    "message": {
+      "from": "No",
+      "to": "Kam",
+      "subject": "Tēma",
+      "date": "Datums",
+      "phone": "Tālrunis",
+      "selectMessage": "Izvēlieties ziņojumu, lai skatītu"
+    },
+    "actions": {
+      "report": "Ziņot",
+      "delete": "Dzēst",
+      "verify": "Verificēt",
+      "proceed": "Turpināt",
+      "reportDescription": "Atzīmēt kā aizdomīgu un eskalēt drošības komandai",
+      "deleteDescription": "Noņemt no iesūtnes bez ziņošanas",
+      "verifyDescription": "Sazināties ar sūtītāju caur zināmu kanālu, lai apstiprinātu",
+      "proceedDescription": "Veikt pieprasīto darbību (noklikšķināt uz saites, atvērt pielikumu utt.)"
+    },
+    "confidence": {
+      "title": "Cik pārliecināts jūs esat?",
+      "low": "Neesmu pārliecināts",
+      "medium": "Diezgan pārliecināts",
+      "high": "Ļoti pārliecināts"
+    },
+    "feedback": {
+      "correct": "Pareizi!",
+      "incorrect": "Nepareizi",
+      "compromised": "Kompromitēts!",
+      "falseAlarm": "Viltus trauksme",
+      "points": "{points, number} punkti",
+      "nextMessage": "Nākamais ziņojums",
+      "finishShift": "Pabeigt maiņu",
+      "explanation": "Paskaidrojums",
+      "cuesMissed": "Norādes, ko jūs varējāt palaist garām"
+    },
+    "lensTool": {
+      "title": "Pārbaudes saraksts",
+      "subtitle": "Pārbaudiet vismaz 3 vienumus pirms lēmuma pieņemšanas",
+      "checkSender": "Pārbaudīt sūtītāja adresi",
+      "verifyLinks": "Verificēt saišu galamērķus",
+      "lookForUrgency": "Meklēt steidzamību/autoritāti",
+      "checkRequests": "Pārbaudīt neparastus pieprasījumus",
+      "verifyExpected": "Verificēt gaidīto saziņu",
+      "checked": "{count, number} no {total, number} pārbaudīti"
+    },
+    "shiftComplete": {
+      "title": "Maiņa pabeigta!",
+      "accuracy": "Precizitāte",
+      "pointsEarned": "Nopelnītie punkti",
+      "messagesProcessed": "Apstrādātie ziņojumi",
+      "backToDashboard": "Atpakaļ uz paneli",
+      "startNewShift": "Sākt jaunu maiņu"
+    },
+    "progress": {
+      "message": "Ziņojums {current, number} no {total, number}",
+      "shiftProgress": "Maiņas progress"
+    }
+  },
+  "recover": {
+    "title": "Ziņošanas un atjaunošanas treniņš",
+    "subtitle": "Praktizējiet incidentu reaģēšanas soļus",
+    "intro": {
+      "title": "Incidentu reaģēšanas apmācība",
+      "description": "Jūs tikko atklājāt potenciālu drošības incidentu. Praktizējiet kritiskos soļus, lai ziņotu un atjaunotu.",
+      "startDrill": "Sākt treniņu"
+    },
+    "stages": {
+      "detect": {
+        "title": "1. posms: Atklāt un dokumentēt",
+        "description": "Ko jūs novērojāt? Dokumentējiet incidenta detaļas."
+      },
+      "contain": {
+        "title": "2. posms: Ierobežot",
+        "description": "Veiciet tūlītēju darbību, lai ierobežotu kaitējumu."
+      },
+      "report": {
+        "title": "3. posms: Ziņot",
+        "description": "Paziņojiet attiecīgajām pusēm."
+      },
+      "recover": {
+        "title": "4. posms: Atjaunot",
+        "description": "Veiciet soļus normālas darbības atjaunošanai."
+      }
+    },
+    "complete": {
+      "title": "Treniņš pabeigts!",
+      "score": "Vērtējums: {score, number} punkti",
+      "feedback": "Jūs pabeidzāt visus kritiskos incidentu reaģēšanas soļus.",
+      "backToDashboard": "Atpakaļ uz paneli",
+      "tryAgain": "Mēģināt vēlreiz"
+    }
+  },
+  "channels": {
+    "email": "E-pasts",
+    "sms": "SMS",
+    "call": "Zvans",
+    "teams": "Teams",
+    "slack": "Slack"
+  },
+  "legitimacy": {
+    "malicious": "Ļaunprātīgs",
+    "legitimate": "Likumīgs",
+    "suspicious": "Aizdomīgs"
+  },
+  "errors": {
+    "generic": "Kaut kas nogāja greizi. Lūdzu, mēģiniet vēlreiz.",
+    "networkError": "Tīkla kļūda. Lūdzu, pārbaudiet savienojumu.",
+    "unauthorized": "Lūdzu, ielogojieties, lai turpinātu.",
+    "notFound": "Lapa nav atrasta.",
+    "shiftFailed": "Neizdevās sākt jaunu maiņu. Lūdzu, mēģiniet vēlreiz."
+  }
+}
