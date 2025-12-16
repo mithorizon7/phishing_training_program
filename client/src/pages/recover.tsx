@@ -43,7 +43,7 @@ const DRILL_SCENARIOS: DrillScenario[] = [
     steps: [
       { id: "disconnect", title: "Disconnect from network", description: "Turn off WiFi or unplug ethernet to stop any ongoing data transfer", icon: Wifi, critical: true },
       { id: "report", title: "Report to IT/Security", description: "Call your IT helpdesk or security team immediately using a known number", icon: Phone, critical: true },
-      { id: "scan", title: "Run security scan", description: "If IT instructs, run antivirus/malware scan on your device", icon: Shield, critical: false },
+      { id: "scan", title: "Run security scan", description: "Run antivirus/malware scan to check for drive-by downloads or exploits", icon: Shield, critical: true },
       { id: "document", title: "Document what happened", description: "Note the URL, what you saw, and any actions you took", icon: FileText, critical: false },
     ],
   },
@@ -66,8 +66,8 @@ const DRILL_SCENARIOS: DrillScenario[] = [
     steps: [
       { id: "bank", title: "Contact your bank immediately", description: "Call your bank's fraud line RIGHT NOW - time is critical for recovery", icon: Phone, critical: true },
       { id: "report_it", title: "Report to IT/Security", description: "They need to know about the breach and may need to alert others", icon: Phone, critical: true },
-      { id: "report_fbi", title: "File IC3 complaint (FBI)", description: "Report to ic3.gov - especially for business email compromise over $10,000", icon: Shield, critical: true },
-      { id: "document", title: "Preserve all evidence", description: "Save emails, messages, and transaction records - do not delete anything", icon: FileText, critical: true },
+      { id: "report_fbi", title: "File IC3 complaint (FBI)", description: "Report to ic3.gov - especially for business email compromise over $10,000", icon: Shield, critical: false },
+      { id: "document", title: "Preserve all evidence", description: "Save emails, messages, and transaction records - do not delete anything", icon: FileText, critical: false },
       { id: "notify", title: "Notify affected parties", description: "If vendor/partner was impersonated, alert them about the fraud", icon: Phone, critical: false },
     ],
   },
@@ -125,15 +125,24 @@ export default function RecoverDrill() {
 
   const getScore = () => {
     if (!selectedScenario) return 0;
-    const criticalWeight = 20;
-    const normalWeight = 10;
-    let score = 0;
-    selectedScenario.steps.forEach(step => {
-      if (completedSteps.has(step.id)) {
-        score += step.critical ? criticalWeight : normalWeight;
-      }
-    });
-    return Math.min(100, score);
+    const criticalSteps = selectedScenario.steps.filter(s => s.critical);
+    const optionalSteps = selectedScenario.steps.filter(s => !s.critical);
+    const criticalCompleted = criticalSteps.filter(s => completedSteps.has(s.id)).length;
+    const optionalCompleted = optionalSteps.filter(s => completedSteps.has(s.id)).length;
+    const allCriticalDone = criticalCompleted === criticalSteps.length;
+    
+    if (allCriticalDone) {
+      return 100;
+    }
+    
+    const criticalPercent = criticalSteps.length > 0 
+      ? (criticalCompleted / criticalSteps.length) * 80 
+      : 80;
+    const optionalBonus = optionalSteps.length > 0 
+      ? (optionalCompleted / optionalSteps.length) * 10 
+      : 0;
+    
+    return Math.round(criticalPercent + optionalBonus);
   };
 
   if (!selectedScenario) {
@@ -272,6 +281,26 @@ export default function RecoverDrill() {
                 );
               })}
             </div>
+
+            <Card className="bg-muted/30">
+              <CardContent className="pt-4 pb-4">
+                <p className="text-sm font-medium mb-2">Key Takeaway</p>
+                <p className="text-sm text-muted-foreground">
+                  {selectedScenario.id === "clicked_link" && 
+                    "Speed matters - disconnecting quickly can prevent malware from spreading or exfiltrating data. Always report even if you're unsure, as IT can assess the real risk."
+                  }
+                  {selectedScenario.id === "entered_credentials" && 
+                    "Password changes must happen immediately from a trusted device. Enable MFA everywhere - it's your best protection even if credentials are stolen."
+                  }
+                  {selectedScenario.id === "sent_money" && 
+                    "The first hour is critical for fund recovery. Banks can sometimes recall wire transfers if notified fast enough. Never delete any evidence."
+                  }
+                  {selectedScenario.id === "downloaded_file" && 
+                    "Don't try to be a hero - well-meaning actions like deleting files or rebooting can destroy forensic evidence or trigger dormant malware."
+                  }
+                </p>
+              </CardContent>
+            </Card>
 
             <div className="flex gap-3">
               <Button variant="outline" className="flex-1" onClick={handleReset} data-testid="button-try-again">
