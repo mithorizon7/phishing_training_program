@@ -39,7 +39,7 @@ import {
   Hash
 } from "lucide-react";
 import { apiRequest, queryClient } from "@/lib/queryClient";
-import { format } from "date-fns";
+import { formatDate, formatDateTime, formatWeekday, formatDateISO } from "@/lib/formatting";
 import type { Assignment, Scenario } from "@shared/schema";
 
 interface CohortAnalytics {
@@ -237,7 +237,7 @@ function AnalyticsTab({ analytics, learners, isLoading }: {
               {analytics.recentActivity.map((day) => (
                 <div key={day.date} className="text-center space-y-1">
                   <div className="text-xs text-muted-foreground">
-                    {format(new Date(day.date), "EEE")}
+                    {formatWeekday(day.date)}
                   </div>
                   <div 
                     className="h-16 rounded-md flex items-end justify-center pb-1 transition-colors"
@@ -314,7 +314,7 @@ function AnalyticsTab({ analytics, learners, isLoading }: {
                       </td>
                       <td className="text-right py-3 text-muted-foreground">
                         {learner.lastPlayedAt 
-                          ? format(new Date(learner.lastPlayedAt), "MMM d, yyyy")
+                          ? formatDate(learner.lastPlayedAt, "medium")
                           : "Never"}
                       </td>
                     </tr>
@@ -775,7 +775,7 @@ function AssignmentsTab() {
                     Verifications: {assignment.verificationBudget}
                   </span>
                   <span className="text-xs">
-                    Created {format(new Date(assignment.createdAt), "MMM d, yyyy")}
+                    Created {formatDate(assignment.createdAt, "medium")}
                   </span>
                 </div>
               </CardContent>
@@ -872,7 +872,7 @@ ${item.explanation}
     }).join("\n");
     
     const header = `# Phishing Training Debrief Pack
-Generated: ${format(new Date(debriefPack.generatedAt), "MMMM d, yyyy 'at' h:mm a")}
+Generated: ${formatDateTime(debriefPack.generatedAt, "long", "short")}
 Total Teachable Moments: ${debriefPack.totalScenarios}
 
 ---
@@ -882,7 +882,7 @@ Total Teachable Moments: ${debriefPack.totalScenarios}
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `debrief-pack-${format(new Date(), "yyyy-MM-dd")}.md`;
+    a.download = `debrief-pack-${formatDateISO()}.md`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -925,7 +925,7 @@ Total Teachable Moments: ${debriefPack.totalScenarios}
             <span>
               {debriefPack.totalScenarios} scenarios with high error rates
               {" | "}
-              Generated {format(new Date(debriefPack.generatedAt), "MMM d, yyyy")}
+              Generated {formatDate(debriefPack.generatedAt, "medium")}
             </span>
           </div>
           

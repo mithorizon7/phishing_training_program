@@ -86,6 +86,8 @@ Preferred communication style: Simple, everyday language.
 - **Glossary**: `i18n-glossary.md` (locked terms for consistency)
 - **Validation**: `npx tsx scripts/i18n-validate.ts`
 - **Key Convention**: `feature.screen.element.state` (e.g., `header.dashboard`, `training.actions.report`)
+- **Date/Number Formatting**: `client/src/lib/formatting.ts` (locale-aware Intl.* utilities)
+- **Known Gaps**: Instructor page (admin feature) uses hardcoded English - future i18n work
 
 ### Frontend Libraries
 - Radix UI primitives for accessible components

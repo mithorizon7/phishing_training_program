@@ -171,6 +171,12 @@
     }
   },
   "training": {
+    "readyToTrain": {
+      "title": "Ready to Train?",
+      "description": "Start a new shift to practice identifying phishing, BEC, and other security threats.",
+      "startButton": "Start New Shift",
+      "startingButton": "Starting..."
+    },
     "inbox": {
       "title": "Inbox",
       "newMessage": "New Message",

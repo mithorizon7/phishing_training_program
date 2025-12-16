@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "@/hooks/use-auth";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { queryClient, apiRequest } from "@/lib/queryClient";
@@ -22,6 +23,7 @@ interface ShiftWithScenarios extends Shift {
 }
 
 export default function Training() {
+  const { t } = useTranslation();
   const { id: shiftId } = useParams<{ id: string }>();
   const { user, isLoading: authLoading, isAuthenticated } = useAuth();
   const [, navigate] = useLocation();
@@ -211,9 +213,9 @@ export default function Training() {
         <Header user={user} />
         <main className="max-w-2xl mx-auto p-6 py-12">
           <Card className="p-8 text-center">
-            <h2 className="text-2xl font-bold mb-4">Ready to Train?</h2>
+            <h2 className="text-2xl font-bold mb-4">{t('training.readyToTrain.title')}</h2>
             <p className="text-muted-foreground mb-6">
-              Start a new shift to practice identifying phishing, BEC, and other security threats.
+              {t('training.readyToTrain.description')}
             </p>
             <Button 
               size="lg" 
@@ -222,7 +224,7 @@ export default function Training() {
               data-testid="button-start-training"
             >
               <PlayCircle className="w-5 h-5 mr-2" />
-              {createShiftMutation.isPending ? "Starting..." : "Start New Shift"}
+              {createShiftMutation.isPending ? t('training.readyToTrain.startingButton') : t('training.readyToTrain.startButton')}
             </Button>
           </Card>
         </main>

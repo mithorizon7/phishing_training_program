@@ -171,6 +171,12 @@
     }
   },
   "training": {
+    "readyToTrain": {
+      "title": "Gatavs apmācībai?",
+      "description": "Sāciet jaunu maiņu, lai praktizētu pikšķerēšanas, BEC un citu drošības draudu atpazīšanu.",
+      "startButton": "Sākt jaunu maiņu",
+      "startingButton": "Sāk..."
+    },
     "inbox": {
       "title": "Iesūtne",
       "newMessage": "Jauns ziņojums",
