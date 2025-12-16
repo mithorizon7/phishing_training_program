@@ -3,7 +3,59 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { setupAuth, registerAuthRoutes, isAuthenticated } from "./replit_integrations/auth";
 import { scenariosSeed } from "./scenarios-seed";
-import type { ActionType, OutcomeType, Scenario } from "@shared/schema";
+import type { ActionType, OutcomeType, Scenario, UserProgress, BadgeId } from "@shared/schema";
+import { BADGES } from "@shared/schema";
+
+// Badge awarding logic
+function checkAndAwardBadges(
+  progress: UserProgress,
+  scenario: Scenario | null,
+  isCorrect: boolean,
+  usedVerification: boolean
+): BadgeId[] {
+  const earnedBadges = [...(progress.earnedBadges || [])] as BadgeId[];
+  const newBadges: BadgeId[] = [];
+
+  // Domain Detective - check if scenario has domain mismatch cue
+  if (scenario && isCorrect && scenario.cues.some(c => c.toLowerCase().includes("domain"))) {
+    const domainDetects = progress.correctDecisions + 1;
+    if (domainDetects >= BADGES.domain_detective.requirement && !earnedBadges.includes("domain_detective")) {
+      newBadges.push("domain_detective");
+    }
+  }
+
+  // Verification Pro - used verification correctly on malicious content
+  if (usedVerification && scenario?.legitimacy === "malicious") {
+    const verifyCount = (progress.totalDecisions || 0);
+    if (verifyCount >= BADGES.verification_pro.requirement && !earnedBadges.includes("verification_pro")) {
+      newBadges.push("verification_pro");
+    }
+  }
+
+  // BEC Blocker - blocked BEC attempts
+  if (isCorrect && scenario?.attackFamily === "bec") {
+    const becBlocks = progress.correctDecisions + 1;
+    if (becBlocks >= BADGES.bec_blocker.requirement && !earnedBadges.includes("bec_blocker")) {
+      newBadges.push("bec_blocker");
+    }
+  }
+
+  // Urgency Immune - resisted urgency attacks
+  if (isCorrect && scenario?.cues.some(c => c.toLowerCase().includes("urgency"))) {
+    const urgencyResists = progress.correctDecisions + 1;
+    if (urgencyResists >= BADGES.urgency_immune.requirement && !earnedBadges.includes("urgency_immune")) {
+      newBadges.push("urgency_immune");
+    }
+  }
+
+  // Streak Master - 20 decision streak
+  const currentStreak = progress.currentStreak + (isCorrect ? 1 : 0);
+  if (currentStreak >= BADGES.streak_master.requirement && !earnedBadges.includes("streak_master")) {
+    newBadges.push("streak_master");
+  }
+
+  return newBadges;
+}
 
 // Scoring logic
 function calculateOutcome(
@@ -252,6 +304,25 @@ export async function registerRoutes(
         }
       }
       
+      // Check for new badges
+      const defaultProgress: UserProgress = {
+        id: '',
+        userId,
+        totalShifts: 0,
+        totalDecisions: 0,
+        correctDecisions: 0,
+        falsePositives: 0,
+        compromised: 0,
+        currentStreak: 0,
+        longestStreak: 0,
+        totalScore: 0,
+        missedCues: {},
+        earnedBadges: [],
+        lastPlayedAt: null,
+      };
+      const newBadges = checkAndAwardBadges(progress || defaultProgress, scenario, isCorrect, usedVerification);
+      const allBadges = [...(progress?.earnedBadges || []), ...newBadges];
+      
       await storage.upsertProgress(userId, {
         totalDecisions: (progress?.totalDecisions || 0) + 1,
         correctDecisions: (progress?.correctDecisions || 0) + (isCorrect ? 1 : 0),
@@ -261,6 +332,7 @@ export async function registerRoutes(
         longestStreak,
         totalScore: (progress?.totalScore || 0) + points,
         missedCues,
+        earnedBadges: allBadges,
       });
       
       res.json({
@@ -268,10 +340,75 @@ export async function registerRoutes(
         outcome,
         pointsEarned: points,
         shift: updatedShift,
+        newBadges,
       });
     } catch (error) {
       console.error("Error submitting decision:", error);
       res.status(500).json({ message: "Failed to submit decision" });
+    }
+  });
+
+  // Get current user info (with role)
+  app.get("/api/user/me", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const user = await storage.getUserById(userId);
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      res.json(user);
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      res.status(500).json({ message: "Failed to fetch user" });
+    }
+  });
+
+  // Instructor middleware
+  const isInstructor = async (req: any, res: any, next: any) => {
+    try {
+      const userId = req.user.claims.sub;
+      const user = await storage.getUserById(userId);
+      if (!user || user.role !== "instructor") {
+        return res.status(403).json({ message: "Instructor access required" });
+      }
+      next();
+    } catch (error) {
+      console.error("Error checking instructor role:", error);
+      res.status(500).json({ message: "Authorization error" });
+    }
+  };
+
+  // Instructor: Get cohort analytics
+  app.get("/api/instructor/analytics", isAuthenticated, isInstructor, async (req: any, res) => {
+    try {
+      const analytics = await storage.getCohortAnalytics();
+      res.json(analytics);
+    } catch (error) {
+      console.error("Error fetching analytics:", error);
+      res.status(500).json({ message: "Failed to fetch analytics" });
+    }
+  });
+
+  // Instructor: Get learner summaries
+  app.get("/api/instructor/learners", isAuthenticated, isInstructor, async (req: any, res) => {
+    try {
+      const learners = await storage.getLearnerSummaries();
+      res.json(learners);
+    } catch (error) {
+      console.error("Error fetching learners:", error);
+      res.status(500).json({ message: "Failed to fetch learners" });
+    }
+  });
+
+  // Promote user to instructor (temporary endpoint for testing)
+  app.post("/api/user/promote-instructor", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const user = await storage.updateUserRole(userId, "instructor");
+      res.json(user);
+    } catch (error) {
+      console.error("Error promoting user:", error);
+      res.status(500).json({ message: "Failed to promote user" });
     }
   });
 
@@ -290,13 +427,28 @@ export async function registerRoutes(
         completedAt: new Date(),
       });
       
-      // Update total shifts count
+      // Update total shifts count and check for perfect shift badge
       const progress = await storage.getProgressByUserId(userId);
+      const earnedBadges = [...(progress?.earnedBadges || [])] as BadgeId[];
+      const newBadges: BadgeId[] = [];
+      
+      // Check for perfect shift (all decisions correct, no compromises or false positives)
+      const isPerfect = shift.correctDecisions === shift.scenarioIds.length && 
+                       shift.compromised === 0 && 
+                       shift.falsePositives === 0;
+      
+      if (isPerfect && !earnedBadges.includes("perfect_shift")) {
+        newBadges.push("perfect_shift");
+      }
+      
+      const allBadges = [...earnedBadges, ...newBadges];
+      
       await storage.upsertProgress(userId, {
         totalShifts: (progress?.totalShifts || 0) + 1,
+        earnedBadges: allBadges,
       });
       
-      res.json(updatedShift);
+      res.json({ shift: updatedShift, newBadges });
     } catch (error) {
       console.error("Error completing shift:", error);
       res.status(500).json({ message: "Failed to complete shift" });

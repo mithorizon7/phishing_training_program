@@ -7,14 +7,14 @@ import {
   DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
-import { Shield, LogOut, User, LayoutDashboard, PlayCircle } from "lucide-react";
+import { Shield, LogOut, User, LayoutDashboard, PlayCircle, GraduationCap } from "lucide-react";
 import { ThemeToggle } from "./theme-toggle";
 import { UserAvatar } from "./user-avatar";
 import type { User as UserType } from "@shared/models/auth";
 import { Link, useLocation } from "wouter";
 
 interface HeaderProps {
-  user: UserType | null | undefined;
+  user: (UserType & { role?: string }) | null | undefined;
   verificationsRemaining?: number;
   inShift?: boolean;
 }
@@ -57,6 +57,18 @@ export function Header({ user, verificationsRemaining, inShift }: HeaderProps) {
                   Training
                 </Link>
               </Button>
+              {user.role === "instructor" && (
+                <Button 
+                  variant={location === "/instructor" ? "secondary" : "ghost"} 
+                  size="sm" 
+                  asChild
+                >
+                  <Link href="/instructor" data-testid="link-instructor">
+                    <GraduationCap className="w-4 h-4 mr-2" />
+                    Instructor
+                  </Link>
+                </Button>
+              )}
             </nav>
           )}
         </div>
@@ -97,6 +109,14 @@ export function Header({ user, verificationsRemaining, inShift }: HeaderProps) {
                     Start Training
                   </Link>
                 </DropdownMenuItem>
+                {user.role === "instructor" && (
+                  <DropdownMenuItem asChild>
+                    <Link href="/instructor" className="flex items-center gap-2 cursor-pointer">
+                      <GraduationCap className="w-4 h-4" />
+                      Instructor Dashboard
+                    </Link>
+                  </DropdownMenuItem>
+                )}
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
                   <a href="/api/logout" className="flex items-center gap-2 cursor-pointer text-destructive">

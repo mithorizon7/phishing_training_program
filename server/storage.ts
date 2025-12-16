@@ -5,8 +5,37 @@ import {
   type Decision, type InsertDecision,
   type UserProgress, type InsertUserProgress
 } from "@shared/schema";
+import { users, type User } from "@shared/models/auth";
 import { db } from "./db";
-import { eq, inArray, sql } from "drizzle-orm";
+import { eq, inArray, sql, desc, and, gte } from "drizzle-orm";
+
+// Analytics types
+export interface CohortAnalytics {
+  totalLearners: number;
+  activeLearners: number;
+  totalDecisions: number;
+  overallAccuracy: number;
+  falsePositiveRate: number;
+  compromiseRate: number;
+  topMissedCues: Array<{ cue: string; count: number }>;
+  mistakePatterns: Array<{ attackFamily: string; errorRate: number }>;
+  recentActivity: Array<{
+    date: string;
+    decisions: number;
+    accuracy: number;
+  }>;
+}
+
+export interface LearnerSummary {
+  userId: string;
+  firstName: string | null;
+  lastName: string | null;
+  email: string | null;
+  totalDecisions: number;
+  accuracy: number;
+  falsePositiveRate: number;
+  lastPlayedAt: Date | null;
+}
 
 export interface IStorage {
   // Scenarios
@@ -26,10 +55,21 @@ export interface IStorage {
   // Decisions
   getDecisionsByShiftId(shiftId: string): Promise<Decision[]>;
   createDecision(decision: InsertDecision): Promise<Decision>;
+  getAllDecisions(): Promise<Decision[]>;
 
   // User Progress
   getProgressByUserId(userId: string): Promise<UserProgress | undefined>;
+  getAllProgress(): Promise<UserProgress[]>;
   upsertProgress(userId: string, updates: Partial<InsertUserProgress>): Promise<UserProgress>;
+
+  // Users
+  getUserById(id: string): Promise<User | undefined>;
+  getAllLearners(): Promise<User[]>;
+  updateUserRole(userId: string, role: "learner" | "instructor"): Promise<User | undefined>;
+
+  // Analytics
+  getCohortAnalytics(): Promise<CohortAnalytics>;
+  getLearnerSummaries(): Promise<LearnerSummary[]>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -98,10 +138,18 @@ export class DatabaseStorage implements IStorage {
     return created;
   }
 
+  async getAllDecisions(): Promise<Decision[]> {
+    return db.select().from(decisions).orderBy(desc(decisions.createdAt));
+  }
+
   // User Progress
   async getProgressByUserId(userId: string): Promise<UserProgress | undefined> {
     const [progress] = await db.select().from(userProgress).where(eq(userProgress.userId, userId));
     return progress;
+  }
+
+  async getAllProgress(): Promise<UserProgress[]> {
+    return db.select().from(userProgress);
   }
 
   async upsertProgress(userId: string, updates: Partial<InsertUserProgress>): Promise<UserProgress> {
@@ -119,6 +167,141 @@ export class DatabaseStorage implements IStorage {
       .values({ userId, ...updates, lastPlayedAt: new Date() })
       .returning();
     return created;
+  }
+
+  // Users
+  async getUserById(id: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user;
+  }
+
+  async getAllLearners(): Promise<User[]> {
+    return db.select().from(users).where(eq(users.role, "learner"));
+  }
+
+  async updateUserRole(userId: string, role: "learner" | "instructor"): Promise<User | undefined> {
+    const [updated] = await db.update(users)
+      .set({ role, updatedAt: new Date() })
+      .where(eq(users.id, userId))
+      .returning();
+    return updated;
+  }
+
+  // Analytics
+  async getCohortAnalytics(): Promise<CohortAnalytics> {
+    // Get all progress records
+    const allProgress = await this.getAllProgress();
+    const allDecisions = await this.getAllDecisions();
+    const allScenarios = await this.getScenarios();
+    
+    // Calculate basic metrics
+    const totalLearners = allProgress.length;
+    const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+    const activeLearners = allProgress.filter(p => p.lastPlayedAt && p.lastPlayedAt >= sevenDaysAgo).length;
+    const totalDecisions = allProgress.reduce((sum, p) => sum + (p.totalDecisions || 0), 0);
+    const totalCorrect = allProgress.reduce((sum, p) => sum + (p.correctDecisions || 0), 0);
+    const totalFalsePositives = allProgress.reduce((sum, p) => sum + (p.falsePositives || 0), 0);
+    const totalCompromised = allProgress.reduce((sum, p) => sum + (p.compromised || 0), 0);
+    
+    const overallAccuracy = totalDecisions > 0 ? (totalCorrect / totalDecisions) * 100 : 0;
+    const falsePositiveRate = totalDecisions > 0 ? (totalFalsePositives / totalDecisions) * 100 : 0;
+    const compromiseRate = totalDecisions > 0 ? (totalCompromised / totalDecisions) * 100 : 0;
+    
+    // Aggregate missed cues across all learners with null checks
+    const cueCounter: Record<string, number> = {};
+    for (const p of allProgress) {
+      const missedCues = (p.missedCues as Record<string, number>) || {};
+      if (missedCues && typeof missedCues === 'object') {
+        for (const [cue, count] of Object.entries(missedCues)) {
+          if (cue && typeof count === 'number') {
+            cueCounter[cue] = (cueCounter[cue] || 0) + count;
+          }
+        }
+      }
+    }
+    const topMissedCues = Object.entries(cueCounter)
+      .map(([cue, count]) => ({ cue, count }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 10);
+    
+    // Calculate mistake patterns by attack family using pre-built map
+    const scenarioMap = new Map(allScenarios.map(s => [s.id, s]));
+    const familyStats: Record<string, { total: number; errors: number }> = {};
+    
+    for (const decision of allDecisions) {
+      const scenario = scenarioMap.get(decision.scenarioId);
+      if (scenario?.attackFamily && Array.isArray(scenario.cues)) {
+        if (!familyStats[scenario.attackFamily]) {
+          familyStats[scenario.attackFamily] = { total: 0, errors: 0 };
+        }
+        familyStats[scenario.attackFamily].total++;
+        if (decision.outcome === "compromised" || decision.outcome === "false_alarm") {
+          familyStats[scenario.attackFamily].errors++;
+        }
+      }
+    }
+    
+    const mistakePatterns = Object.entries(familyStats)
+      .map(([attackFamily, stats]) => ({
+        attackFamily,
+        errorRate: stats.total > 0 ? (stats.errors / stats.total) * 100 : 0
+      }))
+      .sort((a, b) => b.errorRate - a.errorRate);
+    
+    // Calculate recent activity (last 7 days)
+    const recentActivity: Array<{ date: string; decisions: number; accuracy: number }> = [];
+    for (let i = 6; i >= 0; i--) {
+      const date = new Date(Date.now() - i * 24 * 60 * 60 * 1000);
+      const dateStr = date.toISOString().split('T')[0];
+      const dayDecisions = allDecisions.filter(d => {
+        const dDate = d.createdAt.toISOString().split('T')[0];
+        return dDate === dateStr;
+      });
+      
+      const dayCorrect = dayDecisions.filter(d => d.outcome === "safe").length;
+      recentActivity.push({
+        date: dateStr,
+        decisions: dayDecisions.length,
+        accuracy: dayDecisions.length > 0 ? (dayCorrect / dayDecisions.length) * 100 : 0
+      });
+    }
+    
+    return {
+      totalLearners,
+      activeLearners,
+      totalDecisions,
+      overallAccuracy,
+      falsePositiveRate,
+      compromiseRate,
+      topMissedCues,
+      mistakePatterns,
+      recentActivity
+    };
+  }
+
+  async getLearnerSummaries(): Promise<LearnerSummary[]> {
+    const learners = await this.getAllLearners();
+    const allProgress = await this.getAllProgress();
+    
+    const progressMap = new Map(allProgress.map(p => [p.userId, p]));
+    
+    return learners.map(learner => {
+      const progress = progressMap.get(learner.id);
+      const totalDecisions = progress?.totalDecisions || 0;
+      const correctDecisions = progress?.correctDecisions || 0;
+      const falsePositives = progress?.falsePositives || 0;
+      
+      return {
+        userId: learner.id,
+        firstName: learner.firstName,
+        lastName: learner.lastName,
+        email: learner.email,
+        totalDecisions,
+        accuracy: totalDecisions > 0 ? (correctDecisions / totalDecisions) * 100 : 0,
+        falsePositiveRate: totalDecisions > 0 ? (falsePositives / totalDecisions) * 100 : 0,
+        lastPlayedAt: progress?.lastPlayedAt || null
+      };
+    });
   }
 }
 
