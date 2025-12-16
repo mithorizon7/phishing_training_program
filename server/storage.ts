@@ -45,6 +45,7 @@ export interface IStorage {
   getScenarioById(id: string): Promise<Scenario | undefined>;
   getScenariosByIds(ids: string[]): Promise<Scenario[]>;
   getRandomScenarios(count: number, maxDifficulty?: number): Promise<Scenario[]>;
+  getAdaptiveScenarios(count: number, userAccuracy: number, shiftsCompleted: number): Promise<Scenario[]>;
   createScenario(scenario: InsertScenario): Promise<Scenario>;
   getScenariosCount(): Promise<number>;
 
@@ -111,13 +112,99 @@ export class DatabaseStorage implements IStorage {
   async getRandomScenarios(count: number, maxDifficulty: number = 5): Promise<Scenario[]> {
     // Only include standalone scenarios OR first scenario in chains (chainOrder = 1 or null)
     // Exclude follow-up scenarios (chainOrder > 1) from random selection
+    // Filter by difficulty score to enable adaptive learning
     return db.select()
       .from(scenarios)
       .where(
-        sql`(${scenarios.chainOrder} IS NULL OR ${scenarios.chainOrder} = 1)`
+        sql`(${scenarios.chainOrder} IS NULL OR ${scenarios.chainOrder} = 1) 
+            AND (${scenarios.difficultyScore} IS NULL OR ${scenarios.difficultyScore} <= ${maxDifficulty})`
       )
       .orderBy(sql`RANDOM()`)
       .limit(count);
+  }
+
+  async getAdaptiveScenarios(count: number, userAccuracy: number, shiftsCompleted: number): Promise<Scenario[]> {
+    // Adaptive difficulty based on user performance and experience
+    // Start with easier scenarios (difficulty 1-2) and gradually unlock harder ones
+    // 
+    // Difficulty unlocking progression:
+    // - Shifts 0-2: Max difficulty 2 (basic scenarios only)
+    // - Shifts 3-5: Max difficulty 3 (if accuracy > 60%)
+    // - Shifts 6-10: Max difficulty 4 (if accuracy > 70%)
+    // - Shifts 11+: Max difficulty 5 (if accuracy > 75%)
+    
+    let maxDifficulty = 2; // Start with easiest
+    
+    if (shiftsCompleted >= 3 && userAccuracy >= 0.60) {
+      maxDifficulty = 3;
+    }
+    if (shiftsCompleted >= 6 && userAccuracy >= 0.70) {
+      maxDifficulty = 4;
+    }
+    if (shiftsCompleted >= 11 && userAccuracy >= 0.75) {
+      maxDifficulty = 5;
+    }
+    
+    // Get scenarios at or below the user's current level
+    // But mix in some challenge - include 20% slightly harder scenarios if available
+    const easyCount = Math.ceil(count * 0.8);
+    const challengeCount = count - easyCount;
+    
+    const easyScenarios = await db.select()
+      .from(scenarios)
+      .where(
+        sql`(${scenarios.chainOrder} IS NULL OR ${scenarios.chainOrder} = 1) 
+            AND (${scenarios.difficultyScore} IS NULL OR ${scenarios.difficultyScore} <= ${maxDifficulty})`
+      )
+      .orderBy(sql`RANDOM()`)
+      .limit(easyCount);
+    
+    // Get some challenge scenarios (one level above if available)
+    const challengeScenarios = await db.select()
+      .from(scenarios)
+      .where(
+        sql`(${scenarios.chainOrder} IS NULL OR ${scenarios.chainOrder} = 1) 
+            AND ${scenarios.difficultyScore} = ${Math.min(maxDifficulty + 1, 5)}`
+      )
+      .orderBy(sql`RANDOM()`)
+      .limit(challengeCount);
+    
+    // Combine scenarios - if we don't have enough challenge scenarios, backfill with more at-level ones
+    let combined = [...easyScenarios, ...challengeScenarios];
+    
+    // Backfill if we don't have enough scenarios
+    if (combined.length < count) {
+      const backfillCount = count - combined.length;
+      const existingIds = combined.map(s => s.id);
+      
+      // Use notInArray for proper SQL escaping, or fall back to simpler query if no existing IDs
+      let backfillScenarios: Scenario[];
+      if (existingIds.length > 0) {
+        backfillScenarios = await db.select()
+          .from(scenarios)
+          .where(
+            sql`(${scenarios.chainOrder} IS NULL OR ${scenarios.chainOrder} = 1) 
+                AND (${scenarios.difficultyScore} IS NULL OR ${scenarios.difficultyScore} <= ${maxDifficulty})
+                AND ${scenarios.id} NOT IN (${sql.join(existingIds.map(id => sql`${id}`), sql`, `)})`
+          )
+          .orderBy(sql`RANDOM()`)
+          .limit(backfillCount);
+      } else {
+        backfillScenarios = await db.select()
+          .from(scenarios)
+          .where(
+            sql`(${scenarios.chainOrder} IS NULL OR ${scenarios.chainOrder} = 1) 
+                AND (${scenarios.difficultyScore} IS NULL OR ${scenarios.difficultyScore} <= ${maxDifficulty})`
+          )
+          .orderBy(sql`RANDOM()`)
+          .limit(backfillCount);
+      }
+      
+      combined = [...combined, ...backfillScenarios];
+    }
+    
+    // Shuffle and return
+    return combined.sort(() => Math.random() - 0.5);
   }
 
   async createScenario(scenario: InsertScenario): Promise<Scenario> {

@@ -186,13 +186,20 @@ export async function registerRoutes(
     }
   });
 
-  // Create a new shift
+  // Create a new shift with adaptive difficulty
   app.post("/api/shifts", isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
       
-      // Get random scenarios for this shift
-      const scenarios = await storage.getRandomScenarios(10);
+      // Get user progress for adaptive difficulty
+      const progress = await storage.getProgressByUserId(userId);
+      const shiftsCompleted = progress?.totalShifts || 0;
+      const accuracy = progress?.totalDecisions 
+        ? progress.correctDecisions / progress.totalDecisions 
+        : 0;
+      
+      // Use adaptive scenario selection based on user performance
+      const scenarios = await storage.getAdaptiveScenarios(10, accuracy, shiftsCompleted);
       const scenarioIds = scenarios.map(s => s.id);
       
       const shift = await storage.createShift({
