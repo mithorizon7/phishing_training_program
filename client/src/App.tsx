@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import Home from "@/pages/home";
 import Training from "@/pages/training";
 import InstructorDashboard from "@/pages/instructor";
+import RecoverDrill from "@/pages/recover";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -16,6 +17,7 @@ function Router() {
       <Route path="/training" component={Training} />
       <Route path="/training/:id" component={Training} />
       <Route path="/instructor" component={InstructorDashboard} />
+      <Route path="/recover" component={RecoverDrill} />
       <Route component={NotFound} />
     </Switch>
   );

@@ -16,7 +16,10 @@ import {
   Star,
   Flag,
   ShieldAlert,
-  Zap
+  Zap,
+  Briefcase,
+  ShieldCheck,
+  LifeBuoy
 } from "lucide-react";
 import type { UserProgress } from "@shared/schema";
 import { BADGES } from "@shared/schema";
@@ -137,6 +140,17 @@ export function Dashboard({ progress, isLoading, onStartShift }: DashboardProps)
     ? Math.round(falsePositives / (falsePositives + correctLegit) * 100)
     : 0;
 
+  // Dual Scores: Security Score + Operations Score
+  // Security Score: How well you detect and handle threats (weighted: detection is critical)
+  // Operations Score: How well you avoid blocking legitimate work (weighted: discrimination matters)
+  const securityScore = progress && progress.totalMaliciousSeen > 0
+    ? Math.round((progress.correctMaliciousHandling / progress.totalMaliciousSeen) * 100)
+    : 100; // Perfect if no threats seen yet
+  
+  const operationsScore = progress && progress.totalLegitimateSeen > 0
+    ? Math.round((progress.correctLegitimateHandling / progress.totalLegitimateSeen) * 100)
+    : 100; // Perfect if no legitimate seen yet
+
   const missedCuesEntries = progress?.missedCues 
     ? Object.entries(progress.missedCues as Record<string, number>).sort((a, b) => b[1] - a[1]).slice(0, 5)
     : [];
@@ -156,6 +170,55 @@ export function Dashboard({ progress, isLoading, onStartShift }: DashboardProps)
           <PlayCircle className="w-5 h-5 mr-2" />
           Start New Shift
         </Button>
+      </div>
+
+      {/* Dual Score Display - Security vs Operations Balance */}
+      <div className="grid sm:grid-cols-2 gap-6">
+        <Card className="border-2 border-chart-2/30">
+          <CardContent className="pt-6">
+            <div className="flex items-center gap-4">
+              <div className="w-16 h-16 rounded-full bg-chart-2/20 flex items-center justify-center">
+                <ShieldCheck className="w-8 h-8 text-chart-2" />
+              </div>
+              <div className="flex-1">
+                <p className="text-sm text-muted-foreground mb-1">Security Score</p>
+                <div className="flex items-baseline gap-2">
+                  <span className="text-4xl font-bold" data-testid="text-security-score">{securityScore}%</span>
+                </div>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Stopped {progress?.correctMaliciousHandling || 0} of {progress?.totalMaliciousSeen || 0} threats
+                </p>
+              </div>
+            </div>
+            <Progress value={securityScore} className="h-2 mt-4" />
+            <p className="text-xs text-muted-foreground mt-2 text-center">
+              Measures your ability to detect and block malicious content
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card className="border-2 border-chart-3/30">
+          <CardContent className="pt-6">
+            <div className="flex items-center gap-4">
+              <div className="w-16 h-16 rounded-full bg-chart-3/20 flex items-center justify-center">
+                <Briefcase className="w-8 h-8 text-chart-3" />
+              </div>
+              <div className="flex-1">
+                <p className="text-sm text-muted-foreground mb-1">Operations Score</p>
+                <div className="flex items-baseline gap-2">
+                  <span className="text-4xl font-bold" data-testid="text-operations-score">{operationsScore}%</span>
+                </div>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Processed {progress?.correctLegitimateHandling || 0} of {progress?.totalLegitimateSeen || 0} legitimate correctly
+                </p>
+              </div>
+            </div>
+            <Progress value={operationsScore} className="h-2 mt-4" />
+            <p className="text-xs text-muted-foreground mt-2 text-center">
+              Measures your ability to keep legitimate work flowing
+            </p>
+          </CardContent>
+        </Card>
       </div>
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -294,27 +357,52 @@ export function Dashboard({ progress, isLoading, onStartShift }: DashboardProps)
         </Card>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Training Summary</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid sm:grid-cols-3 gap-6">
-            <div className="text-center p-4 rounded-lg bg-muted/30">
-              <div className="text-3xl font-bold text-primary">{progress?.totalShifts || 0}</div>
-              <p className="text-sm text-muted-foreground mt-1">Shifts Completed</p>
+      <div className="grid sm:grid-cols-2 gap-6">
+        <Card>
+          <CardHeader>
+            <CardTitle>Training Summary</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-3 gap-4">
+              <div className="text-center p-3 rounded-lg bg-muted/30">
+                <div className="text-2xl font-bold text-primary">{progress?.totalShifts || 0}</div>
+                <p className="text-xs text-muted-foreground mt-1">Shifts</p>
+              </div>
+              <div className="text-center p-3 rounded-lg bg-muted/30">
+                <div className="text-2xl font-bold text-chart-2">{progress?.totalDecisions || 0}</div>
+                <p className="text-xs text-muted-foreground mt-1">Messages</p>
+              </div>
+              <div className="text-center p-3 rounded-lg bg-muted/30">
+                <div className="text-2xl font-bold text-chart-3">{progress?.totalScore || 0}</div>
+                <p className="text-xs text-muted-foreground mt-1">Points</p>
+              </div>
             </div>
-            <div className="text-center p-4 rounded-lg bg-muted/30">
-              <div className="text-3xl font-bold text-chart-2">{progress?.totalDecisions || 0}</div>
-              <p className="text-sm text-muted-foreground mt-1">Messages Processed</p>
-            </div>
-            <div className="text-center p-4 rounded-lg bg-muted/30">
-              <div className="text-3xl font-bold text-chart-3">{progress?.totalScore || 0}</div>
-              <p className="text-sm text-muted-foreground mt-1">Total Points</p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+
+        <Card className="border-2 border-destructive/20">
+          <CardHeader className="pb-2">
+            <CardTitle className="flex items-center gap-2">
+              <LifeBuoy className="w-5 h-5 text-destructive" />
+              Incident Response Training
+            </CardTitle>
+            <CardDescription>
+              Learn what to do when something goes wrong
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-muted-foreground mb-4">
+              Even experts make mistakes. Practice the critical steps for reporting and recovering from security incidents.
+            </p>
+            <Link href="/recover">
+              <Button variant="outline" className="w-full" data-testid="link-recover-drill">
+                <LifeBuoy className="w-4 h-4 mr-2" />
+                Start Recovery Drill
+              </Button>
+            </Link>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
