@@ -34,7 +34,7 @@ export function Header({ user, verificationsRemaining, inShift }: HeaderProps) {
               <Shield className="w-5 h-5 text-primary-foreground" />
             </div>
             <span className="font-semibold text-lg hidden sm:inline" data-testid="text-header-title">
-              Inbox Arena
+              {t('app.title')}
             </span>
           </Link>
 
@@ -68,7 +68,7 @@ export function Header({ user, verificationsRemaining, inShift }: HeaderProps) {
                 >
                   <Link href="/instructor" data-testid="link-instructor">
                     <GraduationCap className="w-4 h-4 mr-2" />
-                    Instructor
+                    {t('header.instructor')}
                   </Link>
                 </Button>
               )}
@@ -79,7 +79,7 @@ export function Header({ user, verificationsRemaining, inShift }: HeaderProps) {
         <div className="flex items-center gap-2">
           {inShift && verificationsRemaining !== undefined && (
             <Badge variant="outline" className="hidden sm:flex" data-testid="badge-verifications">
-              {verificationsRemaining} verifications left
+              {t('header.verificationsLeft', { count: verificationsRemaining })}
             </Badge>
           )}
           
@@ -117,7 +117,7 @@ export function Header({ user, verificationsRemaining, inShift }: HeaderProps) {
                   <DropdownMenuItem asChild>
                     <Link href="/instructor" className="flex items-center gap-2 cursor-pointer">
                       <GraduationCap className="w-4 h-4" />
-                      Instructor Dashboard
+                      {t('header.instructorDashboard')}
                     </Link>
                   </DropdownMenuItem>
                 )}

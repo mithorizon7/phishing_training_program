@@ -12,7 +12,8 @@
     "save": "Saglabāt",
     "delete": "Dzēst",
     "confirm": "Apstiprināt",
-    "close": "Aizvērt"
+    "close": "Aizvērt",
+    "active": "Aktīvs"
   },
   "app": {
     "title": "Inbox Arena",
@@ -87,7 +88,11 @@
     "dashboard": "Panelis",
     "training": "Apmācība",
     "recover": "Incidentu reaģēšana",
-    "signOut": "Izrakstīties"
+    "signOut": "Izrakstīties",
+    "instructor": "Instruktors",
+    "instructorDashboard": "Instruktora panelis",
+    "verificationsLeft": "{count, plural, one {# verifikācija atlikusi} other {# verifikācijas atlikušas}}",
+    "changeLanguage": "Mainīt valodu"
   },
   "dashboard": {
     "title": "Panelis",

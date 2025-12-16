@@ -12,7 +12,8 @@
     "save": "Сохранить",
     "delete": "Удалить",
     "confirm": "Подтвердить",
-    "close": "Закрыть"
+    "close": "Закрыть",
+    "active": "Активен"
   },
   "app": {
     "title": "Inbox Arena",
@@ -87,7 +88,11 @@
     "dashboard": "Панель",
     "training": "Обучение",
     "recover": "Реагирование на инциденты",
-    "signOut": "Выйти"
+    "signOut": "Выйти",
+    "instructor": "Инструктор",
+    "instructorDashboard": "Панель инструктора",
+    "verificationsLeft": "{count, plural, one {# проверка осталась} few {# проверки осталось} many {# проверок осталось} other {# проверок осталось}}",
+    "changeLanguage": "Сменить язык"
   },
   "dashboard": {
     "title": "Панель",

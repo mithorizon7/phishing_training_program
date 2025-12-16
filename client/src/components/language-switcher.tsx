@@ -10,7 +10,7 @@ import { Languages } from 'lucide-react';
 import { SUPPORTED_LANGUAGES, type SupportedLanguage } from '@/lib/i18n';
 
 export function LanguageSwitcher() {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   
   const currentLang = SUPPORTED_LANGUAGES.find(l => l.code === i18n.language) || SUPPORTED_LANGUAGES[0];
   
@@ -23,7 +23,7 @@ export function LanguageSwitcher() {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon" data-testid="button-language-switcher">
           <Languages className="w-4 h-4" />
-          <span className="sr-only">Change language</span>
+          <span className="sr-only">{t('header.changeLanguage')}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
@@ -36,7 +36,7 @@ export function LanguageSwitcher() {
           >
             <span className="mr-2">{lang.nativeName}</span>
             {lang.code === i18n.language && (
-              <span className="ml-auto text-xs text-muted-foreground">Active</span>
+              <span className="ml-auto text-xs text-muted-foreground">{t('common.active')}</span>
             )}
           </DropdownMenuItem>
         ))}

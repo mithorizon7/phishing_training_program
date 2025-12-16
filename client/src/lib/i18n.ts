@@ -25,7 +25,11 @@ i18n
       lv: { translation: lv },
       ru: { translation: ru },
     },
-    fallbackLng: ['lv', 'en'],
+    fallbackLng: {
+      default: ['en'],
+      lv: ['en'],
+      ru: ['en']
+    },
     supportedLngs: ['en', 'lv', 'ru'],
     detection: {
       order: ['localStorage', 'navigator'],

@@ -12,7 +12,8 @@
     "save": "Save",
     "delete": "Delete",
     "confirm": "Confirm",
-    "close": "Close"
+    "close": "Close",
+    "active": "Active"
   },
   "app": {
     "title": "Inbox Arena",
@@ -87,7 +88,11 @@
     "dashboard": "Dashboard",
     "training": "Training",
     "recover": "Incident Response",
-    "signOut": "Sign Out"
+    "signOut": "Sign Out",
+    "instructor": "Instructor",
+    "instructorDashboard": "Instructor Dashboard",
+    "verificationsLeft": "{count, plural, one {# verification left} other {# verifications left}}",
+    "changeLanguage": "Change language"
   },
   "dashboard": {
     "title": "Dashboard",
