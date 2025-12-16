@@ -8,8 +8,8 @@ export * from "./models/auth";
 // Enums as TypeScript types
 export type MessageChannel = "email" | "sms" | "call";
 export type MessageLegitimacy = "legitimate" | "suspicious_legitimate" | "malicious";
-export type AttackFamily = "phishing" | "bec" | "spoofing" | "smishing" | "vishing" | "wrong_number" | "qr_phishing" | "oauth_phishing";
-export type RiskType = "credential_theft" | "malware" | "payment_fraud" | "data_leakage" | "account_takeover" | "none";
+export type AttackFamily = "phishing" | "bec" | "spoofing" | "smishing" | "vishing" | "wrong_number" | "qr_phishing" | "oauth_phishing" | "ai_phishing";
+export type RiskType = "credential_theft" | "malware" | "payment_fraud" | "data_leakage" | "account_takeover" | "financial_theft" | "none";
 export type ActionType = "report" | "delete" | "verify" | "proceed";
 export type OutcomeType = "safe" | "compromised" | "delayed_work" | "false_alarm";
 
@@ -37,6 +37,11 @@ export const scenarios = pgTable("scenarios", {
   linkUrl: varchar("link_url", { length: 500 }),
   linkText: varchar("link_text", { length: 255 }),
   qrCodeUrl: varchar("qr_code_url", { length: 500 }),
+  // Multi-turn scenario support
+  chainId: varchar("chain_id", { length: 100 }),
+  chainOrder: integer("chain_order"),
+  chainName: varchar("chain_name", { length: 255 }),
+  previousAction: varchar("previous_action", { length: 20 }).$type<ActionType>(),
 });
 
 // Shifts table - gameplay sessions

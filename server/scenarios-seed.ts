@@ -382,4 +382,535 @@ Campus Parking Services`,
     hasAttachment: false,
     qrCodeUrl: "https://parking-registration-update.com/scan",
   },
+
+  // OAuth consent phishing
+  {
+    channel: "email",
+    senderName: "Google Workspace",
+    senderEmail: "notifications@google-workspace-apps.net",
+    subject: "Action Required: Approve New App Integration",
+    body: `Your organization has enabled a new productivity app that requires your authorization.
+
+App: DocuSign Integration Pro
+Publisher: Verified Business Partner
+Permissions requested:
+- Read and compose emails
+- Access Google Drive files
+- View and manage calendar events
+
+This integration will enhance your workflow by connecting DocuSign with your Google Workspace.
+
+[AUTHORIZE APP]
+
+If you did not request this integration, please contact your IT administrator.
+
+This notification was sent by Google Workspace.`,
+    timestamp: "3 hours ago",
+    legitimacy: "malicious",
+    attackFamily: "oauth_phishing",
+    riskType: "credential_theft",
+    cues: ["OAuth consent request", "broad permissions", "fake Google domain", "third-party sender"],
+    correctAction: "report",
+    explanation: "This is OAuth consent phishing. Attackers create malicious apps that request permission to access your email and files. The sender domain 'google-workspace-apps.net' is NOT Google. Legitimate Google OAuth prompts appear directly in your browser, not via email links. The broad permissions (email, drive, calendar) would give attackers complete account access. Never authorize apps through email links.",
+    difficultyScore: 4,
+    userRole: "staff",
+    hasAttachment: false,
+    linkUrl: "https://oauth-consent.google-workspace-apps.net/authorize",
+    linkText: "AUTHORIZE APP",
+  },
+
+  // OAuth consent - legitimate
+  {
+    channel: "email",
+    senderName: "Slack",
+    senderEmail: "feedback@slack.com",
+    subject: "Your team admin installed Zoom for Slack",
+    body: `Hi there,
+
+Your workspace admin has installed the Zoom app for your Slack workspace.
+
+What this means for you:
+- You can start Zoom meetings directly from Slack channels
+- Meeting links will be automatically shared in conversations
+- No additional action required from you
+
+If you have questions about this installation, please contact your workspace administrator.
+
+The Slack Team`,
+    timestamp: "1 week ago",
+    legitimacy: "legitimate",
+    riskType: "none",
+    cues: [],
+    correctAction: "delete",
+    explanation: "This is a legitimate notification from Slack about an admin-installed integration. The sender domain 'slack.com' is correct, it requires no action from you, and it directs questions to your admin rather than asking you to click suspicious links. This is simply an informational notice about a workspace change.",
+    difficultyScore: 2,
+    userRole: "staff",
+    hasAttachment: false,
+  },
+
+  // AI-generated sophisticated spear phishing
+  {
+    channel: "email",
+    senderName: "LinkedIn",
+    senderEmail: "messages-noreply@linkedin-mail.net",
+    subject: "Sarah Mitchell wants to connect - 12 mutual connections",
+    body: `Hi there,
+
+Sarah Mitchell, VP of Business Development at Horizon Partners, would like to connect with you on LinkedIn.
+
+Sarah's note: "Hi! I noticed we both attended the Digital Transformation Summit last month. I really enjoyed the panel discussion on AI in enterprise - would love to continue the conversation!"
+
+12 mutual connections including:
+- James Rodriguez (Your colleague)
+- Michelle Thompson 
+- David Kim
+
+[Accept Invitation]  [View Profile]
+
+You're receiving connection invitations at this email address. Unsubscribe from these emails.
+
+LinkedIn Corporation, 1000 W Maude Ave, Sunnyvale, CA 94085`,
+    timestamp: "4 hours ago",
+    legitimacy: "malicious",
+    attackFamily: "ai_phishing",
+    riskType: "credential_theft",
+    cues: ["fake LinkedIn domain", "personalized context", "urgency through social proof", "AI-generated personal note"],
+    correctAction: "report",
+    explanation: "This is AI-generated spear phishing that uses personal context to seem legitimate. The domain 'linkedin-mail.net' is NOT LinkedIn (real domain: linkedin.com). Attackers use AI to research targets and craft personalized messages mentioning real events you attended and colleagues. Always check sender domains carefully and access LinkedIn directly through linkedin.com, not email links.",
+    difficultyScore: 5,
+    userRole: "staff",
+    hasAttachment: false,
+    linkUrl: "https://linkedin-verification.com/accept-connection",
+    linkText: "Accept Invitation",
+  },
+
+  // AI-generated vendor impersonation
+  {
+    channel: "email",
+    senderName: "Adobe Document Cloud",
+    senderEmail: "noreply@adobesign-documents.com",
+    subject: "Contract Amendment - Your signature needed",
+    body: `Hello,
+
+A document requires your electronic signature.
+
+Document: Q4 2024 Service Agreement Amendment
+From: Patterson & Associates Legal
+Pages: 3
+Expires: December 18, 2024
+
+This amendment updates the renewal terms per our discussion last Thursday. Key changes include the extended payment terms you requested.
+
+[Review and Sign Document]
+
+Document ID: ASG-2024-8847291
+Sent via Adobe Sign - the trusted e-signature solution
+
+This message was sent to you because you are listed as a signer on this document.`,
+    timestamp: "6 hours ago",
+    legitimacy: "malicious",
+    attackFamily: "ai_phishing",
+    riskType: "credential_theft",
+    cues: ["fake Adobe domain", "deadline pressure", "reference to prior conversation", "sophisticated formatting"],
+    correctAction: "report",
+    explanation: "This is sophisticated AI-generated phishing impersonating Adobe Sign. The domain 'adobesign-documents.com' is NOT Adobe (real domain: adobe.com or adobesign.com). The message references a fake prior conversation to build trust. Real Adobe Sign emails come from '@adobesign.com' and you can verify documents by logging into your Adobe account directly.",
+    difficultyScore: 5,
+    userRole: "manager",
+    hasAttachment: false,
+    linkUrl: "https://adobesign-documents.com/sign/doc/ASG-2024-8847291",
+    linkText: "Review and Sign Document",
+  },
+
+  // Deepfake voice phishing (vishing)
+  {
+    channel: "call",
+    senderName: "Unknown Caller",
+    senderPhone: "+1 (555) 892-4103",
+    subject: "Voicemail from your bank's fraud department",
+    body: `[VOICEMAIL TRANSCRIPT]
+
+"Hi, this is Michael from Chase Bank's fraud prevention team. We've detected some unusual activity on your business account ending in 4872. 
+
+There were three transactions totaling $12,847 that we need to verify with you immediately. These charges appear to be from an overseas merchant.
+
+Please call us back at 1-888-555-0142 within the next 2 hours to prevent your account from being frozen. Have your account number and the last 4 of your social ready for verification.
+
+This is an urgent security matter. Thank you."
+
+[END VOICEMAIL]`,
+    timestamp: "25 minutes ago",
+    legitimacy: "malicious",
+    attackFamily: "ai_phishing",
+    riskType: "credential_theft",
+    cues: ["AI-generated voice clone", "urgency", "callback to unknown number", "requests sensitive info"],
+    correctAction: "verify",
+    explanation: "This voicemail shows signs of AI-generated voice phishing (vishing). Fraudsters use AI to clone voices and create convincing bank representative calls. Red flags: They provide a callback number (not the number on your card), create urgency, and request sensitive information. Never call back numbers from voicemails - use the number on your bank card or statement instead.",
+    difficultyScore: 4,
+    userRole: "finance",
+    hasAttachment: false,
+  },
+
+  // Legitimate OAuth notification
+  {
+    channel: "email",
+    senderName: "Microsoft",
+    senderEmail: "account-security-noreply@microsoft.com",
+    subject: "New sign-in to your Microsoft account",
+    body: `Microsoft account
+Unusual sign-in activity
+
+We noticed a new sign-in to your Microsoft account.
+
+Details:
+Country/region: United States
+IP address: 192.168.1.xxx
+Platform: Windows 11
+Browser: Microsoft Edge
+
+If this was you, you can ignore this message.
+
+If this wasn't you, please secure your account:
+1. Sign in to your Microsoft account at account.microsoft.com
+2. Go to Security > Sign-in activity
+3. Review and revoke any suspicious sessions
+
+If you need help, visit support.microsoft.com.
+
+The Microsoft account team`,
+    timestamp: "Yesterday",
+    legitimacy: "legitimate",
+    riskType: "none",
+    cues: [],
+    correctAction: "proceed",
+    explanation: "This is a legitimate security notification from Microsoft. The sender domain '@microsoft.com' is correct. The email provides information without demanding urgent action, tells you to go directly to account.microsoft.com (not through a link), and provides official support channels. This is a helpful security notification to review if you don't recognize the sign-in.",
+    difficultyScore: 2,
+    userRole: "staff",
+    hasAttachment: false,
+    linkUrl: "https://account.microsoft.com",
+    linkText: "account.microsoft.com",
+  },
+
+  // SMS QR code phishing
+  {
+    channel: "sms",
+    senderName: "USPS",
+    senderPhone: "+1 (855) 478-7235",
+    subject: "Package delivery notification",
+    body: `USPS: Your package cannot be delivered due to incomplete address information. 
+
+To reschedule delivery, scan the QR code or visit: usps-redelivery.info/track
+
+Your tracking: 9400111899223847562
+
+Reply STOP to opt out`,
+    timestamp: "1 hour ago",
+    legitimacy: "malicious",
+    attackFamily: "qr_phishing",
+    riskType: "credential_theft",
+    cues: ["fake USPS domain", "QR code in SMS", "address problem pretext", "short URL"],
+    correctAction: "report",
+    explanation: "This is SMS phishing (smishing) with a QR code. The domain 'usps-redelivery.info' is NOT USPS (real domain: usps.com). USPS does not send QR codes via SMS for redelivery. The tracking number format looks legitimate but is randomly generated. Always track packages directly at usps.com using tracking numbers from your original order confirmation.",
+    difficultyScore: 3,
+    userRole: "staff",
+    hasAttachment: false,
+    qrCodeUrl: "https://usps-redelivery.info/track/9400111899223847562",
+  },
+
+  // Multi-factor authentication (MFA) phishing
+  {
+    channel: "sms",
+    senderName: "Microsoft",
+    senderPhone: "+1 (800) 642-7676",
+    subject: "Security verification code",
+    body: `Your Microsoft verification code is: 847291
+
+If you didn't request this code, someone may be trying to access your account. 
+
+Reply HELP for assistance or visit microsoft-security-alert.com to secure your account.
+
+This code expires in 10 minutes.`,
+    timestamp: "2 minutes ago",
+    legitimacy: "malicious",
+    attackFamily: "phishing",
+    riskType: "credential_theft",
+    cues: ["MFA interception attempt", "fake Microsoft domain", "real-time attack indicator"],
+    correctAction: "report",
+    explanation: "This is an MFA interception attack. While the code may be real (an attacker triggered it), the link to 'microsoft-security-alert.com' is malicious. Real Microsoft MFA codes never include links. If you receive an unexpected MFA code, someone is attempting to access your account RIGHT NOW. Change your password immediately through the official Microsoft website and enable additional security measures.",
+    difficultyScore: 5,
+    userRole: "staff",
+    hasAttachment: false,
+    linkUrl: "https://microsoft-security-alert.com/secure",
+    linkText: "microsoft-security-alert.com",
+  },
+
+  // Cryptocurrency/NFT phishing
+  {
+    channel: "email",
+    senderName: "OpenSea",
+    senderEmail: "noreply@opensea-nft.io",
+    subject: "You received an offer for your NFT collection!",
+    body: `Great news!
+
+A buyer has made an offer on your NFT collection.
+
+Collection: Bored Ape Yacht Club #8847
+Offer: 12.5 ETH (approximately $28,750)
+Buyer: CryptoWhale.eth (Verified Collector)
+Expires: 24 hours
+
+[Accept Offer]  [Counter Offer]
+
+This offer is significantly above floor price. Act fast to secure this deal!
+
+Log in with your wallet to review the offer details.
+
+OpenSea - The largest NFT marketplace`,
+    timestamp: "30 minutes ago",
+    legitimacy: "malicious",
+    attackFamily: "phishing",
+    riskType: "financial_theft",
+    cues: ["fake OpenSea domain", "wallet connection request", "high-value lure", "urgency"],
+    correctAction: "report",
+    explanation: "This is cryptocurrency/NFT phishing. The domain 'opensea-nft.io' is NOT OpenSea (real domain: opensea.io). Clicking 'Accept Offer' leads to a fake wallet connection that steals your cryptocurrency. The 'above floor price' language creates FOMO. Never connect your wallet through email links - always access OpenSea directly by typing the URL.",
+    difficultyScore: 4,
+    userRole: "staff",
+    hasAttachment: false,
+    linkUrl: "https://opensea-nft.io/accept-offer",
+    linkText: "Accept Offer",
+  },
+
+  // ============================================
+  // MULTI-TURN SCENARIO CHAINS
+  // ============================================
+
+  // Wrong Number Scam - Message 1 (Initial contact)
+  {
+    channel: "sms",
+    senderName: "Unknown",
+    senderPhone: "+1 (555) 829-4172",
+    subject: "Wrong number text",
+    body: `Hey Jennifer! Are we still on for coffee tomorrow at 3pm? I found that cafe you mentioned downtown.`,
+    timestamp: "2 hours ago",
+    legitimacy: "malicious",
+    attackFamily: "wrong_number",
+    riskType: "none",
+    cues: ["unsolicited message", "wrong name", "pig butchering initial contact"],
+    correctAction: "delete",
+    explanation: "This is the first stage of a 'pig butchering' scam. Scammers send 'wrong number' texts to initiate conversation. If you reply, even to correct them, they'll apologize and try to befriend you. The goal is building a relationship before introducing investment fraud. Best action: don't engage, just delete.",
+    difficultyScore: 2,
+    userRole: "staff",
+    hasAttachment: false,
+    chainId: "wrong_number_scam_1",
+    chainOrder: 1,
+    chainName: "Wrong Number Investment Scam",
+  },
+
+  // Wrong Number Scam - Message 2 (After user replied)
+  {
+    channel: "sms",
+    senderName: "Unknown",
+    senderPhone: "+1 (555) 829-4172",
+    subject: "Follow-up after wrong number",
+    body: `Oh sorry! Wrong number lol. But you seem friendly! I'm Amy from San Diego. Since we're texting anyway, what do you do for work? I'm in crypto trading and just made $15K this month!`,
+    timestamp: "1 hour ago",
+    legitimacy: "malicious",
+    attackFamily: "wrong_number",
+    riskType: "payment_fraud",
+    cues: ["unsolicited financial advice", "mentions crypto gains", "building rapport", "too friendly stranger"],
+    correctAction: "report",
+    explanation: "Classic escalation in a pig butchering scam. After the 'wrong number' hook, they pivot to mentioning impressive financial gains to spark interest. This is social engineering - they're profiling you for investment fraud. The extraordinary gains mentioned are bait. Report and block this number.",
+    difficultyScore: 3,
+    userRole: "staff",
+    hasAttachment: false,
+    chainId: "wrong_number_scam_1",
+    chainOrder: 2,
+    chainName: "Wrong Number Investment Scam",
+    previousAction: "proceed",
+  },
+
+  // Wrong Number Scam - Message 3 (Full investment pitch)
+  {
+    channel: "sms",
+    senderName: "Amy",
+    senderPhone: "+1 (555) 829-4172",
+    subject: "Investment opportunity",
+    body: `I hope you don't mind me texting again! I was thinking about our chat and wanted to share something special.
+
+My uncle in Hong Kong taught me his trading system. I've tripled my savings in 6 months! I've never shared this with strangers but you seem really genuine.
+
+Would you be interested in learning? I can guide you. Start with just $500 on this platform: crypto-elite-trading.com
+
+Let me know! -Amy`,
+    timestamp: "30 minutes ago",
+    legitimacy: "malicious",
+    attackFamily: "wrong_number",
+    riskType: "financial_theft",
+    cues: ["unsolicited investment advice", "guaranteed returns", "foreign connection story", "unknown trading platform", "pressure to invest"],
+    correctAction: "report",
+    explanation: "Final stage of pig butchering - the investment pitch. Red flags: Stranger offering 'secret' trading knowledge, unrealistic returns (tripled savings), unknown platform, and emotional manipulation ('you seem genuine'). This platform will steal your money. These scams have cost victims billions globally. Report immediately.",
+    difficultyScore: 4,
+    userRole: "staff",
+    hasAttachment: false,
+    chainId: "wrong_number_scam_1",
+    chainOrder: 3,
+    chainName: "Wrong Number Investment Scam",
+    previousAction: "proceed",
+  },
+
+  // CEO Impersonation Chain - Message 1 (Initial contact)
+  {
+    channel: "email",
+    senderName: "Mark Thompson (CEO)",
+    senderEmail: "mark.thompson@company-exec.net",
+    replyTo: "m.thompson.ceo@gmail.com",
+    subject: "Quick question",
+    body: `Hi,
+
+Are you at your desk? I need to ask you something but I'm about to go into a board meeting.
+
+Mark
+Sent from my iPhone`,
+    timestamp: "15 minutes ago",
+    legitimacy: "malicious",
+    attackFamily: "bec",
+    riskType: "none",
+    cues: ["executive impersonation", "reply-to mismatch", "vague urgent request", "fake CEO email"],
+    correctAction: "verify",
+    explanation: "This is the opening of a BEC (Business Email Compromise) attack. The message is intentionally vague to get you to respond. Notice the reply-to goes to a Gmail account. Before responding, verify through a known channel like calling the CEO's assistant or office number directly.",
+    difficultyScore: 3,
+    userRole: "staff",
+    hasAttachment: false,
+    chainId: "ceo_fraud_chain_1",
+    chainOrder: 1,
+    chainName: "CEO Wire Fraud Attempt",
+  },
+
+  // CEO Impersonation Chain - Message 2 (Gift card request)
+  {
+    channel: "email",
+    senderName: "Mark Thompson (CEO)",
+    senderEmail: "m.thompson.ceo@gmail.com",
+    subject: "Re: Quick question",
+    body: `Perfect, you're there.
+
+I need you to pick up some gift cards as thank-you gifts for our key clients. Get 5 Amazon cards at $200 each ($1000 total).
+
+This is time-sensitive - I need the card numbers texted to me at 555-0147 before 5pm. I'll reimburse you from the exec budget tomorrow.
+
+Can you handle this? I'm counting on you.
+
+Mark`,
+    timestamp: "10 minutes ago",
+    legitimacy: "malicious",
+    attackFamily: "bec",
+    riskType: "payment_fraud",
+    cues: ["gift card request", "text card numbers", "time pressure", "skip normal processes", "personal reimbursement promise"],
+    correctAction: "report",
+    explanation: "Classic BEC gift card scam. The attacker establishes contact, then requests untraceable gift cards. Major red flags: CEOs don't buy gift cards this way, the request bypasses normal procurement, card numbers texted to a personal phone are unrecoverable, and the 'trust' language ('counting on you') is manipulation. Report immediately.",
+    difficultyScore: 4,
+    userRole: "staff",
+    hasAttachment: false,
+    chainId: "ceo_fraud_chain_1",
+    chainOrder: 2,
+    chainName: "CEO Wire Fraud Attempt",
+    previousAction: "proceed",
+  },
+
+  // CEO Impersonation Chain - Alternative path (Wire transfer)
+  {
+    channel: "email",
+    senderName: "Mark Thompson (CEO)",
+    senderEmail: "m.thompson.ceo@gmail.com",
+    subject: "Re: Quick question - URGENT",
+    body: `I'm glad you're being cautious, but this is really me and I need this handled immediately.
+
+Actually, forget the gift cards. I need you to process a wire transfer instead - $47,500 to finalize an acquisition before market close.
+
+Wire to:
+Meridian Consulting Group
+Chase Bank
+Routing: 021000021
+Account: 847291650
+
+Do NOT discuss this with anyone - it's confidential until announced. Send me confirmation when done.
+
+Mark`,
+    timestamp: "5 minutes ago",
+    legitimacy: "malicious",
+    attackFamily: "bec",
+    riskType: "payment_fraud",
+    cues: ["escalated urgency", "wire transfer request", "confidentiality demand", "pressure after pushback", "new banking details"],
+    correctAction: "report",
+    explanation: "Escalation after encountering resistance. The attacker pivoted from gift cards to wire fraud - a more lucrative target. The 'confidential' framing isolates you from verification. The urgency around 'market close' is manufactured pressure. This follows the pattern of real attacks that have cost companies millions. Report to security immediately.",
+    difficultyScore: 5,
+    userRole: "finance",
+    hasAttachment: false,
+    chainId: "ceo_fraud_chain_1",
+    chainOrder: 3,
+    chainName: "CEO Wire Fraud Attempt",
+    previousAction: "verify",
+  },
+
+  // Tech Support Scam Chain - Message 1 (Pop-up alert)
+  {
+    channel: "call",
+    senderName: "Microsoft Security Alert",
+    senderPhone: "+1 (888) 555-0199",
+    subject: "Voicemail: Computer security warning",
+    body: `[AUTOMATED VOICE MESSAGE]
+
+CRITICAL SECURITY ALERT. This is Microsoft Windows. Your computer has been compromised. Viruses have been detected that are stealing your banking information and personal files.
+
+DO NOT SHUT DOWN YOUR COMPUTER. This may cause permanent data loss.
+
+Call Microsoft Support immediately at 1-888-555-0199 to speak with a certified technician. Failure to call within 30 minutes will result in your computer being permanently disabled.
+
+Your case number is: MS-8847291
+
+This is an urgent security matter requiring immediate attention.`,
+    timestamp: "5 minutes ago",
+    legitimacy: "malicious",
+    attackFamily: "vishing",
+    riskType: "credential_theft",
+    cues: ["unsolicited security warning", "Microsoft impersonation", "fake case number", "threat of data loss", "callback number"],
+    correctAction: "report",
+    explanation: "This is a tech support scam. Microsoft never calls users about viruses. Red flags: Automated fear-based message, threats of 'permanent' damage, urgent callback request, and a fake case number. If you call, scammers will try to get remote access to your computer and your payment info. Report and ignore.",
+    difficultyScore: 2,
+    userRole: "staff",
+    hasAttachment: false,
+    chainId: "tech_support_scam_1",
+    chainOrder: 1,
+    chainName: "Tech Support Scam",
+  },
+
+  // Tech Support Scam Chain - Message 2 (After calling)
+  {
+    channel: "call",
+    senderName: "Microsoft Support (James)",
+    senderPhone: "+1 (888) 555-0199",
+    subject: "Tech support call transcript",
+    body: `[CALL TRANSCRIPT]
+
+"Thank you for calling Microsoft Support, this is James, case number MS-8847291. I see here your computer has been flagged for a critical security breach.
+
+I'll need you to download our remote support tool so I can assess the damage. Go to anydesk-support.com and click 'Connect with Technician.'
+
+While that downloads, I'll need to verify your identity. Can you confirm your full name, date of birth, and the last four digits of your Social Security number?
+
+Don't worry, this is standard Microsoft verification procedure. I'm here to help protect your computer."`,
+    timestamp: "Just now",
+    legitimacy: "malicious",
+    attackFamily: "vishing",
+    riskType: "account_takeover",
+    cues: ["remote access request", "fake support domain", "requests personal information", "fake verification procedure"],
+    correctAction: "report",
+    explanation: "The scam continues with remote access and identity theft. 'AnyDesk' is real software, but the domain is fake. Once connected, they can install malware, steal files, and drain accounts. Microsoft never asks for SSN or uses third-party sites for support. Hang up immediately and report. If you gave any info, change passwords and monitor accounts.",
+    difficultyScore: 3,
+    userRole: "staff",
+    hasAttachment: false,
+    chainId: "tech_support_scam_1",
+    chainOrder: 2,
+    chainName: "Tech Support Scam",
+    previousAction: "proceed",
+  },
 ];

@@ -336,12 +336,43 @@ export async function registerRoutes(
         earnedBadges: allBadges,
       });
       
+      // Check for chain follow-up scenario
+      let nextScenario: Scenario | undefined;
+      if (scenario.chainId && scenario.chainOrder !== null) {
+        // Try to find the next scenario in the chain based on the action taken
+        // Any action can potentially trigger chain progression
+        nextScenario = await storage.getNextChainScenario(
+          scenario.chainId, 
+          scenario.chainOrder, 
+          action
+        );
+        
+        if (nextScenario) {
+          // Get fresh shift data to avoid race conditions
+          const freshShift = await storage.getShiftById(shiftId);
+          if (freshShift) {
+            // Check if this scenario is already in the list (prevent duplicates)
+            if (!freshShift.scenarioIds.includes(nextScenario.id)) {
+              const updatedScenarioIds = [...freshShift.scenarioIds, nextScenario.id];
+              await storage.updateShift(shiftId, {
+                scenarioIds: updatedScenarioIds,
+              });
+            }
+          }
+        }
+      }
+      
       res.json({
         decision,
         outcome,
         pointsEarned: points,
         shift: updatedShift,
         newBadges,
+        nextChainScenario: nextScenario ? {
+          id: nextScenario.id,
+          chainName: nextScenario.chainName,
+          triggeredBy: action,
+        } : undefined,
       });
     } catch (error) {
       console.error("Error submitting decision:", error);

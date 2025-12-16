@@ -86,6 +86,10 @@ export interface IStorage {
   getAssignmentCompletions(assignmentId: string): Promise<AssignmentCompletion[]>;
   createAssignmentCompletion(completion: InsertAssignmentCompletion): Promise<AssignmentCompletion>;
   updateAssignmentCompletion(id: string, updates: Partial<AssignmentCompletion>): Promise<AssignmentCompletion | undefined>;
+
+  // Multi-turn scenario chains
+  getNextChainScenario(chainId: string, currentChainOrder: number, previousAction: string): Promise<Scenario | undefined>;
+  getScenarioChains(): Promise<Array<{ chainId: string; chainName: string; scenarioCount: number }>>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -105,8 +109,13 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getRandomScenarios(count: number, maxDifficulty: number = 5): Promise<Scenario[]> {
+    // Only include standalone scenarios OR first scenario in chains (chainOrder = 1 or null)
+    // Exclude follow-up scenarios (chainOrder > 1) from random selection
     return db.select()
       .from(scenarios)
+      .where(
+        sql`(${scenarios.chainOrder} IS NULL OR ${scenarios.chainOrder} = 1)`
+      )
       .orderBy(sql`RANDOM()`)
       .limit(count);
   }
@@ -377,6 +386,42 @@ export class DatabaseStorage implements IStorage {
       .where(eq(assignmentCompletions.id, id))
       .returning();
     return updated;
+  }
+
+  // Multi-turn scenario chains
+  async getNextChainScenario(chainId: string, currentChainOrder: number, previousAction: string): Promise<Scenario | undefined> {
+    // Find the next scenario in the chain that:
+    // 1. Has the same chainId
+    // 2. Has chainOrder = currentChainOrder + 1
+    // 3. Has previousAction matching the action the user took
+    const [nextScenario] = await db.select()
+      .from(scenarios)
+      .where(
+        and(
+          eq(scenarios.chainId, chainId),
+          eq(scenarios.chainOrder, currentChainOrder + 1),
+          eq(scenarios.previousAction, previousAction as any)
+        )
+      )
+      .limit(1);
+    return nextScenario;
+  }
+
+  async getScenarioChains(): Promise<Array<{ chainId: string; chainName: string; scenarioCount: number }>> {
+    const chains = await db.select({
+      chainId: scenarios.chainId,
+      chainName: scenarios.chainName,
+      count: sql<number>`count(*)`.as('count')
+    })
+      .from(scenarios)
+      .where(sql`${scenarios.chainId} IS NOT NULL`)
+      .groupBy(scenarios.chainId, scenarios.chainName);
+    
+    return chains.map(c => ({
+      chainId: c.chainId!,
+      chainName: c.chainName || c.chainId!,
+      scenarioCount: Number(c.count)
+    }));
   }
 }
 
