@@ -187,7 +187,7 @@
     "actions": {
       "report": "Ziņot",
       "delete": "Dzēst",
-      "verify": "Verificēt",
+      "verify": "Pārbaudīt",
       "proceed": "Turpināt",
       "reportDescription": "Atzīmēt kā aizdomīgu un eskalēt drošības komandai",
       "deleteDescription": "Noņemt no iesūtnes bez ziņošanas",

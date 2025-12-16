@@ -77,11 +77,22 @@ Preferred communication style: Simple, everyday language.
 ### Authentication
 - Replit OpenID Connect (`ISSUER_URL`, `REPL_ID`, `SESSION_SECRET` environment variables)
 
+### Internationalization (i18n)
+- **Framework**: i18next with react-i18next and ICU message format
+- **Supported Languages**: English (en - source), Latvian (lv - default), Russian (ru)
+- **Fallback Chain**: User preference → Browser locale → lv → en
+- **Locale Files**: `client/src/locales/{en,lv,ru}.json`
+- **Configuration**: `client/src/lib/i18n.ts`
+- **Glossary**: `i18n-glossary.md` (locked terms for consistency)
+- **Validation**: `npx tsx scripts/i18n-validate.ts`
+- **Key Convention**: `feature.screen.element.state` (e.g., `header.dashboard`, `training.actions.report`)
+
 ### Frontend Libraries
 - Radix UI primitives for accessible components
 - Lucide React for icons
 - date-fns for date formatting
 - embla-carousel-react for carousels
+- i18next + react-i18next for internationalization
 
 ### Backend Libraries
 - passport + openid-client for authentication

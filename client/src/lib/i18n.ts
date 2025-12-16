@@ -1,3 +1,26 @@
+/**
+ * Internationalization Configuration (Latvia v1)
+ * 
+ * Architecture:
+ * - ICU-capable i18n with proper plural support (important for Russian/Latvian)
+ * - Key-based IDs following pattern: feature.screen.element.state
+ * - Bundled loading strategy (all locales loaded at startup)
+ * 
+ * Fallback Chain:
+ * - User preference → Browser locale → lv (default) → en (final fallback)
+ * 
+ * Locales:
+ * - en: English (source locale, canonical keyset)
+ * - lv: Latvian (runtime default for Latvia launch)
+ * - ru: Russian
+ * 
+ * Key Convention Examples:
+ * - header.dashboard: Header component, dashboard link
+ * - training.actions.report: Training feature, actions section, report button
+ * - dashboard.stats.detectionRate: Dashboard feature, stats section, detection rate
+ * 
+ * See i18n-glossary.md for locked term translations and quality guidelines.
+ */
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
@@ -26,11 +49,12 @@ i18n
       ru: { translation: ru },
     },
     fallbackLng: {
-      default: ['en'],
+      default: ['lv', 'en'],
       lv: ['en'],
       ru: ['en']
     },
     supportedLngs: ['en', 'lv', 'ru'],
+    lng: undefined,
     detection: {
       order: ['localStorage', 'navigator'],
       caches: ['localStorage'],
@@ -40,10 +64,17 @@ i18n
       escapeValue: false,
     },
     returnEmptyString: false,
+    saveMissing: import.meta.env.DEV,
     missingKeyHandler: (lngs, ns, key) => {
       if (import.meta.env.DEV) {
         console.warn(`[MISSING:${key}] in ${lngs.join(', ')}`);
       }
+    },
+    parseMissingKeyHandler: (key) => {
+      if (import.meta.env.DEV) {
+        return `[MISSING:${key}]`;
+      }
+      return key;
     },
   });
 
