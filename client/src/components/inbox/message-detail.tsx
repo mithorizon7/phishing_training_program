@@ -25,7 +25,10 @@ import {
   CheckCircle,
   ArrowRight,
   QrCode,
-  User
+  User,
+  Hash,
+  Users,
+  MessageCircle
 } from "lucide-react";
 import type { Scenario, ActionType, MessageChannel } from "@shared/schema";
 
@@ -41,6 +44,9 @@ function getChannelIcon(channel: MessageChannel) {
     case "email": return Mail;
     case "sms": return MessageSquare;
     case "call": return Phone;
+    case "teams": return Users;
+    case "slack": return Hash;
+    default: return Mail;
   }
 }
 
@@ -49,6 +55,9 @@ function getChannelLabel(channel: MessageChannel) {
     case "email": return "Email";
     case "sms": return "SMS Message";
     case "call": return "Call Transcript";
+    case "teams": return "Teams Message";
+    case "slack": return "Slack Message";
+    default: return "Message";
   }
 }
 
@@ -87,6 +96,9 @@ export function MessageDetail({
             <div className={`w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 ${
               scenario.channel === 'email' ? 'bg-primary/10 text-primary' :
               scenario.channel === 'sms' ? 'bg-chart-2/10 text-chart-2' :
+              scenario.channel === 'call' ? 'bg-chart-3/10 text-chart-3' :
+              scenario.channel === 'teams' ? 'bg-indigo-500/10 text-indigo-600 dark:text-indigo-400' :
+              scenario.channel === 'slack' ? 'bg-purple-500/10 text-purple-600 dark:text-purple-400' :
               'bg-chart-3/10 text-chart-3'
             }`}>
               <Icon className="w-6 h-6" />

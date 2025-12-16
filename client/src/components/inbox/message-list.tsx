@@ -2,7 +2,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Mail, MessageSquare, Phone, Paperclip, Clock } from "lucide-react";
+import { Mail, MessageSquare, Phone, Paperclip, Clock, Users, Hash } from "lucide-react";
 import type { Scenario, MessageChannel } from "@shared/schema";
 
 interface MessageListProps {
@@ -18,6 +18,9 @@ function getChannelIcon(channel: MessageChannel) {
     case "email": return Mail;
     case "sms": return MessageSquare;
     case "call": return Phone;
+    case "teams": return Users;
+    case "slack": return Hash;
+    default: return Mail;
   }
 }
 
@@ -48,6 +51,9 @@ function MessageRow({
         <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
           scenario.channel === 'email' ? 'bg-primary/10 text-primary' :
           scenario.channel === 'sms' ? 'bg-chart-2/10 text-chart-2' :
+          scenario.channel === 'call' ? 'bg-chart-3/10 text-chart-3' :
+          scenario.channel === 'teams' ? 'bg-indigo-500/10 text-indigo-600 dark:text-indigo-400' :
+          scenario.channel === 'slack' ? 'bg-purple-500/10 text-purple-600 dark:text-purple-400' :
           'bg-chart-3/10 text-chart-3'
         }`}>
           <Icon className="w-5 h-5" />
@@ -92,6 +98,8 @@ export function MessageList({
   const emailScenarios = scenarios.filter(s => s.channel === 'email');
   const smsScenarios = scenarios.filter(s => s.channel === 'sms');
   const callScenarios = scenarios.filter(s => s.channel === 'call');
+  const teamsScenarios = scenarios.filter(s => s.channel === 'teams');
+  const slackScenarios = scenarios.filter(s => s.channel === 'slack');
 
   if (isLoading) {
     return <MessageListSkeleton />;
@@ -103,7 +111,7 @@ export function MessageList({
     <Card className="flex flex-col h-full">
       <Tabs defaultValue="all" className="flex flex-col h-full">
         <div className="border-b px-4 pt-4">
-          <TabsList className="w-full grid grid-cols-4">
+          <TabsList className="w-full grid grid-cols-6">
             <TabsTrigger value="all" data-testid="tab-all">
               All ({scenarios.length})
             </TabsTrigger>
@@ -118,6 +126,14 @@ export function MessageList({
             <TabsTrigger value="call" data-testid="tab-call">
               <Phone className="w-4 h-4 mr-1" />
               {callScenarios.length}
+            </TabsTrigger>
+            <TabsTrigger value="teams" data-testid="tab-teams">
+              <Users className="w-4 h-4 mr-1" />
+              {teamsScenarios.length}
+            </TabsTrigger>
+            <TabsTrigger value="slack" data-testid="tab-slack">
+              <Hash className="w-4 h-4 mr-1" />
+              {slackScenarios.length}
             </TabsTrigger>
           </TabsList>
         </div>
@@ -182,6 +198,44 @@ export function MessageList({
               <EmptyState channel="call" />
             ) : (
               callScenarios.map((scenario) => {
+                const index = scenarios.findIndex(s => s.id === scenario.id);
+                return (
+                  <MessageRow
+                    key={scenario.id}
+                    scenario={scenario}
+                    isActive={currentScenario?.id === scenario.id}
+                    isCompleted={completedIds.includes(scenario.id)}
+                    onClick={() => onSelectMessage(index)}
+                  />
+                );
+              })
+            )}
+          </TabsContent>
+          
+          <TabsContent value="teams" className="m-0">
+            {teamsScenarios.length === 0 ? (
+              <EmptyState channel="teams" />
+            ) : (
+              teamsScenarios.map((scenario) => {
+                const index = scenarios.findIndex(s => s.id === scenario.id);
+                return (
+                  <MessageRow
+                    key={scenario.id}
+                    scenario={scenario}
+                    isActive={currentScenario?.id === scenario.id}
+                    isCompleted={completedIds.includes(scenario.id)}
+                    onClick={() => onSelectMessage(index)}
+                  />
+                );
+              })
+            )}
+          </TabsContent>
+          
+          <TabsContent value="slack" className="m-0">
+            {slackScenarios.length === 0 ? (
+              <EmptyState channel="slack" />
+            ) : (
+              slackScenarios.map((scenario) => {
                 const index = scenarios.findIndex(s => s.id === scenario.id);
                 return (
                   <MessageRow

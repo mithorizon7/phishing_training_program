@@ -35,7 +35,8 @@ import {
   Download,
   BookOpen,
   ChevronDown,
-  ChevronUp
+  ChevronUp,
+  Hash
 } from "lucide-react";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { format } from "date-fns";
@@ -457,11 +458,13 @@ function AssignmentsTab() {
       case "email": return <Mail className="w-4 h-4" />;
       case "sms": return <MessageSquare className="w-4 h-4" />;
       case "call": return <Phone className="w-4 h-4" />;
+      case "teams": return <Users className="w-4 h-4" />;
+      case "slack": return <Hash className="w-4 h-4" />;
       default: return null;
     }
   };
 
-  const channels = ["email", "sms", "call"];
+  const channels = ["email", "sms", "call", "teams", "slack"];
   const attackFamilies = ["phishing", "bec", "spoofing", "smishing", "vishing", "qr_phishing", "oauth_phishing"];
 
   const filteredScenarios = scenarios?.filter(s => {

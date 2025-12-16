@@ -6,7 +6,7 @@ import { z } from "zod";
 export * from "./models/auth";
 
 // Enums as TypeScript types
-export type MessageChannel = "email" | "sms" | "call";
+export type MessageChannel = "email" | "sms" | "call" | "teams" | "slack";
 export type MessageLegitimacy = "legitimate" | "suspicious_legitimate" | "malicious";
 export type AttackFamily = "phishing" | "bec" | "spoofing" | "smishing" | "vishing" | "wrong_number" | "qr_phishing" | "oauth_phishing" | "ai_phishing";
 export type RiskType = "credential_theft" | "malware" | "payment_fraud" | "data_leakage" | "account_takeover" | "financial_theft" | "none";

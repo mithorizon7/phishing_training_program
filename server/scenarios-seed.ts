@@ -1,6 +1,11 @@
 import type { InsertScenario } from "@shared/schema";
+import { calculateNISTDifficulty } from "@shared/nist-phish-scale";
 
-export const scenariosSeed: InsertScenario[] = [
+// Helper type for scenarios without calculated difficulty
+type ScenarioWithoutDifficulty = Omit<InsertScenario, 'difficultyScore'>;
+
+// Raw scenarios before difficulty calculation
+const rawScenarios: ScenarioWithoutDifficulty[] = [
   // Classic credential phishing (easy)
   {
     channel: "email",
@@ -26,7 +31,6 @@ IT Security Team`,
     cues: ["urgent language", "threat of suspension", "suspicious domain", "generic greeting"],
     correctAction: "report",
     explanation: "This is a classic phishing email using urgency and fear to pressure you into clicking. The domain 'company-support.net' is not your actual company domain, and the link goes to 'secure-verify.com' which is a common phishing pattern. Legitimate IT security teams will never threaten immediate account suspension via email.",
-    difficultyScore: 1,
     userRole: "staff",
     hasAttachment: false,
     linkUrl: "https://company-login.secure-verify.com/auth",
@@ -61,7 +65,6 @@ Sent from my iPhone`,
     cues: ["unusual request", "urgency", "gift cards", "text codes to personal number", "keep it secret", "reply-to mismatch", "fake CEO"],
     correctAction: "verify",
     explanation: "This is a Business Email Compromise (BEC) attack. The CEO would never ask for gift cards via email, especially to be texted to a personal number. The reply-to address goes to a personal Gmail account, not the corporate domain. Always verify unusual financial requests through a known channel - call the person's office number directly.",
-    difficultyScore: 3,
     userRole: "staff",
     hasAttachment: false,
   },
@@ -94,7 +97,6 @@ IT Operations Team`,
     cues: [],
     correctAction: "delete",
     explanation: "This is a legitimate system maintenance notification from IT. The sender email matches your company domain, there's no urgent action required, no suspicious links (the intranet link is internal), and it provides a known contact method (extension 4357) for questions. Safe to delete or archive.",
-    difficultyScore: 1,
     userRole: "staff",
     hasAttachment: false,
     linkUrl: "https://intranet.yourcompany.com/it-support",
@@ -131,7 +133,6 @@ Accounts Payable Department`,
     cues: ["lookalike domain", "updated banking info", "wire transfer urgency", "end of day deadline"],
     correctAction: "verify",
     explanation: "This is a spoofing attack using a lookalike domain. 'yourcompany-billing.com' is NOT the same as 'yourcompany.com'. The request to update banking information for wire transfers is a major red flag. Attackers often intercept legitimate invoice conversations and insert new banking details. Always verify banking changes through a known phone number, never through email.",
-    difficultyScore: 3,
     userRole: "finance",
     hasAttachment: true,
     attachmentName: "Invoice_INV-2024-8847.pdf",
@@ -150,7 +151,6 @@ Accounts Payable Department`,
     cues: ["unsolicited text", "small fee request", "shortened URL", "urgency"],
     correctAction: "delete",
     explanation: "This is a smishing (SMS phishing) attack. UPS does not send texts requesting small fees via shortened URLs. The small amount ($2.99) is designed to seem harmless, but the link will steal your payment information. Legitimate delivery companies contact you through their official apps or your account on their website.",
-    difficultyScore: 2,
     userRole: "staff",
     hasAttachment: false,
     linkUrl: "https://bit.ly/ups-redeliver-fee",
@@ -170,7 +170,6 @@ Accounts Payable Department`,
     cues: ["wrong number pretense", "overly familiar", "vague reference"],
     correctAction: "delete",
     explanation: "This is the beginning of a 'wrong number' scam. The attacker pretends to have the wrong number, but if you respond, they'll engage in friendly conversation before eventually pivoting to investment scams (often cryptocurrency) or romance fraud. Never engage with unsolicited messages from unknown numbers, even if they seem friendly.",
-    difficultyScore: 2,
     userRole: "staff",
     hasAttachment: false,
   },
@@ -201,7 +200,6 @@ Menlo Park, CA`,
     cues: [],
     correctAction: "verify",
     explanation: "This appears to be a legitimate QuickBooks invoice notification. However, invoice emails are commonly spoofed. The best practice is to verify: Do you have an active relationship with ABC Consulting? Was this invoice expected? If unsure, log into QuickBooks directly (not through the email link) or contact your accounts payable team to confirm.",
-    difficultyScore: 2,
     userRole: "finance",
     hasAttachment: false,
     linkUrl: "https://app.qbo.intuit.com/invoice/v4/123456789",
@@ -229,7 +227,6 @@ Caller: "Hello, this is Mike from Microsoft Technical Support. We've detected cr
     cues: ["unsolicited tech support call", "claims of detected threats", "requests remote access", "urgency and fear", "Microsoft doesn't call you"],
     correctAction: "report",
     explanation: "This is a tech support scam (vishing). Microsoft never makes unsolicited calls about computer problems. The 'errors' in Event Viewer are normal system logs, not malware. The goal is to get remote access to your computer to install actual malware or steal information. Hang up immediately and report the number.",
-    difficultyScore: 2,
     userRole: "staff",
     hasAttachment: false,
   },
@@ -270,7 +267,6 @@ This is an automated message. Please do not reply.`,
     cues: ["suspicious domain microsoft365.net", "foreign sign-in claim", "fear of account compromise", "secure account button"],
     correctAction: "report",
     explanation: "This is a sophisticated phishing email. While it looks professional, the sender domain 'microsoft365.net' is NOT owned by Microsoft (they use 'microsoft.com'). The email creates fear about a Russian sign-in to pressure you into clicking. If you're concerned about your account, go directly to account.microsoft.com - never click email links.",
-    difficultyScore: 3,
     userRole: "staff",
     hasAttachment: false,
     linkUrl: "https://microsoft365-security.com/verify",
@@ -310,7 +306,6 @@ HR Benefits Team`,
     cues: [],
     correctAction: "proceed",
     explanation: "This is a legitimate HR communication about open enrollment. The sender email matches your company domain, it references internal systems (Workday) correctly, provides multiple verified contact methods (extension number, physical office location), and the request aligns with normal annual HR processes. Safe to proceed with accessing Workday directly.",
-    difficultyScore: 1,
     userRole: "staff",
     hasAttachment: false,
   },
@@ -343,7 +338,6 @@ Chief Financial Officer`,
     cues: ["urgent wire request", "confidential pressure", "reply-to mismatch", "unavailable for calls", "acquisition pretext"],
     correctAction: "verify",
     explanation: "This is a Business Email Compromise (BEC) attack targeting wire fraud. Red flags: The reply-to address goes to a personal Outlook account, not the corporate email. The 'confidential' framing prevents you from checking with others. The CFO being unavailable for calls is suspicious. Always verify large wire transfers by calling the executive's known office number, never by replying to the email.",
-    difficultyScore: 4,
     userRole: "finance",
     hasAttachment: false,
   },
@@ -377,7 +371,6 @@ Campus Parking Services`,
     cues: ["unfamiliar sender domain", "QR code", "deadline pressure", "requests payment info"],
     correctAction: "report",
     explanation: "This is QR code phishing ('quishing'). QR codes are essentially links you cannot preview before scanning. The sender domain 'campus-services.org' is suspicious - verify your actual campus parking contact. The QR code likely leads to a fake payment page. For any parking registration, go directly to your company's known parking portal or contact the facilities team.",
-    difficultyScore: 3,
     userRole: "staff",
     hasAttachment: false,
     qrCodeUrl: "https://parking-registration-update.com/scan",
@@ -412,7 +405,6 @@ This notification was sent by Google Workspace.`,
     cues: ["OAuth consent request", "broad permissions", "fake Google domain", "third-party sender"],
     correctAction: "report",
     explanation: "This is OAuth consent phishing. Attackers create malicious apps that request permission to access your email and files. The sender domain 'google-workspace-apps.net' is NOT Google. Legitimate Google OAuth prompts appear directly in your browser, not via email links. The broad permissions (email, drive, calendar) would give attackers complete account access. Never authorize apps through email links.",
-    difficultyScore: 4,
     userRole: "staff",
     hasAttachment: false,
     linkUrl: "https://oauth-consent.google-workspace-apps.net/authorize",
@@ -443,7 +435,6 @@ The Slack Team`,
     cues: [],
     correctAction: "delete",
     explanation: "This is a legitimate notification from Slack about an admin-installed integration. The sender domain 'slack.com' is correct, it requires no action from you, and it directs questions to your admin rather than asking you to click suspicious links. This is simply an informational notice about a workspace change.",
-    difficultyScore: 2,
     userRole: "staff",
     hasAttachment: false,
   },
@@ -477,7 +468,6 @@ LinkedIn Corporation, 1000 W Maude Ave, Sunnyvale, CA 94085`,
     cues: ["fake LinkedIn domain", "personalized context", "urgency through social proof", "AI-generated personal note"],
     correctAction: "report",
     explanation: "This is AI-generated spear phishing that uses personal context to seem legitimate. The domain 'linkedin-mail.net' is NOT LinkedIn (real domain: linkedin.com). Attackers use AI to research targets and craft personalized messages mentioning real events you attended and colleagues. Always check sender domains carefully and access LinkedIn directly through linkedin.com, not email links.",
-    difficultyScore: 5,
     userRole: "staff",
     hasAttachment: false,
     linkUrl: "https://linkedin-verification.com/accept-connection",
@@ -514,7 +504,6 @@ This message was sent to you because you are listed as a signer on this document
     cues: ["fake Adobe domain", "deadline pressure", "reference to prior conversation", "sophisticated formatting"],
     correctAction: "report",
     explanation: "This is sophisticated AI-generated phishing impersonating Adobe Sign. The domain 'adobesign-documents.com' is NOT Adobe (real domain: adobe.com or adobesign.com). The message references a fake prior conversation to build trust. Real Adobe Sign emails come from '@adobesign.com' and you can verify documents by logging into your Adobe account directly.",
-    difficultyScore: 5,
     userRole: "manager",
     hasAttachment: false,
     linkUrl: "https://adobesign-documents.com/sign/doc/ASG-2024-8847291",
@@ -545,7 +534,6 @@ This is an urgent security matter. Thank you."
     cues: ["AI-generated voice clone", "urgency", "callback to unknown number", "requests sensitive info"],
     correctAction: "verify",
     explanation: "This voicemail shows signs of AI-generated voice phishing (vishing). Fraudsters use AI to clone voices and create convincing bank representative calls. Red flags: They provide a callback number (not the number on your card), create urgency, and request sensitive information. Never call back numbers from voicemails - use the number on your bank card or statement instead.",
-    difficultyScore: 4,
     userRole: "finance",
     hasAttachment: false,
   },
@@ -583,7 +571,6 @@ The Microsoft account team`,
     cues: [],
     correctAction: "proceed",
     explanation: "This is a legitimate security notification from Microsoft. The sender domain '@microsoft.com' is correct. The email provides information without demanding urgent action, tells you to go directly to account.microsoft.com (not through a link), and provides official support channels. This is a helpful security notification to review if you don't recognize the sign-in.",
-    difficultyScore: 2,
     userRole: "staff",
     hasAttachment: false,
     linkUrl: "https://account.microsoft.com",
@@ -610,7 +597,6 @@ Reply STOP to opt out`,
     cues: ["fake USPS domain", "QR code in SMS", "address problem pretext", "short URL"],
     correctAction: "report",
     explanation: "This is SMS phishing (smishing) with a QR code. The domain 'usps-redelivery.info' is NOT USPS (real domain: usps.com). USPS does not send QR codes via SMS for redelivery. The tracking number format looks legitimate but is randomly generated. Always track packages directly at usps.com using tracking numbers from your original order confirmation.",
-    difficultyScore: 3,
     userRole: "staff",
     hasAttachment: false,
     qrCodeUrl: "https://usps-redelivery.info/track/9400111899223847562",
@@ -636,7 +622,6 @@ This code expires in 10 minutes.`,
     cues: ["MFA interception attempt", "fake Microsoft domain", "real-time attack indicator"],
     correctAction: "report",
     explanation: "This is an MFA interception attack. While the code may be real (an attacker triggered it), the link to 'microsoft-security-alert.com' is malicious. Real Microsoft MFA codes never include links. If you receive an unexpected MFA code, someone is attempting to access your account RIGHT NOW. Change your password immediately through the official Microsoft website and enable additional security measures.",
-    difficultyScore: 5,
     userRole: "staff",
     hasAttachment: false,
     linkUrl: "https://microsoft-security-alert.com/secure",
@@ -672,7 +657,6 @@ OpenSea - The largest NFT marketplace`,
     cues: ["fake OpenSea domain", "wallet connection request", "high-value lure", "urgency"],
     correctAction: "report",
     explanation: "This is cryptocurrency/NFT phishing. The domain 'opensea-nft.io' is NOT OpenSea (real domain: opensea.io). Clicking 'Accept Offer' leads to a fake wallet connection that steals your cryptocurrency. The 'above floor price' language creates FOMO. Never connect your wallet through email links - always access OpenSea directly by typing the URL.",
-    difficultyScore: 4,
     userRole: "staff",
     hasAttachment: false,
     linkUrl: "https://opensea-nft.io/accept-offer",
@@ -697,7 +681,6 @@ OpenSea - The largest NFT marketplace`,
     cues: ["unsolicited message", "wrong name", "pig butchering initial contact"],
     correctAction: "delete",
     explanation: "This is the first stage of a 'pig butchering' scam. Scammers send 'wrong number' texts to initiate conversation. If you reply, even to correct them, they'll apologize and try to befriend you. The goal is building a relationship before introducing investment fraud. Best action: don't engage, just delete.",
-    difficultyScore: 2,
     userRole: "staff",
     hasAttachment: false,
     chainId: "wrong_number_scam_1",
@@ -719,7 +702,6 @@ OpenSea - The largest NFT marketplace`,
     cues: ["unsolicited financial advice", "mentions crypto gains", "building rapport", "too friendly stranger"],
     correctAction: "report",
     explanation: "Classic escalation in a pig butchering scam. After the 'wrong number' hook, they pivot to mentioning impressive financial gains to spark interest. This is social engineering - they're profiling you for investment fraud. The extraordinary gains mentioned are bait. Report and block this number.",
-    difficultyScore: 3,
     userRole: "staff",
     hasAttachment: false,
     chainId: "wrong_number_scam_1",
@@ -748,7 +730,6 @@ Let me know! -Amy`,
     cues: ["unsolicited investment advice", "guaranteed returns", "foreign connection story", "unknown trading platform", "pressure to invest"],
     correctAction: "report",
     explanation: "Final stage of pig butchering - the investment pitch. Red flags: Stranger offering 'secret' trading knowledge, unrealistic returns (tripled savings), unknown platform, and emotional manipulation ('you seem genuine'). This platform will steal your money. These scams have cost victims billions globally. Report immediately.",
-    difficultyScore: 4,
     userRole: "staff",
     hasAttachment: false,
     chainId: "wrong_number_scam_1",
@@ -777,7 +758,6 @@ Sent from my iPhone`,
     cues: ["executive impersonation", "reply-to mismatch", "vague urgent request", "fake CEO email"],
     correctAction: "verify",
     explanation: "This is the opening of a BEC (Business Email Compromise) attack. The message is intentionally vague to get you to respond. Notice the reply-to goes to a Gmail account. Before responding, verify through a known channel like calling the CEO's assistant or office number directly.",
-    difficultyScore: 3,
     userRole: "staff",
     hasAttachment: false,
     chainId: "ceo_fraud_chain_1",
@@ -807,7 +787,6 @@ Mark`,
     cues: ["gift card request", "text card numbers", "time pressure", "skip normal processes", "personal reimbursement promise"],
     correctAction: "report",
     explanation: "Classic BEC gift card scam. The attacker establishes contact, then requests untraceable gift cards. Major red flags: CEOs don't buy gift cards this way, the request bypasses normal procurement, card numbers texted to a personal phone are unrecoverable, and the 'trust' language ('counting on you') is manipulation. Report immediately.",
-    difficultyScore: 4,
     userRole: "staff",
     hasAttachment: false,
     chainId: "ceo_fraud_chain_1",
@@ -842,7 +821,6 @@ Mark`,
     cues: ["escalated urgency", "wire transfer request", "confidentiality demand", "pressure after pushback", "new banking details"],
     correctAction: "report",
     explanation: "Escalation after encountering resistance. The attacker pivoted from gift cards to wire fraud - a more lucrative target. The 'confidential' framing isolates you from verification. The urgency around 'market close' is manufactured pressure. This follows the pattern of real attacks that have cost companies millions. Report to security immediately.",
-    difficultyScore: 5,
     userRole: "finance",
     hasAttachment: false,
     chainId: "ceo_fraud_chain_1",
@@ -875,7 +853,6 @@ This is an urgent security matter requiring immediate attention.`,
     cues: ["unsolicited security warning", "Microsoft impersonation", "fake case number", "threat of data loss", "callback number"],
     correctAction: "report",
     explanation: "This is a tech support scam. Microsoft never calls users about viruses. Red flags: Automated fear-based message, threats of 'permanent' damage, urgent callback request, and a fake case number. If you call, scammers will try to get remote access to your computer and your payment info. Report and ignore.",
-    difficultyScore: 2,
     userRole: "staff",
     hasAttachment: false,
     chainId: "tech_support_scam_1",
@@ -905,7 +882,6 @@ Don't worry, this is standard Microsoft verification procedure. I'm here to help
     cues: ["remote access request", "fake support domain", "requests personal information", "fake verification procedure"],
     correctAction: "report",
     explanation: "The scam continues with remote access and identity theft. 'AnyDesk' is real software, but the domain is fake. Once connected, they can install malware, steal files, and drain accounts. Microsoft never asks for SSN or uses third-party sites for support. Hang up immediately and report. If you gave any info, change passwords and monitor accounts.",
-    difficultyScore: 3,
     userRole: "staff",
     hasAttachment: false,
     chainId: "tech_support_scam_1",
@@ -945,7 +921,6 @@ Sarah`,
     cues: [],
     correctAction: "proceed",
     explanation: "This is a legitimate urgent request. Key indicators: The sender email matches the company domain with correct reply-to, references internal systems (S: drive, DocuSign), provides a verifiable contact method (internal extension), and the urgency is proportionate to a real business need (board meeting). Real deadlines exist - the goal is recognizing legitimate urgency vs manufactured pressure.",
-    difficultyScore: 3,
     userRole: "finance",
     hasAttachment: false,
   },
@@ -981,7 +956,6 @@ IT Security Team`,
     cues: [],
     correctAction: "proceed",
     explanation: "This is a legitimate IT notification. Key indicators: Correct company domain, instructs you to change password locally (Ctrl+Alt+Delete) rather than through a link, explicitly says NOT to share your password, and provides known internal contacts. Compare this to phishing which asks you to click links or enter credentials on a webpage.",
-    difficultyScore: 2,
     userRole: "staff",
     hasAttachment: false,
   },
@@ -1024,7 +998,6 @@ Apex Software Solutions`,
     cues: [],
     correctAction: "verify",
     explanation: "This appears to be a legitimate past-due notice but warrants verification. Best practice: Check if Apex Software is a known vendor in your system, verify the invoice number matches your records, and confirm payment details haven't changed. The request itself isn't suspicious, but vendor invoices are commonly spoofed. A quick verification call protects against invoice fraud.",
-    difficultyScore: 3,
     userRole: "finance",
     hasAttachment: false,
     linkUrl: "https://pay.apexsoftware.com",
@@ -1044,7 +1017,6 @@ Apex Software Solutions`,
     cues: [],
     correctAction: "verify",
     explanation: "This is a legitimate fraud alert format from Chase. Key indicators: The number matches Chase's known fraud line, it asks for simple YES/NO (no links or personal info), and describes a specific transaction. However, it's always safer to verify: Call the number on the back of your card rather than replying to the text. This protects against sophisticated spoofing.",
-    difficultyScore: 3,
     userRole: "staff",
     hasAttachment: false,
   },
@@ -1082,7 +1054,6 @@ HR Team`,
     cues: [],
     correctAction: "proceed",
     explanation: "This is a legitimate policy update, despite the urgent tone. Key indicators: Correct company domain, references internal systems (Workday, known portal), provides context (audit findings), offers multiple verification channels (email, town hall), and doesn't ask for credentials or payments. Organizations do have legitimate urgent policy changes.",
-    difficultyScore: 2,
     userRole: "staff",
     hasAttachment: false,
     linkUrl: "https://travel.yourcompany.com",
@@ -1119,7 +1090,6 @@ Passcode: Q1Plan`,
     cues: [],
     correctAction: "verify",
     explanation: "This calendar invite is likely legitimate but worth verifying since it's from an external contact. Check: Do you have a relationship with ClientCompany? Does this align with a discussion from last week? When uncertain about external meeting requests, confirm with your internal colleague (Sarah Martinez) that this meeting was expected. Calendar invites can be used for phishing.",
-    difficultyScore: 3,
     userRole: "staff",
     hasAttachment: true,
     attachmentName: "Q1_Planning_Template.xlsx",
@@ -1168,7 +1138,6 @@ On Dec 10, you wrote:
     cues: ["look-alike domain", "banking info change", "fake reply chain", "domain uses capital I instead of lowercase l"],
     correctAction: "verify",
     explanation: "This is a reply-chain hijack attack. The email appears to be a continued conversation, but look carefully at the domain: 'abc-suppIies.com' uses a capital I instead of lowercase L. Attackers monitor vendor relationships, then insert themselves with spoofed domains and fake banking changes. ALWAYS verify banking changes by calling the vendor's known phone number from your records, never from the email.",
-    difficultyScore: 5,
     userRole: "finance",
     hasAttachment: true,
     attachmentName: "Invoice_PO4847.pdf",
@@ -1210,7 +1179,6 @@ DocuSign, Inc. | 221 Main Street, Suite 1550 | San Francisco, CA 94105`,
     cues: ["unexpected document", "suspicious sender domain", "no prior context"],
     correctAction: "verify",
     explanation: "This is a highly sophisticated phishing email with perfect grammar and formatting. While docusign.net is a legitimate DocuSign domain, the red flags are contextual: Do you know Marcus Chen? Are you expecting this NDA? Do you have a meeting scheduled? Attackers use real DocuSign formatting to steal credentials. When in doubt, contact the supposed sender through a known channel before signing anything.",
-    difficultyScore: 4,
     userRole: "manager",
     hasAttachment: false,
     linkUrl: "https://docusign-view.com/envelope/3f7a8b9c",
@@ -1255,7 +1223,6 @@ Your Company`,
     cues: ["look-alike domain", "MFA phishing", "manufactured deadline"],
     correctAction: "report",
     explanation: "This is sophisticated MFA phishing. The sender domain 'yourcompany-it.net' is NOT your company's domain. Attackers know MFA migrations happen, so they create fake ones. Red flags: External domain, link to complete migration (real IT would use internal systems), and the urgency. Legitimate MFA changes come from your actual IT domain and direct you to internal portals you already use.",
-    difficultyScore: 5,
     userRole: "staff",
     hasAttachment: false,
     linkUrl: "https://yourcompany-it-mfa.net/enroll",
@@ -1302,10 +1269,264 @@ SAP Concur`,
     cues: ["fake Concur domain", "unexpected booking", "credential harvesting"],
     correctAction: "verify",
     explanation: "This is travel-themed phishing. The domain 'concur-solutions.com' is NOT SAP Concur (real domain: concur.com). Even if you do travel, attackers send fake bookings hoping you'll click to 'view' them. Check: Did you book this trip? Is this your correct name? Always access Concur through your company's known travel portal or bookmark, never through email links.",
-    difficultyScore: 4,
     userRole: "staff",
     hasAttachment: false,
     linkUrl: "https://concur-solutions.com/travel/view",
     linkText: "View or Modify Booking",
   },
+
+  // === TEAMS/SLACK CHANNEL SCENARIOS ===
+
+  // Teams phishing - fake IT support
+  {
+    channel: "teams",
+    senderName: "IT Support - Michael",
+    senderEmail: "michael.support@external-ithelp.com",
+    subject: "Urgent: Your account needs verification",
+    body: `Hi there,
+
+I'm from the IT support team and we've detected some unusual login attempts on your account from an unfamiliar location.
+
+To keep your account secure, I need you to click this link and verify your credentials right away:
+
+https://teams-microsoft-verify.com/auth/login
+
+If you don't verify within the next 30 minutes, your account will be temporarily locked for security reasons.
+
+Please let me know once you've completed the verification!
+
+Thanks,
+Michael
+IT Support`,
+    timestamp: "15 minutes ago",
+    legitimacy: "malicious",
+    attackFamily: "phishing",
+    riskType: "credential_theft",
+    cues: ["external sender", "urgency", "suspicious link domain", "threat of account lock", "unsolicited request"],
+    correctAction: "report",
+    explanation: "This is Teams-based phishing. Red flags: The sender email is from an external domain 'external-ithelp.com' not your company. Real IT support would not contact you through Teams with external credentials. The link 'teams-microsoft-verify.com' is NOT Microsoft. Never click verification links sent through chat - go directly to your company's IT portal.",
+    userRole: "staff",
+    hasAttachment: false,
+    linkUrl: "https://teams-microsoft-verify.com/auth/login",
+    linkText: "Verification Link",
+  },
+
+  // Teams legitimate - project update
+  {
+    channel: "teams",
+    senderName: "Sarah Chen",
+    senderEmail: "sarah.chen@yourcompany.com",
+    subject: "Q4 Project Update",
+    body: `Hey team,
+
+Just wanted to give everyone a quick update on the Q4 project timeline.
+
+We're on track to hit our December 20th deadline. I've updated the shared docs with the latest milestones.
+
+A few things to note:
+- Design review is scheduled for Thursday 2pm
+- Dev freeze starts December 15th
+- Please update your status in the project tracker by EOD Friday
+
+Let me know if you have any blockers!
+
+Sarah`,
+    timestamp: "1 hour ago",
+    legitimacy: "legitimate",
+    attackFamily: undefined,
+    riskType: "none",
+    cues: [],
+    correctAction: "proceed",
+    explanation: "This is a legitimate internal Teams message. The sender is from your company domain (@yourcompany.com), the content is routine project communication with no unusual requests, no links to click, and references internal processes. This is normal workplace communication.",
+    userRole: "staff",
+    hasAttachment: false,
+  },
+
+  // Slack phishing - fake HR bonus
+  {
+    channel: "slack",
+    senderName: "HR-Payroll-Bot",
+    senderEmail: "notifications@slack-hr-integrations.io",
+    subject: "Year-End Bonus Approval Required",
+    body: `Congratulations!
+
+You've been selected for a year-end performance bonus of $2,500. 
+
+To receive your bonus in the next payroll cycle, you must confirm your direct deposit information within 48 hours.
+
+Click here to verify your banking details:
+https://hr-portal-bonuses.com/verify-deposit
+
+This is an automated message from the HR Payroll Integration.
+
+Human Resources`,
+    timestamp: "30 minutes ago",
+    legitimacy: "malicious",
+    attackFamily: "phishing",
+    riskType: "financial_theft",
+    cues: ["financial lure", "deadline pressure", "external link", "asking for banking details", "automated bot pretense"],
+    correctAction: "report",
+    explanation: "This is Slack-based phishing using a fake bonus lure. Red flags: The sender is from an external domain 'slack-hr-integrations.io', not your company. Real HR would never ask you to 'verify banking details' through a Slack bot with an external link. Bonus notifications come through official HR channels and payroll systems you already use.",
+    userRole: "staff",
+    hasAttachment: false,
+    linkUrl: "https://hr-portal-bonuses.com/verify-deposit",
+    linkText: "Verify Banking Details",
+  },
+
+  // Slack legitimate - standup reminder
+  {
+    channel: "slack",
+    senderName: "Standup Bot",
+    senderEmail: "standupbot@yourcompany.slack.com",
+    subject: "Daily Standup Reminder",
+    body: `Good morning!
+
+It's time for your daily standup update. Please share:
+
+1. What did you accomplish yesterday?
+2. What are you working on today?
+3. Any blockers?
+
+Post your update in #dev-standups
+
+Have a great day!`,
+    timestamp: "8:00 AM",
+    legitimacy: "legitimate",
+    attackFamily: undefined,
+    riskType: "none",
+    cues: [],
+    correctAction: "proceed",
+    explanation: "This is a legitimate Slack bot reminder. The sender is from your company's Slack workspace (@yourcompany.slack.com), it's a routine standup reminder with no links to click or actions required outside of normal workflow. This is standard automated workplace communication.",
+    userRole: "staff",
+    hasAttachment: false,
+  },
+
+  // Teams sophisticated phishing - document sharing
+  {
+    channel: "teams",
+    senderName: "David Thompson (Finance)",
+    senderEmail: "david.thompson@yourcompany-finance.com",
+    subject: "Shared Document: Budget Review Q4",
+    body: `Hi,
+
+I've shared the Q4 budget review document with you. Please review before our meeting tomorrow.
+
+Document: Q4_Budget_Review_Final.xlsx
+
+Click here to open in SharePoint:
+https://yourcompany-sharepoint.com/docs/budget-review
+
+Let me know if you have any questions about the figures.
+
+Best,
+David Thompson
+Finance Department`,
+    timestamp: "2 hours ago",
+    legitimacy: "malicious",
+    attackFamily: "phishing",
+    riskType: "credential_theft",
+    cues: ["look-alike domain", "spoofed internal name", "external SharePoint link", "manufactured urgency"],
+    correctAction: "report",
+    explanation: "This is sophisticated Teams phishing using a look-alike domain. The sender appears to be internal but 'yourcompany-finance.com' is NOT 'yourcompany.com' - attackers add words to domains to trick you. The SharePoint link 'yourcompany-sharepoint.com' is also fake (real SharePoint is sharepoint.com or your tenant). Always verify by checking the full sender domain and hovering over links before clicking.",
+    userRole: "staff",
+    hasAttachment: false,
+    linkUrl: "https://yourcompany-sharepoint.com/docs/budget-review",
+    linkText: "Open in SharePoint",
+  },
+
+  // Slack suspicious but legitimate - vendor request
+  {
+    channel: "slack",
+    senderName: "Alex from Vendor Solutions",
+    senderEmail: "alex@vendorsolutions.com",
+    subject: "Following up on our call",
+    body: `Hi there,
+
+Following up on our call from last week about the software renewal.
+
+I know the deadline is coming up on Friday, so I wanted to make sure we're on track to get the PO processed.
+
+Can you confirm whether your procurement team has approved the renewal? Happy to jump on a quick call if that would help move things along.
+
+Thanks,
+Alex
+Vendor Solutions
+Account Manager`,
+    timestamp: "Yesterday",
+    legitimacy: "suspicious_legitimate",
+    attackFamily: undefined,
+    riskType: "none",
+    cues: ["external sender", "deadline mention", "procurement request"],
+    correctAction: "verify",
+    explanation: "This appears to be a legitimate vendor follow-up but contains some elements that could be concerning (external sender, deadline pressure, procurement mention). The appropriate action is to verify - check your calendar for the referenced call, or contact your procurement team to confirm this is an active vendor relationship. Not every external contact is malicious, but verification is prudent.",
+    userRole: "staff",
+    hasAttachment: false,
+  },
+
+  // Teams legitimate - meeting reschedule
+  {
+    channel: "teams",
+    senderName: "Jennifer Walsh",
+    senderEmail: "jennifer.walsh@yourcompany.com",
+    subject: "Need to reschedule our 1:1",
+    body: `Hey,
+
+Something came up and I need to reschedule our 1:1 that was set for Thursday at 3pm.
+
+Would Friday morning work for you instead? I'm free between 9-11am.
+
+Let me know what works best!
+
+Jen`,
+    timestamp: "3 hours ago",
+    legitimacy: "legitimate",
+    attackFamily: undefined,
+    riskType: "none",
+    cues: [],
+    correctAction: "proceed",
+    explanation: "This is a legitimate Teams message from a colleague. The sender is from your company domain (@yourcompany.com), the request is routine (rescheduling a meeting), there are no links or unusual requests. This is normal workplace communication.",
+    userRole: "staff",
+    hasAttachment: false,
+  },
+
+  // Slack phishing - fake security alert
+  {
+    channel: "slack",
+    senderName: "Slack Security",
+    senderEmail: "security-alerts@slack-workspace-security.net",
+    subject: "Unusual Sign-in Activity Detected",
+    body: `SECURITY ALERT
+
+We detected a sign-in to your Slack account from an unrecognized device:
+
+Location: Moscow, Russia
+Device: Windows PC
+Time: 2:47 AM (your time)
+
+If this wasn't you, your account may be compromised.
+
+Secure your account immediately:
+https://slack-security-center.net/secure-account
+
+If this was you, you can ignore this message.
+
+Slack Security Team`,
+    timestamp: "5 minutes ago",
+    legitimacy: "malicious",
+    attackFamily: "phishing",
+    riskType: "credential_theft",
+    cues: ["fear-based urgency", "fake security alert", "suspicious domain", "external sender", "foreign location scare"],
+    correctAction: "report",
+    explanation: "This is a fear-based phishing attack using a fake security alert. Red flags: The sender domain 'slack-workspace-security.net' is NOT Slack (real Slack is slack.com). The 'Moscow, Russia' location is designed to scare you into clicking without thinking. Real Slack security alerts come from slack.com and direct you to your actual Slack settings, not external websites.",
+    userRole: "staff",
+    hasAttachment: false,
+    linkUrl: "https://slack-security-center.net/secure-account",
+    linkText: "Secure Your Account",
+  },
 ];
+
+// Calculate difficulty scores dynamically using NIST Phish Scale
+export const scenariosSeed: InsertScenario[] = rawScenarios.map(scenario => ({
+  ...scenario,
+  difficultyScore: calculateNISTDifficulty(scenario.cues),
+}));
