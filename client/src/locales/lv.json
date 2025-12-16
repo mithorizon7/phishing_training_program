@@ -72,7 +72,7 @@
       },
       "verify": {
         "title": "Pārbaudīt caur zināmu kanālu",
-        "description": "Neatbildiet uz aizdomīgiem e-pastiem, jautājot \"vai tas ir īsts?\" Izmantojiet verificētu saziņas metodi, pēc tam ziņojiet."
+        "description": "Neatbildiet uz aizdomīgiem e-pastiem, jautājot \"vai tas ir īsts?\" Izmantojiet pārbaudītu saziņas metodi, pēc tam ziņojiet."
       }
     },
     "cta": {
@@ -91,7 +91,7 @@
     "signOut": "Izrakstīties",
     "instructor": "Instruktors",
     "instructorDashboard": "Instruktora panelis",
-    "verificationsLeft": "{count, plural, one {# verifikācija atlikusi} other {# verifikācijas atlikušas}}",
+    "verificationsLeft": "{count, plural, one {# pārbaude atlikusi} other {# pārbaudes atlikušas}}",
     "changeLanguage": "Mainīt valodu"
   },
   "dashboard": {
@@ -215,10 +215,10 @@
       "title": "Pārbaudes saraksts",
       "subtitle": "Pārbaudiet vismaz 3 vienumus pirms lēmuma pieņemšanas",
       "checkSender": "Pārbaudīt sūtītāja adresi",
-      "verifyLinks": "Verificēt saišu galamērķus",
+      "verifyLinks": "Pārbaudīt saišu galamērķus",
       "lookForUrgency": "Meklēt steidzamību/autoritāti",
       "checkRequests": "Pārbaudīt neparastus pieprasījumus",
-      "verifyExpected": "Verificēt gaidīto saziņu",
+      "verifyExpected": "Pārbaudīt gaidīto saziņu",
       "checked": "{count, number} no {total, number} pārbaudīti"
     },
     "shiftComplete": {
