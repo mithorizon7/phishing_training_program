@@ -85,6 +85,36 @@ export const userProgress = pgTable("user_progress", {
   lastPlayedAt: timestamp("last_played_at"),
 });
 
+// Assignments table - instructor-created training modules
+export const assignments = pgTable("assignments", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  title: varchar("title", { length: 255 }).notNull(),
+  description: text("description"),
+  createdBy: varchar("created_by").notNull(),
+  scenarioIds: text("scenario_ids").array().notNull(),
+  difficultyMin: integer("difficulty_min").default(1),
+  difficultyMax: integer("difficulty_max").default(5),
+  targetChannels: text("target_channels").array().default([]),
+  targetAttackFamilies: text("target_attack_families").array().default([]),
+  passingScore: integer("passing_score").default(70),
+  verificationBudget: integer("verification_budget").default(3),
+  isPublished: boolean("is_published").default(false),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+// Assignment completions table - tracks learner completion
+export const assignmentCompletions = pgTable("assignment_completions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  assignmentId: varchar("assignment_id").notNull(),
+  userId: varchar("user_id").notNull(),
+  shiftId: varchar("shift_id"),
+  score: integer("score"),
+  passed: boolean("passed"),
+  completedAt: timestamp("completed_at"),
+  startedAt: timestamp("started_at").defaultNow().notNull(),
+});
+
 // Relations
 export const shiftsRelations = relations(shifts, ({ many }) => ({
   decisions: many(decisions),
@@ -106,6 +136,8 @@ export const insertScenarioSchema = createInsertSchema(scenarios).omit({ id: tru
 export const insertShiftSchema = createInsertSchema(shifts).omit({ id: true, startedAt: true });
 export const insertDecisionSchema = createInsertSchema(decisions).omit({ id: true, createdAt: true });
 export const insertUserProgressSchema = createInsertSchema(userProgress).omit({ id: true });
+export const insertAssignmentSchema = createInsertSchema(assignments).omit({ id: true, createdAt: true, updatedAt: true });
+export const insertAssignmentCompletionSchema = createInsertSchema(assignmentCompletions).omit({ id: true, startedAt: true });
 
 // Types
 export type Scenario = typeof scenarios.$inferSelect;
@@ -116,6 +148,10 @@ export type Decision = typeof decisions.$inferSelect;
 export type InsertDecision = z.infer<typeof insertDecisionSchema>;
 export type UserProgress = typeof userProgress.$inferSelect;
 export type InsertUserProgress = z.infer<typeof insertUserProgressSchema>;
+export type Assignment = typeof assignments.$inferSelect;
+export type InsertAssignment = z.infer<typeof insertAssignmentSchema>;
+export type AssignmentCompletion = typeof assignmentCompletions.$inferSelect;
+export type InsertAssignmentCompletion = z.infer<typeof insertAssignmentCompletionSchema>;
 
 // Badge definitions
 export const BADGES = {

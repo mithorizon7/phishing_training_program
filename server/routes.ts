@@ -4,7 +4,8 @@ import { storage } from "./storage";
 import { setupAuth, registerAuthRoutes, isAuthenticated } from "./replit_integrations/auth";
 import { scenariosSeed } from "./scenarios-seed";
 import type { ActionType, OutcomeType, Scenario, UserProgress, BadgeId } from "@shared/schema";
-import { BADGES } from "@shared/schema";
+import { BADGES, insertAssignmentSchema } from "@shared/schema";
+import { z } from "zod";
 
 // Badge awarding logic
 function checkAndAwardBadges(
@@ -409,6 +410,197 @@ export async function registerRoutes(
     } catch (error) {
       console.error("Error promoting user:", error);
       res.status(500).json({ message: "Failed to promote user" });
+    }
+  });
+
+  // Instructor: Get all assignments by instructor
+  app.get("/api/instructor/assignments", isAuthenticated, isInstructor, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const assignments = await storage.getAssignmentsByInstructor(userId);
+      res.json(assignments);
+    } catch (error) {
+      console.error("Error fetching assignments:", error);
+      res.status(500).json({ message: "Failed to fetch assignments" });
+    }
+  });
+
+  // Instructor: Get single assignment
+  app.get("/api/instructor/assignments/:id", isAuthenticated, isInstructor, async (req: any, res) => {
+    try {
+      const { id } = req.params;
+      const assignment = await storage.getAssignmentById(id);
+      if (!assignment) {
+        return res.status(404).json({ message: "Assignment not found" });
+      }
+      res.json(assignment);
+    } catch (error) {
+      console.error("Error fetching assignment:", error);
+      res.status(500).json({ message: "Failed to fetch assignment" });
+    }
+  });
+
+  // Instructor: Create assignment
+  app.post("/api/instructor/assignments", isAuthenticated, isInstructor, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      
+      // Validate request body
+      const validationResult = insertAssignmentSchema.safeParse({
+        ...req.body,
+        createdBy: userId,
+      });
+      
+      if (!validationResult.success) {
+        return res.status(400).json({ 
+          message: "Invalid assignment data", 
+          errors: validationResult.error.flatten().fieldErrors 
+        });
+      }
+      
+      const assignment = await storage.createAssignment(validationResult.data);
+      res.json(assignment);
+    } catch (error) {
+      console.error("Error creating assignment:", error);
+      res.status(500).json({ message: "Failed to create assignment" });
+    }
+  });
+
+  // Instructor: Update assignment
+  app.patch("/api/instructor/assignments/:id", isAuthenticated, isInstructor, async (req: any, res) => {
+    try {
+      const { id } = req.params;
+      const userId = req.user.claims.sub;
+      
+      // Verify ownership
+      const existing = await storage.getAssignmentById(id);
+      if (!existing || existing.createdBy !== userId) {
+        return res.status(404).json({ message: "Assignment not found" });
+      }
+      
+      const assignment = await storage.updateAssignment(id, req.body);
+      res.json(assignment);
+    } catch (error) {
+      console.error("Error updating assignment:", error);
+      res.status(500).json({ message: "Failed to update assignment" });
+    }
+  });
+
+  // Instructor: Delete assignment
+  app.delete("/api/instructor/assignments/:id", isAuthenticated, isInstructor, async (req: any, res) => {
+    try {
+      const { id } = req.params;
+      const userId = req.user.claims.sub;
+      
+      // Verify ownership
+      const existing = await storage.getAssignmentById(id);
+      if (!existing || existing.createdBy !== userId) {
+        return res.status(404).json({ message: "Assignment not found" });
+      }
+      
+      await storage.deleteAssignment(id);
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Error deleting assignment:", error);
+      res.status(500).json({ message: "Failed to delete assignment" });
+    }
+  });
+
+  // Instructor: Get assignment completions
+  app.get("/api/instructor/assignments/:id/completions", isAuthenticated, isInstructor, async (req: any, res) => {
+    try {
+      const { id } = req.params;
+      const completions = await storage.getAssignmentCompletions(id);
+      res.json(completions);
+    } catch (error) {
+      console.error("Error fetching completions:", error);
+      res.status(500).json({ message: "Failed to fetch completions" });
+    }
+  });
+
+  // Instructor: Generate debrief pack (anonymized teachable moments)
+  app.get("/api/instructor/debrief-pack", isAuthenticated, isInstructor, async (req: any, res) => {
+    try {
+      const decisions = await storage.getAllDecisions();
+      const allScenarios = await storage.getScenarios();
+      const scenarioMap = new Map(allScenarios.map(s => [s.id, s]));
+      
+      // Group decisions by scenario
+      const scenarioStats: Record<string, {
+        scenario: Scenario;
+        totalAttempts: number;
+        correctCount: number;
+        compromisedCount: number;
+        falseAlarmCount: number;
+        commonMistakes: string[];
+        missedCues: string[];
+      }> = {};
+      
+      for (const decision of decisions) {
+        const scenario = scenarioMap.get(decision.scenarioId);
+        if (!scenario) continue;
+        
+        if (!scenarioStats[scenario.id]) {
+          scenarioStats[scenario.id] = {
+            scenario,
+            totalAttempts: 0,
+            correctCount: 0,
+            compromisedCount: 0,
+            falseAlarmCount: 0,
+            commonMistakes: [],
+            missedCues: [],
+          };
+        }
+        
+        scenarioStats[scenario.id].totalAttempts++;
+        if (decision.outcome === "safe") {
+          scenarioStats[scenario.id].correctCount++;
+        } else if (decision.outcome === "compromised") {
+          scenarioStats[scenario.id].compromisedCount++;
+          // Track missed cues for compromised decisions
+          if (scenario.cues && Array.isArray(scenario.cues)) {
+            scenarioStats[scenario.id].missedCues.push(...scenario.cues);
+          }
+        } else if (decision.outcome === "false_alarm") {
+          scenarioStats[scenario.id].falseAlarmCount++;
+        }
+      }
+      
+      // Build debrief items - focus on scenarios with high error rates
+      const debriefItems = Object.values(scenarioStats)
+        .filter(stat => stat.totalAttempts >= 3) // Need enough data
+        .map(stat => {
+          const errorRate = ((stat.compromisedCount + stat.falseAlarmCount) / stat.totalAttempts) * 100;
+          const uniqueMissedCues = [...new Set(stat.missedCues)];
+          
+          return {
+            scenarioId: stat.scenario.id,
+            channel: stat.scenario.channel,
+            attackFamily: stat.scenario.attackFamily,
+            subject: stat.scenario.subject,
+            senderName: stat.scenario.senderName,
+            correctAction: stat.scenario.correctAction,
+            explanation: stat.scenario.explanation,
+            cues: stat.scenario.cues,
+            difficultyScore: stat.scenario.difficultyScore,
+            totalAttempts: stat.totalAttempts,
+            errorRate: Math.round(errorRate * 10) / 10,
+            compromiseRate: Math.round((stat.compromisedCount / stat.totalAttempts) * 100 * 10) / 10,
+            falsePositiveRate: Math.round((stat.falseAlarmCount / stat.totalAttempts) * 100 * 10) / 10,
+            frequentlyMissedCues: uniqueMissedCues.slice(0, 5),
+          };
+        })
+        .sort((a, b) => b.errorRate - a.errorRate)
+        .slice(0, 20); // Top 20 most problematic scenarios
+      
+      res.json({
+        generatedAt: new Date().toISOString(),
+        totalScenarios: debriefItems.length,
+        items: debriefItems,
+      });
+    } catch (error) {
+      console.error("Error generating debrief pack:", error);
+      res.status(500).json({ message: "Failed to generate debrief pack" });
     }
   });
 

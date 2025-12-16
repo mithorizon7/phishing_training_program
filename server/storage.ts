@@ -1,9 +1,11 @@
 import { 
-  scenarios, shifts, decisions, userProgress,
+  scenarios, shifts, decisions, userProgress, assignments, assignmentCompletions,
   type Scenario, type InsertScenario,
   type Shift, type InsertShift,
   type Decision, type InsertDecision,
-  type UserProgress, type InsertUserProgress
+  type UserProgress, type InsertUserProgress,
+  type Assignment, type InsertAssignment,
+  type AssignmentCompletion, type InsertAssignmentCompletion
 } from "@shared/schema";
 import { users, type User } from "@shared/models/auth";
 import { db } from "./db";
@@ -70,6 +72,20 @@ export interface IStorage {
   // Analytics
   getCohortAnalytics(): Promise<CohortAnalytics>;
   getLearnerSummaries(): Promise<LearnerSummary[]>;
+
+  // Assignments
+  getAssignments(): Promise<Assignment[]>;
+  getAssignmentById(id: string): Promise<Assignment | undefined>;
+  getAssignmentsByInstructor(instructorId: string): Promise<Assignment[]>;
+  getPublishedAssignments(): Promise<Assignment[]>;
+  createAssignment(assignment: InsertAssignment): Promise<Assignment>;
+  updateAssignment(id: string, updates: Partial<Assignment>): Promise<Assignment | undefined>;
+  deleteAssignment(id: string): Promise<boolean>;
+
+  // Assignment Completions
+  getAssignmentCompletions(assignmentId: string): Promise<AssignmentCompletion[]>;
+  createAssignmentCompletion(completion: InsertAssignmentCompletion): Promise<AssignmentCompletion>;
+  updateAssignmentCompletion(id: string, updates: Partial<AssignmentCompletion>): Promise<AssignmentCompletion | undefined>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -302,6 +318,65 @@ export class DatabaseStorage implements IStorage {
         lastPlayedAt: progress?.lastPlayedAt || null
       };
     });
+  }
+
+  // Assignments
+  async getAssignments(): Promise<Assignment[]> {
+    return db.select().from(assignments).orderBy(desc(assignments.createdAt));
+  }
+
+  async getAssignmentById(id: string): Promise<Assignment | undefined> {
+    const [assignment] = await db.select().from(assignments).where(eq(assignments.id, id));
+    return assignment;
+  }
+
+  async getAssignmentsByInstructor(instructorId: string): Promise<Assignment[]> {
+    return db.select().from(assignments)
+      .where(eq(assignments.createdBy, instructorId))
+      .orderBy(desc(assignments.createdAt));
+  }
+
+  async getPublishedAssignments(): Promise<Assignment[]> {
+    return db.select().from(assignments)
+      .where(eq(assignments.isPublished, true))
+      .orderBy(desc(assignments.createdAt));
+  }
+
+  async createAssignment(assignment: InsertAssignment): Promise<Assignment> {
+    const [created] = await db.insert(assignments).values(assignment).returning();
+    return created;
+  }
+
+  async updateAssignment(id: string, updates: Partial<Assignment>): Promise<Assignment | undefined> {
+    const [updated] = await db.update(assignments)
+      .set({ ...updates, updatedAt: new Date() })
+      .where(eq(assignments.id, id))
+      .returning();
+    return updated;
+  }
+
+  async deleteAssignment(id: string): Promise<boolean> {
+    const result = await db.delete(assignments).where(eq(assignments.id, id));
+    return true;
+  }
+
+  // Assignment Completions
+  async getAssignmentCompletions(assignmentId: string): Promise<AssignmentCompletion[]> {
+    return db.select().from(assignmentCompletions)
+      .where(eq(assignmentCompletions.assignmentId, assignmentId));
+  }
+
+  async createAssignmentCompletion(completion: InsertAssignmentCompletion): Promise<AssignmentCompletion> {
+    const [created] = await db.insert(assignmentCompletions).values(completion).returning();
+    return created;
+  }
+
+  async updateAssignmentCompletion(id: string, updates: Partial<AssignmentCompletion>): Promise<AssignmentCompletion | undefined> {
+    const [updated] = await db.update(assignmentCompletions)
+      .set(updates)
+      .where(eq(assignmentCompletions.id, id))
+      .returning();
+    return updated;
   }
 }
 
