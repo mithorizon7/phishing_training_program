@@ -913,4 +913,399 @@ Don't worry, this is standard Microsoft verification procedure. I'm here to help
     chainName: "Tech Support Scam",
     previousAction: "proceed",
   },
+
+  // ============================================
+  // SUSPICIOUS-BUT-LEGITIMATE SCENARIOS
+  // These train discrimination - not everything urgent is malicious
+  // ============================================
+
+  // Legitimate urgent request from real executive
+  {
+    channel: "email",
+    senderName: "Sarah Martinez (VP Operations)",
+    senderEmail: "s.martinez@yourcompany.com",
+    replyTo: "s.martinez@yourcompany.com",
+    subject: "URGENT: Need signature before board meeting at 2pm",
+    body: `Hi,
+
+I know this is last minute, but I need your approval signature on the Q4 budget reforecast before the board meeting at 2pm today.
+
+The document is in the shared Finance folder: S:\\Finance\\2024\\Q4 Budget Reforecast Final.xlsx
+
+Please review and sign using DocuSign (you should have received a separate notification from our official DocuSign account).
+
+If you have questions, I'm at my desk - call me at ext. 3847.
+
+Thanks for understanding the rush!
+
+Sarah`,
+    timestamp: "45 minutes ago",
+    legitimacy: "suspicious_legitimate",
+    riskType: "none",
+    cues: [],
+    correctAction: "proceed",
+    explanation: "This is a legitimate urgent request. Key indicators: The sender email matches the company domain with correct reply-to, references internal systems (S: drive, DocuSign), provides a verifiable contact method (internal extension), and the urgency is proportionate to a real business need (board meeting). Real deadlines exist - the goal is recognizing legitimate urgency vs manufactured pressure.",
+    difficultyScore: 3,
+    userRole: "finance",
+    hasAttachment: false,
+  },
+
+  // Legitimate password expiry notification (looks like phishing)
+  {
+    channel: "email",
+    senderName: "IT Security",
+    senderEmail: "security@yourcompany.com",
+    subject: "Action Required: Password expires in 3 days",
+    body: `Dear Employee,
+
+Your network password will expire in 3 days.
+
+To change your password:
+1. Press Ctrl+Alt+Delete on your computer
+2. Select "Change a password"
+3. Enter your current password, then your new password twice
+
+Password requirements:
+- Minimum 12 characters
+- Mix of uppercase, lowercase, numbers, and symbols
+- Cannot reuse last 10 passwords
+
+If you need assistance, contact the IT Help Desk at helpdesk@yourcompany.com or ext. 4357.
+
+Do NOT reply to this email with your password.
+
+IT Security Team`,
+    timestamp: "This morning",
+    legitimacy: "suspicious_legitimate",
+    riskType: "none",
+    cues: [],
+    correctAction: "proceed",
+    explanation: "This is a legitimate IT notification. Key indicators: Correct company domain, instructs you to change password locally (Ctrl+Alt+Delete) rather than through a link, explicitly says NOT to share your password, and provides known internal contacts. Compare this to phishing which asks you to click links or enter credentials on a webpage.",
+    difficultyScore: 2,
+    userRole: "staff",
+    hasAttachment: false,
+  },
+
+  // Legitimate vendor payment request (looks like BEC)
+  {
+    channel: "email",
+    senderName: "Apex Software Solutions",
+    senderEmail: "billing@apexsoftware.com",
+    replyTo: "ar@apexsoftware.com",
+    subject: "Past due invoice - Account #AC-7841",
+    body: `Dear Accounts Payable,
+
+This is a friendly reminder that invoice #INV-2024-1156 for $8,750.00 is now 15 days past due.
+
+Invoice details:
+- Invoice #: INV-2024-1156
+- Invoice date: November 15, 2024
+- Due date: November 30, 2024
+- Amount: $8,750.00
+- Service: Annual software license renewal
+
+Please process payment at your earliest convenience to avoid service interruption on December 31, 2024.
+
+Payment can be made via:
+- ACH transfer (details on file)
+- Check payable to Apex Software Solutions
+- Credit card via our secure portal at https://pay.apexsoftware.com
+
+If you have questions, contact our AR team at ar@apexsoftware.com or (555) 847-2910.
+
+Thank you for your business.
+
+Jennifer Walsh
+Accounts Receivable
+Apex Software Solutions`,
+    timestamp: "Yesterday",
+    legitimacy: "suspicious_legitimate",
+    riskType: "none",
+    cues: [],
+    correctAction: "verify",
+    explanation: "This appears to be a legitimate past-due notice but warrants verification. Best practice: Check if Apex Software is a known vendor in your system, verify the invoice number matches your records, and confirm payment details haven't changed. The request itself isn't suspicious, but vendor invoices are commonly spoofed. A quick verification call protects against invoice fraud.",
+    difficultyScore: 3,
+    userRole: "finance",
+    hasAttachment: false,
+    linkUrl: "https://pay.apexsoftware.com",
+    linkText: "our secure portal",
+  },
+
+  // Legitimate bank fraud alert (looks like vishing)
+  {
+    channel: "sms",
+    senderName: "Chase Bank",
+    senderPhone: "+1 (800) 935-9935",
+    subject: "Fraud alert",
+    body: `Chase Fraud: Did you attempt a $847.00 purchase at AMAZON.COM on 12/15? Reply YES or NO. If not you, we'll block your card. Msg&data rates may apply.`,
+    timestamp: "10 minutes ago",
+    legitimacy: "suspicious_legitimate",
+    riskType: "none",
+    cues: [],
+    correctAction: "verify",
+    explanation: "This is a legitimate fraud alert format from Chase. Key indicators: The number matches Chase's known fraud line, it asks for simple YES/NO (no links or personal info), and describes a specific transaction. However, it's always safer to verify: Call the number on the back of your card rather than replying to the text. This protects against sophisticated spoofing.",
+    difficultyScore: 3,
+    userRole: "staff",
+    hasAttachment: false,
+  },
+
+  // Legitimate HR policy update (urgent but real)
+  {
+    channel: "email",
+    senderName: "Human Resources",
+    senderEmail: "hr@yourcompany.com",
+    subject: "IMPORTANT: New expense policy effective immediately",
+    body: `All Employees,
+
+Effective immediately, please note the following changes to our travel and expense policy:
+
+KEY CHANGES:
+1. All travel bookings must use our new portal: Concur (travel.yourcompany.com)
+2. Expense reports over $500 require manager + VP approval
+3. Personal credit cards are no longer reimbursable for travel
+
+WHY NOW:
+Due to recent audit findings, we must implement these controls immediately to maintain compliance with our SOX obligations.
+
+WHAT YOU NEED TO DO:
+- Complete the Concur training by Friday (link in Workday Learning)
+- Submit any outstanding expense reports under the old policy by December 20
+
+Questions? Contact hr@yourcompany.com or attend Friday's town hall at 3pm.
+
+Thank you for your understanding.
+
+HR Team`,
+    timestamp: "2 hours ago",
+    legitimacy: "suspicious_legitimate",
+    riskType: "none",
+    cues: [],
+    correctAction: "proceed",
+    explanation: "This is a legitimate policy update, despite the urgent tone. Key indicators: Correct company domain, references internal systems (Workday, known portal), provides context (audit findings), offers multiple verification channels (email, town hall), and doesn't ask for credentials or payments. Organizations do have legitimate urgent policy changes.",
+    difficultyScore: 2,
+    userRole: "staff",
+    hasAttachment: false,
+    linkUrl: "https://travel.yourcompany.com",
+    linkText: "Concur",
+  },
+
+  // Legitimate calendar invite from new contact
+  {
+    channel: "email",
+    senderName: "Microsoft Outlook",
+    senderEmail: "noreply@outlook.com",
+    subject: "Meeting Request: Q1 Planning Discussion",
+    body: `You've been invited to a meeting:
+
+Q1 Planning Discussion
+
+When: Tuesday, December 17, 2024 2:00 PM - 3:00 PM
+Where: Microsoft Teams meeting
+
+Organizer: Tom Richards (t.richards@clientcompany.com)
+Attendees: You, Sarah Martinez, Finance Team
+
+Note from organizer:
+"Hi team - as discussed in last week's call, let's align on Q1 priorities and budget allocation. I've attached the draft planning template for review beforehand."
+
+[Accept]  [Tentative]  [Decline]
+
+Join Microsoft Teams Meeting
+Meeting ID: 284 847 291#
+Passcode: Q1Plan`,
+    timestamp: "3 hours ago",
+    legitimacy: "suspicious_legitimate",
+    riskType: "none",
+    cues: [],
+    correctAction: "verify",
+    explanation: "This calendar invite is likely legitimate but worth verifying since it's from an external contact. Check: Do you have a relationship with ClientCompany? Does this align with a discussion from last week? When uncertain about external meeting requests, confirm with your internal colleague (Sarah Martinez) that this meeting was expected. Calendar invites can be used for phishing.",
+    difficultyScore: 3,
+    userRole: "staff",
+    hasAttachment: true,
+    attachmentName: "Q1_Planning_Template.xlsx",
+  },
+
+  // ============================================
+  // REPLY-CHAIN HIJACK SCENARIO
+  // ============================================
+
+  // Reply-chain hijack - vendor payment redirect
+  {
+    channel: "email",
+    senderName: "David Chen - ABC Supplies",
+    senderEmail: "dchen@abc-suppIies.com",
+    replyTo: "dchen@abc-suppIies.com",
+    subject: "Re: PO #4847 - Invoice and updated payment info",
+    body: `Hi,
+
+Following up on our conversation about PO #4847. I've attached the invoice as requested.
+
+IMPORTANT: Please note our banking information has changed. Our old bank (First National) was acquired, so please use these new details for all future payments:
+
+New Bank: Horizon Trust
+Account Name: ABC Supplies LLC
+Account: 847291650
+Routing: 021000089
+
+Please update your records and process this invoice to the new account. Let me know if you have any questions!
+
+Thanks,
+David Chen
+ABC Supplies
+
+---
+On Dec 10, David Chen wrote:
+> Great talking with you about the Q4 order. I'll send over the invoice
+> by end of week. Thanks for your continued business!
+
+On Dec 10, you wrote:
+> Hi David, can you send the invoice for PO #4847? We're processing
+> December payments this week.`,
+    timestamp: "1 hour ago",
+    legitimacy: "malicious",
+    attackFamily: "bec",
+    riskType: "payment_fraud",
+    cues: ["look-alike domain", "banking info change", "fake reply chain", "domain uses capital I instead of lowercase l"],
+    correctAction: "verify",
+    explanation: "This is a reply-chain hijack attack. The email appears to be a continued conversation, but look carefully at the domain: 'abc-suppIies.com' uses a capital I instead of lowercase L. Attackers monitor vendor relationships, then insert themselves with spoofed domains and fake banking changes. ALWAYS verify banking changes by calling the vendor's known phone number from your records, never from the email.",
+    difficultyScore: 5,
+    userRole: "finance",
+    hasAttachment: true,
+    attachmentName: "Invoice_PO4847.pdf",
+  },
+
+  // ============================================
+  // HIGH-DIFFICULTY PHISHING (PERFECT GRAMMAR)
+  // ============================================
+
+  // Perfectly written credential phishing
+  {
+    channel: "email",
+    senderName: "DocuSign",
+    senderEmail: "dse_na4@docusign.net",
+    subject: "Document Ready for Signature: NDA - Confidential Agreement",
+    body: `DocuSign
+
+Hello,
+
+Marcus Chen has sent you a document to review and sign.
+
+Document: NDA - Confidential Agreement
+Sent by: Marcus Chen (m.chen@horizonventures.com)
+Expires: December 20, 2024
+
+This NDA is required before our meeting next Tuesday to discuss the potential partnership opportunity. Please review and sign at your earliest convenience.
+
+REVIEW DOCUMENT
+
+This email was sent to you by Marcus Chen through DocuSign Electronic Signature Service.
+
+Questions? Contact the sender directly.
+
+DocuSign, Inc. | 221 Main Street, Suite 1550 | San Francisco, CA 94105`,
+    timestamp: "2 hours ago",
+    legitimacy: "malicious",
+    attackFamily: "phishing",
+    riskType: "credential_theft",
+    cues: ["unexpected document", "suspicious sender domain", "no prior context"],
+    correctAction: "verify",
+    explanation: "This is a highly sophisticated phishing email with perfect grammar and formatting. While docusign.net is a legitimate DocuSign domain, the red flags are contextual: Do you know Marcus Chen? Are you expecting this NDA? Do you have a meeting scheduled? Attackers use real DocuSign formatting to steal credentials. When in doubt, contact the supposed sender through a known channel before signing anything.",
+    difficultyScore: 4,
+    userRole: "manager",
+    hasAttachment: false,
+    linkUrl: "https://docusign-view.com/envelope/3f7a8b9c",
+    linkText: "REVIEW DOCUMENT",
+  },
+
+  // Perfectly crafted internal IT request
+  {
+    channel: "email",
+    senderName: "IT Service Desk",
+    senderEmail: "servicedesk@yourcompany-it.net",
+    subject: "Scheduled: Multi-Factor Authentication Upgrade",
+    body: `IT Service Announcement
+
+Dear Colleague,
+
+As part of our ongoing security improvements, your Multi-Factor Authentication (MFA) enrollment requires an update.
+
+What's happening:
+We're migrating to Microsoft Authenticator for enhanced security. Your current MFA method will be deprecated on December 31, 2024.
+
+Action required:
+Please complete your MFA migration by visiting our secure portal. The process takes approximately 5 minutes.
+
+Complete MFA Migration
+
+Timeline:
+- Now - December 20: Complete migration (recommended)
+- December 21 - 30: Migration required
+- December 31: Legacy MFA disabled
+
+If you experience issues, contact the IT Service Desk at helpdesk@yourcompany.com or call ext. 4357.
+
+Thank you for your cooperation.
+
+IT Security Team
+Your Company`,
+    timestamp: "This morning",
+    legitimacy: "malicious",
+    attackFamily: "phishing",
+    riskType: "credential_theft",
+    cues: ["look-alike domain", "MFA phishing", "manufactured deadline"],
+    correctAction: "report",
+    explanation: "This is sophisticated MFA phishing. The sender domain 'yourcompany-it.net' is NOT your company's domain. Attackers know MFA migrations happen, so they create fake ones. Red flags: External domain, link to complete migration (real IT would use internal systems), and the urgency. Legitimate MFA changes come from your actual IT domain and direct you to internal portals you already use.",
+    difficultyScore: 5,
+    userRole: "staff",
+    hasAttachment: false,
+    linkUrl: "https://yourcompany-it-mfa.net/enroll",
+    linkText: "Complete MFA Migration",
+  },
+
+  // Executive travel booking phishing
+  {
+    channel: "email",
+    senderName: "Concur Travel",
+    senderEmail: "noreply@us.concur-solutions.com",
+    subject: "Flight Confirmation: New York to San Francisco - Dec 18",
+    body: `Concur Travel
+
+Your trip has been booked.
+
+Traveler: Jennifer Walsh
+Confirmation: ABCD12
+
+OUTBOUND FLIGHT
+December 18, 2024
+United Airlines UA 847
+Depart: JFK 8:00 AM
+Arrive: SFO 11:30 AM (local)
+
+RETURN FLIGHT
+December 20, 2024
+United Airlines UA 1156
+Depart: SFO 6:00 PM
+Arrive: JFK 2:30 AM +1 (local)
+
+Total Cost: $847.00
+
+View or Modify Booking
+
+Need to make changes? Log in to Concur Travel to update your itinerary.
+
+Concur Travel Services
+SAP Concur`,
+    timestamp: "4 hours ago",
+    legitimacy: "malicious",
+    attackFamily: "phishing",
+    riskType: "credential_theft",
+    cues: ["fake Concur domain", "unexpected booking", "credential harvesting"],
+    correctAction: "verify",
+    explanation: "This is travel-themed phishing. The domain 'concur-solutions.com' is NOT SAP Concur (real domain: concur.com). Even if you do travel, attackers send fake bookings hoping you'll click to 'view' them. Check: Did you book this trip? Is this your correct name? Always access Concur through your company's known travel portal or bookmark, never through email links.",
+    difficultyScore: 4,
+    userRole: "staff",
+    hasAttachment: false,
+    linkUrl: "https://concur-solutions.com/travel/view",
+    linkText: "View or Modify Booking",
+  },
 ];

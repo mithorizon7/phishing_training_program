@@ -37,7 +37,12 @@ Preferred communication style: Simple, everyday language.
 - **Scenarios**: Message library with phishing/legitimate content, difficulty scores, and correct actions
 - **Shifts**: Gameplay sessions tracking user progress through scenario sets
 - **Decisions**: Individual user choices with outcomes and points
-- **UserProgress**: Aggregated statistics including accuracy, streaks, and badges
+- **UserProgress**: Aggregated statistics including accuracy, streaks, badges, and granular metrics:
+  - `totalReports` / `correctReports`: Track report action usage and accuracy
+  - `totalMaliciousSeen` / `correctMaliciousHandling`: Threat detection rate
+  - `totalLegitimateSeen` / `correctLegitimateHandling`: Discrimination accuracy
+  - `unsafeActions`: Proceed on malicious (security failures)
+  - `highConfidenceWrong`: Overconfident errors for calibration training
 
 ### Authentication Flow
 - Replit Auth via OpenID Connect

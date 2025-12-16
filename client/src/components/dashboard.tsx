@@ -13,7 +13,10 @@ import {
   Search,
   CheckCircle,
   Clock,
-  Star
+  Star,
+  Flag,
+  ShieldAlert,
+  Zap
 } from "lucide-react";
 import type { UserProgress } from "@shared/schema";
 import { BADGES } from "@shared/schema";
@@ -115,6 +118,25 @@ export function Dashboard({ progress, isLoading, onStartShift }: DashboardProps)
     ? Math.round((progress.correctDecisions / progress.totalDecisions) * 100) 
     : 0;
 
+  // Detection rate: correctly handled malicious messages / total malicious seen
+  // "Correctly handled" = any action except proceed (report, delete, verify are all safe)
+  const detectionRate = progress && progress.totalMaliciousSeen > 0
+    ? Math.round((progress.correctMaliciousHandling / progress.totalMaliciousSeen) * 100)
+    : 0;
+
+  // Report accuracy: correct reports (reported malicious) / total reports made
+  const reportAccuracy = progress && progress.totalReports > 0
+    ? Math.round((progress.correctReports / progress.totalReports) * 100)
+    : 0;
+
+  // False positive rate: FP / (FP + correctly handled legitimate)
+  // This is the standard FPR formula: FP / (FP + TN)
+  const falsePositives = progress?.falsePositives || 0;
+  const correctLegit = progress?.correctLegitimateHandling || 0;
+  const falsePositiveRate = (falsePositives + correctLegit) > 0
+    ? Math.round(falsePositives / (falsePositives + correctLegit) * 100)
+    : 0;
+
   const missedCuesEntries = progress?.missedCues 
     ? Object.entries(progress.missedCues as Record<string, number>).sort((a, b) => b[1] - a[1]).slice(0, 5)
     : [];
@@ -138,23 +160,23 @@ export function Dashboard({ progress, isLoading, onStartShift }: DashboardProps)
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
-          title="Accuracy"
-          value={`${accuracy}%`}
-          subtitle={`${progress?.correctDecisions || 0} correct decisions`}
-          icon={Target}
+          title="Detection Rate"
+          value={`${detectionRate}%`}
+          subtitle={`${progress?.correctMaliciousHandling || 0} of ${progress?.totalMaliciousSeen || 0} threats handled safely`}
+          icon={ShieldAlert}
           color="bg-chart-2"
         />
         <StatCard
-          title="Safe Decisions"
-          value={progress?.correctDecisions || 0}
-          subtitle="Messages handled correctly"
-          icon={Shield}
+          title="Report Accuracy"
+          value={`${reportAccuracy}%`}
+          subtitle={`${progress?.totalReports || 0} total reports made`}
+          icon={Flag}
           color="bg-primary"
         />
         <StatCard
-          title="False Positives"
-          value={progress?.falsePositives || 0}
-          subtitle="Legitimate messages reported"
+          title="False Positive Rate"
+          value={`${falsePositiveRate}%`}
+          subtitle={`${progress?.falsePositives || 0} legitimate reported`}
           icon={AlertTriangle}
           color="bg-chart-4"
         />
@@ -166,6 +188,54 @@ export function Dashboard({ progress, isLoading, onStartShift }: DashboardProps)
           color="bg-chart-5"
         />
       </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Zap className="w-5 h-5" />
+            Key Performance Metrics
+          </CardTitle>
+          <CardDescription>
+            Balance security vigilance with operational efficiency
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="p-4 rounded-lg bg-muted/30">
+              <div className="flex items-center gap-2 mb-2">
+                <Target className="w-4 h-4 text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">Overall Accuracy</span>
+              </div>
+              <div className="text-2xl font-bold" data-testid="text-accuracy">{accuracy}%</div>
+              <p className="text-xs text-muted-foreground">{progress?.correctDecisions || 0} correct decisions</p>
+            </div>
+            <div className="p-4 rounded-lg bg-muted/30">
+              <div className="flex items-center gap-2 mb-2">
+                <Shield className="w-4 h-4 text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">Unsafe Actions</span>
+              </div>
+              <div className="text-2xl font-bold" data-testid="text-unsafe-actions">{progress?.unsafeActions || 0}</div>
+              <p className="text-xs text-muted-foreground">Threats allowed through</p>
+            </div>
+            <div className="p-4 rounded-lg bg-muted/30">
+              <div className="flex items-center gap-2 mb-2">
+                <AlertTriangle className="w-4 h-4 text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">Compromised</span>
+              </div>
+              <div className="text-2xl font-bold" data-testid="text-compromised">{progress?.compromised || 0}</div>
+              <p className="text-xs text-muted-foreground">Security breaches</p>
+            </div>
+            <div className="p-4 rounded-lg bg-muted/30">
+              <div className="flex items-center gap-2 mb-2">
+                <CheckCircle className="w-4 h-4 text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">High-Confidence Errors</span>
+              </div>
+              <div className="text-2xl font-bold" data-testid="text-high-confidence-wrong">{progress?.highConfidenceWrong || 0}</div>
+              <p className="text-xs text-muted-foreground">Wrong with 85%+ confidence</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       <div className="grid lg:grid-cols-3 gap-6">
         <Card className="lg:col-span-2">

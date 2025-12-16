@@ -163,6 +163,14 @@ export async function registerRoutes(
           correctDecisions: 0,
           falsePositives: 0,
           compromised: 0,
+          totalReports: 0,
+          correctReports: 0,
+          totalMaliciousSeen: 0,
+          correctMaliciousHandling: 0,
+          totalLegitimateSeen: 0,
+          correctLegitimateHandling: 0,
+          unsafeActions: 0,
+          highConfidenceWrong: 0,
           currentStreak: 0,
           longestStreak: 0,
           totalScore: 0,
@@ -284,6 +292,20 @@ export async function registerRoutes(
       const isFalsePositive = outcome === "false_alarm";
       const isCompromised = outcome === "compromised";
       
+      // Track new metrics for spec compliance
+      const isReport = action === "report";
+      const isMalicious = scenario.legitimacy === "malicious";
+      const isLegitimate = scenario.legitimacy === "legitimate" || scenario.legitimacy === "suspicious_legitimate";
+      // Correct report = reported a malicious message (not just when report is the "correct" action)
+      const isCorrectReport = isReport && isMalicious;
+      // Correct handling of malicious = any action that isn't proceed (report, delete, or verify are all safe)
+      const isCorrectMaliciousHandling = isMalicious && action !== "proceed";
+      const isUnsafeAction = isMalicious && action === "proceed";
+      const isHighConfidenceWrong = !isCorrect && confidence >= 85;
+      // Correctly handled legitimate = took the correct action (typically proceed)
+      // Delete of legitimate causes "delayed_work" which is a penalty, not correct
+      const isCorrectLegitimateHandling = isLegitimate && isCorrect;
+      
       const updatedShift = await storage.updateShift(shiftId, {
         score: shift.score + points,
         correctDecisions: shift.correctDecisions + (isCorrect ? 1 : 0),
@@ -314,6 +336,14 @@ export async function registerRoutes(
         correctDecisions: 0,
         falsePositives: 0,
         compromised: 0,
+        totalReports: 0,
+        correctReports: 0,
+        totalMaliciousSeen: 0,
+        correctMaliciousHandling: 0,
+        totalLegitimateSeen: 0,
+        correctLegitimateHandling: 0,
+        unsafeActions: 0,
+        highConfidenceWrong: 0,
         currentStreak: 0,
         longestStreak: 0,
         totalScore: 0,
@@ -329,6 +359,14 @@ export async function registerRoutes(
         correctDecisions: (progress?.correctDecisions || 0) + (isCorrect ? 1 : 0),
         falsePositives: (progress?.falsePositives || 0) + (isFalsePositive ? 1 : 0),
         compromised: (progress?.compromised || 0) + (isCompromised ? 1 : 0),
+        totalReports: (progress?.totalReports || 0) + (isReport ? 1 : 0),
+        correctReports: (progress?.correctReports || 0) + (isCorrectReport ? 1 : 0),
+        totalMaliciousSeen: (progress?.totalMaliciousSeen || 0) + (isMalicious ? 1 : 0),
+        correctMaliciousHandling: (progress?.correctMaliciousHandling || 0) + (isCorrectMaliciousHandling ? 1 : 0),
+        totalLegitimateSeen: (progress?.totalLegitimateSeen || 0) + (isLegitimate ? 1 : 0),
+        correctLegitimateHandling: (progress?.correctLegitimateHandling || 0) + (isCorrectLegitimateHandling ? 1 : 0),
+        unsafeActions: (progress?.unsafeActions || 0) + (isUnsafeAction ? 1 : 0),
+        highConfidenceWrong: (progress?.highConfidenceWrong || 0) + (isHighConfidenceWrong ? 1 : 0),
         currentStreak,
         longestStreak,
         totalScore: (progress?.totalScore || 0) + points,
@@ -602,7 +640,7 @@ export async function registerRoutes(
         .filter(stat => stat.totalAttempts >= 3) // Need enough data
         .map(stat => {
           const errorRate = ((stat.compromisedCount + stat.falseAlarmCount) / stat.totalAttempts) * 100;
-          const uniqueMissedCues = [...new Set(stat.missedCues)];
+          const uniqueMissedCues = Array.from(new Set(stat.missedCues));
           
           return {
             scenarioId: stat.scenario.id,
