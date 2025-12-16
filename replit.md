@@ -35,6 +35,10 @@ Preferred communication style: Simple, everyday language.
 
 ### Key Data Models
 - **Scenarios**: Message library with phishing/legitimate content, difficulty scores, and correct actions
+  - 69 total scenarios (44 malicious, 17 legitimate, 8 suspicious-legitimate)
+  - Attack families: Phishing, BEC, Wrong-number, Vishing, OAuth, AI-phishing, QR-phishing, Tech-support, Reply-chain hijack
+  - 25% legitimate content ratio for discrimination training (avoids paranoid over-reporting)
+  - Multi-turn chain support (chainId, chainOrder, previousAction) for progressive scams like pig butchering
 - **Shifts**: Gameplay sessions tracking user progress through scenario sets
 - **Decisions**: Individual user choices with outcomes and points
 - **UserProgress**: Aggregated statistics including accuracy, streaks, badges, and granular metrics:
@@ -43,6 +47,16 @@ Preferred communication style: Simple, everyday language.
   - `totalLegitimateSeen` / `correctLegitimateHandling`: Discrimination accuracy
   - `unsafeActions`: Proceed on malicious (security failures)
   - `highConfidenceWrong`: Overconfident errors for calibration training
+
+### Adaptive Difficulty System
+- Uses NIST Phish Scale methodology for scoring scenario difficulty (1-5)
+- Progressive unlocking based on learner performance:
+  - Shifts 0-2: Max difficulty 2 (basic scenarios only)
+  - Shifts 3-5: Max difficulty 3 (if accuracy > 60%)
+  - Shifts 6-10: Max difficulty 4 (if accuracy > 70%)
+  - Shifts 11+: Max difficulty 5 (if accuracy > 75%)
+- 20% challenge scenarios mixed in for stretch learning
+- Automatic backfill ensures 10 scenarios per shift even when challenge scenarios unavailable
 
 ### Authentication Flow
 - Replit Auth via OpenID Connect
