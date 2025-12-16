@@ -19,7 +19,10 @@ import {
   Zap,
   Briefcase,
   ShieldCheck,
-  LifeBuoy
+  LifeBuoy,
+  Gauge,
+  ShieldX,
+  ShieldOff
 } from "lucide-react";
 import type { UserProgress } from "@shared/schema";
 import { BADGES } from "@shared/schema";
@@ -58,6 +61,130 @@ function StatCard({
         </div>
         {subtitle && (
           <p className="text-xs text-muted-foreground mt-1">{subtitle}</p>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
+function RiskMeter({ progress }: { progress: UserProgress | null }) {
+  const unsafeActions = progress?.unsafeActions || 0;
+  const highConfWrong = progress?.highConfidenceWrong || 0;
+  const totalDecisions = progress?.totalDecisions || 0;
+  const totalMalicious = progress?.totalMaliciousSeen || 0;
+  
+  let riskLevel: "low" | "medium" | "high" | "critical" = "low";
+  let riskScore = 0;
+  let riskMessage = "Looking good! Keep practicing to maintain your skills.";
+  
+  if (totalDecisions > 0) {
+    const unsafeRate = totalMalicious > 0 ? (unsafeActions / totalMalicious) * 100 : 0;
+    const calibrationIssues = totalDecisions > 0 ? (highConfWrong / totalDecisions) * 100 : 0;
+    
+    riskScore = Math.min(100, Math.round(unsafeRate * 0.7 + calibrationIssues * 0.3));
+    
+    if (riskScore <= 10) {
+      riskLevel = "low";
+      riskMessage = "Excellent threat awareness. You're catching attacks effectively.";
+    } else if (riskScore <= 30) {
+      riskLevel = "medium";
+      riskMessage = "Some areas need attention. Focus on the patterns you're missing.";
+    } else if (riskScore <= 50) {
+      riskLevel = "high";
+      riskMessage = "Higher vulnerability detected. Review the attack patterns below.";
+    } else {
+      riskLevel = "critical";
+      riskMessage = "Critical: You're allowing too many threats through. Focus training needed.";
+    }
+  } else {
+    riskMessage = "Complete some training to see your risk profile.";
+  }
+  
+  const riskColors = {
+    low: { bg: "bg-chart-2/20", border: "border-chart-2/50", text: "text-chart-2", fill: "bg-chart-2" },
+    medium: { bg: "bg-amber-500/20", border: "border-amber-500/50", text: "text-amber-600 dark:text-amber-400", fill: "bg-amber-500" },
+    high: { bg: "bg-orange-500/20", border: "border-orange-500/50", text: "text-orange-600 dark:text-orange-400", fill: "bg-orange-500" },
+    critical: { bg: "bg-destructive/20", border: "border-destructive/50", text: "text-destructive", fill: "bg-destructive" },
+  };
+  
+  const colors = riskColors[riskLevel];
+  
+  const missedCues = progress?.missedCues as Record<string, number> | undefined;
+  const topVulnerabilities = missedCues 
+    ? Object.entries(missedCues).sort((a, b) => b[1] - a[1]).slice(0, 4)
+    : [];
+
+  return (
+    <Card className={`border-2 ${colors.border}`}>
+      <CardHeader className="pb-2">
+        <CardTitle className="flex items-center gap-2">
+          <Gauge className="w-5 h-5" />
+          Risk Meter
+        </CardTitle>
+        <CardDescription>Your vulnerability profile based on training performance</CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="flex items-center gap-4">
+          <div className={`w-20 h-20 rounded-full ${colors.bg} flex items-center justify-center relative`}>
+            {riskLevel === "low" && <ShieldCheck className={`w-10 h-10 ${colors.text}`} />}
+            {riskLevel === "medium" && <Shield className={`w-10 h-10 ${colors.text}`} />}
+            {riskLevel === "high" && <ShieldOff className={`w-10 h-10 ${colors.text}`} />}
+            {riskLevel === "critical" && <ShieldX className={`w-10 h-10 ${colors.text}`} />}
+          </div>
+          <div className="flex-1">
+            <div className="flex items-center gap-2 mb-1">
+              <Badge variant="outline" className={colors.text} data-testid="badge-risk-level">
+                {riskLevel.charAt(0).toUpperCase() + riskLevel.slice(1)} Risk
+              </Badge>
+              {totalDecisions > 0 && (
+                <span className="text-sm text-muted-foreground">Score: {riskScore}/100</span>
+              )}
+            </div>
+            <p className="text-sm text-muted-foreground">{riskMessage}</p>
+          </div>
+        </div>
+        
+        <div className="relative">
+          <div className="h-3 rounded-full overflow-hidden flex">
+            <div className="flex-1 bg-chart-2/30" />
+            <div className="flex-1 bg-amber-500/30" />
+            <div className="flex-1 bg-orange-500/30" />
+            <div className="flex-1 bg-destructive/30" />
+          </div>
+          <div 
+            className="absolute top-0 left-0 h-3 rounded-full transition-all duration-300"
+            style={{ 
+              width: `${Math.min(100, riskScore)}%`,
+              background: riskScore <= 10 ? 'hsl(var(--chart-2))' : 
+                         riskScore <= 30 ? 'hsl(45, 93%, 47%)' :
+                         riskScore <= 50 ? 'hsl(25, 95%, 53%)' : 
+                         'hsl(var(--destructive))'
+            }} 
+          />
+          <div 
+            className="absolute top-1/2 -translate-y-1/2 w-3 h-5 rounded bg-foreground/80 border-2 border-background shadow-sm transition-all duration-300"
+            style={{ left: `calc(${Math.min(100, riskScore)}% - 6px)` }}
+          />
+        </div>
+        <div className="flex text-xs text-muted-foreground mt-1">
+          <span className="flex-1 text-left">Low</span>
+          <span className="flex-1 text-center">Medium</span>
+          <span className="flex-1 text-center">High</span>
+          <span className="flex-1 text-right">Critical</span>
+        </div>
+        
+        {topVulnerabilities.length > 0 && (
+          <div className="pt-2 border-t">
+            <p className="text-xs font-medium mb-2">Top Vulnerabilities (missed cues)</p>
+            <div className="grid grid-cols-2 gap-2">
+              {topVulnerabilities.map(([cue, count]) => (
+                <div key={cue} className="flex items-center justify-between text-xs p-2 rounded bg-muted/50">
+                  <span className="truncate">{cue}</span>
+                  <Badge variant="secondary">{count}</Badge>
+                </div>
+              ))}
+            </div>
+          </div>
         )}
       </CardContent>
     </Card>
@@ -356,6 +483,8 @@ export function Dashboard({ progress, isLoading, onStartShift }: DashboardProps)
           </CardContent>
         </Card>
       </div>
+
+      <RiskMeter progress={progress} />
 
       <div className="grid sm:grid-cols-2 gap-6">
         <Card>

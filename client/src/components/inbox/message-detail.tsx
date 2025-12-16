@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Progress } from "@/components/ui/progress";
 import { 
   Accordion,
   AccordionContent,
@@ -28,15 +30,35 @@ import {
   User,
   Hash,
   Users,
-  MessageCircle
+  MessageCircle,
+  Search,
+  Clock,
+  Target
 } from "lucide-react";
 import type { Scenario, ActionType, MessageChannel } from "@shared/schema";
+
+interface LensCheck {
+  id: string;
+  label: string;
+  description: string;
+  icon: React.ElementType;
+}
+
+const LENS_CHECKS: LensCheck[] = [
+  { id: "sender", label: "Sender Identity", description: "Checked email address, not just display name", icon: User },
+  { id: "links", label: "Link Destinations", description: "Hovered to see actual URL before clicking", icon: LinkIcon },
+  { id: "urgency", label: "Urgency Pressure", description: "Noted any artificial time pressure or threats", icon: Clock },
+  { id: "request", label: "Request Type", description: "Identified what they're asking me to do", icon: Target },
+  { id: "context", label: "Context Check", description: "Considered if this request makes sense", icon: Search },
+];
 
 interface MessageDetailProps {
   scenario: Scenario | null;
   verificationsRemaining: number;
   onAction: (action: ActionType) => void;
   disabled?: boolean;
+  lensChecks?: Set<string>;
+  onLensCheck?: (checkId: string, checked: boolean) => void;
 }
 
 function getChannelIcon(channel: MessageChannel) {
@@ -65,10 +87,15 @@ export function MessageDetail({
   scenario, 
   verificationsRemaining,
   onAction,
-  disabled 
+  disabled,
+  lensChecks = new Set(),
+  onLensCheck
 }: MessageDetailProps) {
   const [showRealSender, setShowRealSender] = useState(false);
   const [showLinkTarget, setShowLinkTarget] = useState(false);
+  
+  const lensProgress = (lensChecks.size / LENS_CHECKS.length) * 100;
+  const lensComplete = lensChecks.size >= 3;
 
   if (!scenario) {
     return (
@@ -276,6 +303,56 @@ export function MessageDetail({
           </Accordion>
         </CardContent>
       </Card>
+
+      {onLensCheck && (
+        <Card className={`flex-shrink-0 transition-colors ${lensComplete ? 'border-chart-2/50' : 'border-amber-500/50'}`}>
+          <CardHeader className="pb-2">
+            <div className="flex items-center justify-between gap-2">
+              <h3 className="font-semibold text-sm flex items-center gap-2">
+                <Search className="w-4 h-4" />
+                Lens Tool
+                <Badge variant={lensComplete ? "default" : "secondary"} className="text-xs">
+                  {lensChecks.size}/{LENS_CHECKS.length}
+                </Badge>
+              </h3>
+              {!lensComplete && (
+                <span className="text-xs text-amber-600 dark:text-amber-400">Check at least 3 before deciding</span>
+              )}
+            </div>
+            <Progress value={lensProgress} className="h-1.5 mt-2" />
+          </CardHeader>
+          <CardContent className="pt-0">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+              {LENS_CHECKS.map((check) => {
+                const Icon = check.icon;
+                const isChecked = lensChecks.has(check.id);
+                return (
+                  <div 
+                    key={check.id}
+                    className={`flex items-start gap-2 p-2 rounded-md cursor-pointer transition-colors ${
+                      isChecked ? 'bg-chart-2/10' : 'hover-elevate'
+                    }`}
+                    onClick={() => onLensCheck(check.id, !isChecked)}
+                    data-testid={`lens-check-${check.id}`}
+                  >
+                    <Checkbox 
+                      checked={isChecked}
+                      className="mt-0.5"
+                    />
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-1.5">
+                        <Icon className="w-3.5 h-3.5 text-muted-foreground flex-shrink-0" />
+                        <span className="text-xs font-medium truncate">{check.label}</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">{check.description}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       <Card className="flex-shrink-0">
         <CardContent className="py-4">

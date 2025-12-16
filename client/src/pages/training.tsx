@@ -37,6 +37,7 @@ export default function Training() {
     pointsEarned: number;
   } | null>(null);
   const [showComplete, setShowComplete] = useState(false);
+  const [lensChecks, setLensChecks] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     if (!authLoading && !isAuthenticated) {
@@ -173,6 +174,22 @@ export default function Training() {
     navigate("/");
   };
 
+  const handleLensCheck = (checkId: string, checked: boolean) => {
+    setLensChecks(prev => {
+      const newSet = new Set(prev);
+      if (checked) {
+        newSet.add(checkId);
+      } else {
+        newSet.delete(checkId);
+      }
+      return newSet;
+    });
+  };
+
+  useEffect(() => {
+    setLensChecks(new Set());
+  }, [currentIndex]);
+
   const handlePlayAgain = () => {
     setShowComplete(false);
     setCompletedIds([]);
@@ -269,6 +286,8 @@ export default function Training() {
                   verificationsRemaining={verificationsRemaining}
                   onAction={handleAction}
                   disabled={submitDecisionMutation.isPending || completedIds.includes(currentScenario?.id || "")}
+                  lensChecks={lensChecks}
+                  onLensCheck={handleLensCheck}
                 />
               </div>
             </div>
