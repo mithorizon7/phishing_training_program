@@ -178,9 +178,9 @@ function RiskMeter({ progress }: { progress: UserProgress | null }) {
             <p className="text-xs font-medium mb-2">Top Vulnerabilities (missed cues)</p>
             <div className="grid grid-cols-2 gap-2">
               {topVulnerabilities.map(([cue, count]) => (
-                <div key={cue} className="flex items-center justify-between text-xs p-2 rounded bg-muted/50">
-                  <span className="truncate">{cue}</span>
-                  <Badge variant="secondary">{count}</Badge>
+                <div key={cue} className="flex items-center justify-between gap-2 text-xs p-2 rounded bg-muted/50">
+                  <span className="truncate flex-1 min-w-0">{cue}</span>
+                  <Badge variant="secondary" className="flex-shrink-0">{count}</Badge>
                 </div>
               ))}
             </div>
@@ -466,9 +466,9 @@ export function Dashboard({ progress, isLoading, onStartShift }: DashboardProps)
             {missedCuesEntries.length > 0 ? (
               <div className="space-y-3">
                 {missedCuesEntries.map(([cue, count]) => (
-                  <div key={cue} className="flex items-center justify-between gap-2">
-                    <span className="text-sm truncate">{cue}</span>
-                    <Badge variant="secondary" className="text-xs">
+                  <div key={cue} className="flex items-center justify-between gap-3">
+                    <span className="text-sm truncate flex-1 min-w-0">{cue}</span>
+                    <Badge variant="secondary" className="text-xs flex-shrink-0">
                       {count}
                     </Badge>
                   </div>
@@ -539,7 +539,7 @@ export function Dashboard({ progress, isLoading, onStartShift }: DashboardProps)
 function DashboardSkeleton() {
   return (
     <div className="max-w-6xl mx-auto p-6 space-y-8">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <Skeleton className="h-8 w-40 mb-2" />
           <Skeleton className="h-4 w-60" />

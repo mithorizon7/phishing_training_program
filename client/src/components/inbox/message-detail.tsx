@@ -365,43 +365,43 @@ export function MessageDetail({
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             <Button
               variant="default"
-              className="flex-col h-auto py-3 gap-1"
+              size="lg"
               onClick={() => onAction("report")}
               disabled={disabled}
               data-testid="button-action-report"
             >
-              <Shield className="w-5 h-5" />
-              <span className="text-xs">Report</span>
+              <Shield className="w-4 h-4 mr-2" />
+              Report
             </Button>
             <Button
               variant="outline"
-              className="flex-col h-auto py-3 gap-1"
+              size="lg"
               onClick={() => onAction("delete")}
               disabled={disabled}
               data-testid="button-action-delete"
             >
-              <Trash2 className="w-5 h-5" />
-              <span className="text-xs">Delete</span>
+              <Trash2 className="w-4 h-4 mr-2" />
+              Delete
             </Button>
             <Button
               variant="outline"
-              className="flex-col h-auto py-3 gap-1"
+              size="lg"
               onClick={() => onAction("verify")}
               disabled={disabled || verificationsRemaining <= 0}
               data-testid="button-action-verify"
             >
-              <CheckCircle className="w-5 h-5" />
-              <span className="text-xs">Verify</span>
+              <CheckCircle className="w-4 h-4 mr-2" />
+              Verify
             </Button>
             <Button
               variant="destructive"
-              className="flex-col h-auto py-3 gap-1"
+              size="lg"
               onClick={() => onAction("proceed")}
               disabled={disabled}
               data-testid="button-action-proceed"
             >
-              <ArrowRight className="w-5 h-5" />
-              <span className="text-xs">Proceed</span>
+              <ArrowRight className="w-4 h-4 mr-2" />
+              Proceed
             </Button>
           </div>
         </CardContent>

@@ -110,30 +110,30 @@ export function MessageList({
   return (
     <Card className="flex flex-col h-full">
       <Tabs defaultValue="all" className="flex flex-col h-full">
-        <div className="border-b px-4 pt-4">
-          <TabsList className="w-full grid grid-cols-6">
-            <TabsTrigger value="all" data-testid="tab-all">
+        <div className="border-b px-2 sm:px-4 pt-4">
+          <TabsList className="w-full flex flex-wrap gap-1">
+            <TabsTrigger value="all" className="flex-1 min-w-fit" data-testid="tab-all">
               All ({scenarios.length})
             </TabsTrigger>
-            <TabsTrigger value="email" data-testid="tab-email">
-              <Mail className="w-4 h-4 mr-1" />
-              {emailScenarios.length}
+            <TabsTrigger value="email" className="flex-1 min-w-fit" data-testid="tab-email">
+              <Mail className="w-4 h-4 sm:mr-1" />
+              <span className="hidden sm:inline">{emailScenarios.length}</span>
             </TabsTrigger>
-            <TabsTrigger value="sms" data-testid="tab-sms">
-              <MessageSquare className="w-4 h-4 mr-1" />
-              {smsScenarios.length}
+            <TabsTrigger value="sms" className="flex-1 min-w-fit" data-testid="tab-sms">
+              <MessageSquare className="w-4 h-4 sm:mr-1" />
+              <span className="hidden sm:inline">{smsScenarios.length}</span>
             </TabsTrigger>
-            <TabsTrigger value="call" data-testid="tab-call">
-              <Phone className="w-4 h-4 mr-1" />
-              {callScenarios.length}
+            <TabsTrigger value="call" className="flex-1 min-w-fit" data-testid="tab-call">
+              <Phone className="w-4 h-4 sm:mr-1" />
+              <span className="hidden sm:inline">{callScenarios.length}</span>
             </TabsTrigger>
-            <TabsTrigger value="teams" data-testid="tab-teams">
-              <Users className="w-4 h-4 mr-1" />
-              {teamsScenarios.length}
+            <TabsTrigger value="teams" className="flex-1 min-w-fit" data-testid="tab-teams">
+              <Users className="w-4 h-4 sm:mr-1" />
+              <span className="hidden sm:inline">{teamsScenarios.length}</span>
             </TabsTrigger>
-            <TabsTrigger value="slack" data-testid="tab-slack">
-              <Hash className="w-4 h-4 mr-1" />
-              {slackScenarios.length}
+            <TabsTrigger value="slack" className="flex-1 min-w-fit" data-testid="tab-slack">
+              <Hash className="w-4 h-4 sm:mr-1" />
+              <span className="hidden sm:inline">{slackScenarios.length}</span>
             </TabsTrigger>
           </TabsList>
         </div>

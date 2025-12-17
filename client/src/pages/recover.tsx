@@ -183,11 +183,11 @@ export default function RecoverDrill() {
                   <CardContent className="pt-6">
                     <h3 className="font-semibold mb-2">{scenario.title}</h3>
                     <p className="text-sm text-muted-foreground">{scenario.description}</p>
-                    <div className="mt-4 flex items-center justify-between">
+                    <div className="mt-4 flex items-center justify-between gap-2">
                       <Badge variant="outline">
                         {scenario.steps.filter(s => s.critical).length} critical steps
                       </Badge>
-                      <ArrowRight className="w-4 h-4 text-muted-foreground" />
+                      <ArrowRight className="w-4 h-4 text-muted-foreground flex-shrink-0" />
                     </div>
                   </CardContent>
                 </Card>
@@ -385,12 +385,12 @@ export default function RecoverDrill() {
         })}
       </div>
 
-      <div className="sticky bottom-0 bg-background pt-4 pb-2 border-t">
-        <div className="flex items-center justify-between mb-4">
+      <div className="sticky bottom-0 z-50 bg-background pt-4 pb-2 border-t">
+        <div className="flex items-center justify-between gap-4 mb-4">
           <span className="text-sm text-muted-foreground">
             {completedSteps.size} of {selectedScenario.steps.length} steps selected
           </span>
-          <span className="text-sm font-medium">
+          <span className="text-sm font-medium flex-shrink-0">
             {getCriticalStepsCompleted()}/{getTotalCriticalSteps()} critical
           </span>
         </div>

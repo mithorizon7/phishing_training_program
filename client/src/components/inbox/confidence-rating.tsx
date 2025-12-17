@@ -46,7 +46,7 @@ export function ConfidenceRating({ action, onSubmit, onCancel }: ConfidenceRatin
           </div>
 
           <div className="space-y-4">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between gap-4">
               <span className="text-sm text-muted-foreground">Confidence Level</span>
               <span className="font-semibold text-lg">{confidence}%</span>
             </div>
@@ -59,7 +59,7 @@ export function ConfidenceRating({ action, onSubmit, onCancel }: ConfidenceRatin
               className="w-full"
               data-testid="slider-confidence"
             />
-            <div className="flex justify-between text-xs text-muted-foreground">
+            <div className="flex justify-between gap-4 text-xs text-muted-foreground">
               <span>50% - Guessing</span>
               <span>100% - Certain</span>
             </div>
