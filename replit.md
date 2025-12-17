@@ -100,3 +100,17 @@ Preferred communication style: Simple, everyday language.
 - passport + openid-client for authentication
 - memoizee for caching OIDC configuration
 - drizzle-orm + drizzle-zod for database operations
+
+## Technical Debt & Future Improvements
+
+### Performance Considerations
+- **Analytics Queries**: `getCohortAnalytics()` in `server/storage.ts` loads all decisions/progress/scenarios into memory. Consider pagination or aggregation queries for scale.
+- **QueryClient staleTime**: Set to `Infinity` in `client/src/lib/queryClient.ts` - data never auto-refetches. Consider finite staleTime for progress data.
+
+### Data Integrity
+- **Decision Submission**: No database transaction wrapping multi-table updates (shift, decision, progress). Add transaction support for atomicity.
+
+### Security Notes
+- Input validation added for decision submission (action enum, confidence 0-100 range)
+- Instructor promotion endpoint disabled - use direct SQL to promote users: `UPDATE users SET role = 'instructor' WHERE id = 'user-id';`
+- Rate limiting not implemented on API endpoints (consider for production)

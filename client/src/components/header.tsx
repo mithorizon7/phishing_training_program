@@ -16,7 +16,7 @@ import type { User as UserType } from "@shared/models/auth";
 import { Link, useLocation } from "wouter";
 
 interface HeaderProps {
-  user: (UserType & { role?: string }) | null | undefined;
+  user: UserType | null | undefined;
   verificationsRemaining?: number;
   inShift?: boolean;
 }

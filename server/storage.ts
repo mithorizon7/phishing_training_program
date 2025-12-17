@@ -1,12 +1,16 @@
 import { 
   scenarios, shifts, decisions, userProgress, assignments, assignmentCompletions,
-  type Scenario, type InsertScenario,
+  type Scenario,
   type Shift, type InsertShift,
-  type Decision, type InsertDecision,
+  type Decision,
   type UserProgress, type InsertUserProgress,
   type Assignment, type InsertAssignment,
   type AssignmentCompletion, type InsertAssignmentCompletion
 } from "@shared/schema";
+
+// Use Drizzle's native insert types for type-safe inserts
+type InsertScenarioNative = typeof scenarios.$inferInsert;
+type InsertDecisionNative = typeof decisions.$inferInsert;
 import { users, type User } from "@shared/models/auth";
 import { db } from "./db";
 import { eq, inArray, sql, desc, and, gte } from "drizzle-orm";
@@ -46,7 +50,7 @@ export interface IStorage {
   getScenariosByIds(ids: string[]): Promise<Scenario[]>;
   getRandomScenarios(count: number, maxDifficulty?: number): Promise<Scenario[]>;
   getAdaptiveScenarios(count: number, userAccuracy: number, shiftsCompleted: number): Promise<Scenario[]>;
-  createScenario(scenario: InsertScenario): Promise<Scenario>;
+  createScenario(scenario: InsertScenarioNative): Promise<Scenario>;
   getScenariosCount(): Promise<number>;
 
   // Shifts
@@ -57,7 +61,7 @@ export interface IStorage {
 
   // Decisions
   getDecisionsByShiftId(shiftId: string): Promise<Decision[]>;
-  createDecision(decision: InsertDecision): Promise<Decision>;
+  createDecision(decision: InsertDecisionNative): Promise<Decision>;
   getAllDecisions(): Promise<Decision[]>;
 
   // User Progress
@@ -207,7 +211,7 @@ export class DatabaseStorage implements IStorage {
     return combined.sort(() => Math.random() - 0.5);
   }
 
-  async createScenario(scenario: InsertScenario): Promise<Scenario> {
+  async createScenario(scenario: InsertScenarioNative): Promise<Scenario> {
     const [created] = await db.insert(scenarios).values(scenario).returning();
     return created;
   }
@@ -245,7 +249,7 @@ export class DatabaseStorage implements IStorage {
     return db.select().from(decisions).where(eq(decisions.shiftId, shiftId));
   }
 
-  async createDecision(decision: InsertDecision): Promise<Decision> {
+  async createDecision(decision: InsertDecisionNative): Promise<Decision> {
     const [created] = await db.insert(decisions).values(decision).returning();
     return created;
   }

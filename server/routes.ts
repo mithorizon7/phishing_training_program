@@ -4,8 +4,30 @@ import { storage } from "./storage";
 import { setupAuth, registerAuthRoutes, isAuthenticated } from "./replit_integrations/auth";
 import { scenariosSeed } from "./scenarios-seed";
 import type { ActionType, OutcomeType, Scenario, UserProgress, BadgeId } from "@shared/schema";
-import { BADGES, insertAssignmentSchema } from "@shared/schema";
+import { BADGES, insertAssignmentSchema, insertDecisionSchema } from "@shared/schema";
 import { z } from "zod";
+
+// Valid actions for runtime validation - single source of truth
+const VALID_ACTIONS: readonly ActionType[] = ["report", "delete", "verify", "proceed"] as const;
+
+// Runtime assertion that validates action type
+function assertActionType(value: string): ActionType {
+  if (!VALID_ACTIONS.includes(value as ActionType)) {
+    throw new Error(`Invalid action type: ${value}`);
+  }
+  return value as ActionType;
+}
+
+// Decision submission validation - pick client-provided fields from the shared schema
+// Uses runtime assertion to guarantee ActionType compatibility
+const submitDecisionSchema = z.object({
+  scenarioId: z.string().min(1),
+  action: z.string().refine(
+    (val): val is ActionType => VALID_ACTIONS.includes(val as ActionType),
+    { message: "Invalid action type" }
+  ),
+  confidence: z.number().int().min(0).max(100),
+});
 
 // Badge awarding logic
 function checkAndAwardBadges(
@@ -133,7 +155,8 @@ async function seedScenariosIfNeeded() {
   if (count === 0) {
     console.log("Seeding scenarios...");
     for (const scenario of scenariosSeed) {
-      await storage.createScenario(scenario);
+      // Seed data is pre-validated, cast to native insert type
+      await storage.createScenario(scenario as Parameters<typeof storage.createScenario>[0]);
     }
     console.log(`Seeded ${scenariosSeed.length} scenarios`);
   }
@@ -255,13 +278,18 @@ export async function registerRoutes(
   app.post("/api/shifts/:shiftId/decisions", isAuthenticated, async (req: any, res) => {
     try {
       const { shiftId } = req.params;
-      const { scenarioId, action, confidence } = req.body;
       const userId = req.user.claims.sub;
       
-      // Validate input
-      if (!scenarioId || !action || confidence === undefined) {
-        return res.status(400).json({ message: "Missing required fields" });
+      // Validate input using Zod schema
+      const validationResult = submitDecisionSchema.safeParse(req.body);
+      if (!validationResult.success) {
+        return res.status(400).json({ 
+          message: "Invalid input", 
+          errors: validationResult.error.flatten().fieldErrors 
+        });
       }
+      
+      const { scenarioId, action, confidence } = validationResult.data;
       
       const shift = await storage.getShiftById(shiftId);
       if (!shift || shift.userId !== userId) {
@@ -474,18 +502,6 @@ export async function registerRoutes(
     } catch (error) {
       console.error("Error fetching learners:", error);
       res.status(500).json({ message: "Failed to fetch learners" });
-    }
-  });
-
-  // Promote user to instructor (temporary endpoint for testing)
-  app.post("/api/user/promote-instructor", isAuthenticated, async (req: any, res) => {
-    try {
-      const userId = req.user.claims.sub;
-      const user = await storage.updateUserRole(userId, "instructor");
-      res.json(user);
-    } catch (error) {
-      console.error("Error promoting user:", error);
-      res.status(500).json({ message: "Failed to promote user" });
     }
   });
 
