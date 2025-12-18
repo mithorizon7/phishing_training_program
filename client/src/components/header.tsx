@@ -173,8 +173,12 @@ export function Header({ user, verificationsRemaining, inShift, isGuestMode: pro
                   </a>
                 </DropdownMenuItem>
                 <DropdownMenuItem 
-                  onClick={() => {
-                    document.cookie = 'guestId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+                  onClick={async () => {
+                    try {
+                      await fetch('/api/guest/session', { method: 'DELETE' });
+                    } catch (e) {
+                      // Continue even if request fails
+                    }
                     exitGuestMode();
                     window.location.href = "/";
                   }}

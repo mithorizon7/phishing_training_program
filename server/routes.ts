@@ -10,11 +10,14 @@ import { randomUUID } from "crypto";
 import cookieParser from "cookie-parser";
 
 // Guest session management - stores guest progress in memory
+const MAX_GUEST_SESSIONS = 10000; // Limit to prevent memory exhaustion
+
 const guestSessions: Map<string, {
   id: string;
   progress: UserProgress;
   shifts: Map<string, any>;
   createdAt: Date;
+  lastAccessedAt: Date;
 }> = new Map();
 
 // Clean up old guest sessions every hour
@@ -25,14 +28,33 @@ setInterval(() => {
       guestSessions.delete(id);
     }
   }
+  // Log session count for monitoring
+  if (guestSessions.size > 0) {
+    console.log(`[guest-sessions] Active: ${guestSessions.size}`);
+  }
 }, 60 * 60 * 1000);
+
+// Evict oldest sessions when limit is reached
+function evictOldestGuestSessions(count: number) {
+  const sorted = [...guestSessions.entries()]
+    .sort((a, b) => a[1].lastAccessedAt.getTime() - b[1].lastAccessedAt.getTime());
+  for (let i = 0; i < count && i < sorted.length; i++) {
+    guestSessions.delete(sorted[i][0]);
+  }
+}
 
 // Get or create guest session
 function getGuestSession(req: Request): { id: string; progress: UserProgress; shifts: Map<string, any> } {
   let guestId = req.cookies?.guestId;
   
   if (!guestId || !guestSessions.has(guestId)) {
+    // Evict oldest sessions if at limit
+    if (guestSessions.size >= MAX_GUEST_SESSIONS) {
+      evictOldestGuestSessions(Math.ceil(MAX_GUEST_SESSIONS * 0.1)); // Evict 10%
+    }
+    
     guestId = `guest_${randomUUID()}`;
+    const now = new Date();
     const session = {
       id: guestId,
       progress: {
@@ -59,9 +81,14 @@ function getGuestSession(req: Request): { id: string; progress: UserProgress; sh
         lastPlayedAt: null,
       } as UserProgress,
       shifts: new Map(),
-      createdAt: new Date(),
+      createdAt: now,
+      lastAccessedAt: now,
     };
     guestSessions.set(guestId, session);
+  } else {
+    // Update last accessed time
+    const session = guestSessions.get(guestId)!;
+    session.lastAccessedAt = new Date();
   }
   
   return guestSessions.get(guestId)!;
@@ -72,6 +99,15 @@ function setGuestCookie(res: Response, guestId: string) {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    sameSite: 'lax',
+  });
+}
+
+function clearGuestCookie(res: Response) {
+  res.cookie('guestId', '', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    maxAge: 0,
     sameSite: 'lax',
   });
 }
@@ -456,6 +492,21 @@ export async function registerRoutes(
     } catch (error) {
       console.error("Error submitting guest decision:", error);
       res.status(500).json({ message: "Failed to submit decision" });
+    }
+  });
+
+  // Clear guest session (for exiting guest mode)
+  app.delete("/api/guest/session", async (req: any, res) => {
+    try {
+      const guestId = req.cookies?.guestId;
+      if (guestId && guestSessions.has(guestId)) {
+        guestSessions.delete(guestId);
+      }
+      clearGuestCookie(res);
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Error clearing guest session:", error);
+      res.status(500).json({ message: "Failed to clear session" });
     }
   });
 

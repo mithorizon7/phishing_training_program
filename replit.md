@@ -67,14 +67,16 @@ Preferred communication style: Simple, everyday language.
 ### Guest Mode
 - Allows users to try the full training experience without authentication
 - Guest sessions stored in server memory (not database) with 24-hour TTL
-- Cookie-based session identification (`guestId` cookie)
+- Cookie-based session identification (`guestId` cookie, HttpOnly for security)
 - Frontend state managed via Zustand store with localStorage persistence
+- Session limits: Max 10,000 concurrent guest sessions with LRU eviction
 - Guest API endpoints mirror authenticated endpoints with `/api/guest` prefix:
   - `GET /api/guest/progress` - Get guest progress
   - `POST /api/guest/shifts` - Create guest shift
   - `GET /api/guest/shifts/:id` - Get guest shift
   - `POST /api/guest/shifts/:shiftId/decisions` - Submit guest decision
-- Exiting guest mode clears both localStorage state and server cookie
+  - `DELETE /api/guest/session` - Clear guest session and cookie
+- Exiting guest mode calls the DELETE endpoint to clear server session and cookie
 - Guest data is temporary and cannot be transferred to authenticated accounts
 
 ### Build System
