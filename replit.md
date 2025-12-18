@@ -64,6 +64,19 @@ Preferred communication style: Simple, everyday language.
 - Protected routes use `isAuthenticated` middleware
 - User data synced to local database on login
 
+### Guest Mode
+- Allows users to try the full training experience without authentication
+- Guest sessions stored in server memory (not database) with 24-hour TTL
+- Cookie-based session identification (`guestId` cookie)
+- Frontend state managed via Zustand store with localStorage persistence
+- Guest API endpoints mirror authenticated endpoints with `/api/guest` prefix:
+  - `GET /api/guest/progress` - Get guest progress
+  - `POST /api/guest/shifts` - Create guest shift
+  - `GET /api/guest/shifts/:id` - Get guest shift
+  - `POST /api/guest/shifts/:shiftId/decisions` - Submit guest decision
+- Exiting guest mode clears both localStorage state and server cookie
+- Guest data is temporary and cannot be transferred to authenticated accounts
+
 ### Build System
 - Development: Vite dev server with HMR proxied through Express
 - Production: Vite builds to `dist/public`, esbuild bundles server to `dist/index.cjs`
