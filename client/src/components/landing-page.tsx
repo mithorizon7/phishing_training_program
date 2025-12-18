@@ -1,12 +1,21 @@
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Shield, Target, Brain, TrendingUp, Mail, MessageSquare, Phone, CheckCircle } from "lucide-react";
+import { Shield, Target, Brain, TrendingUp, Mail, MessageSquare, Phone, CheckCircle, PlayCircle } from "lucide-react";
 import { ThemeToggle } from "./theme-toggle";
 import { LanguageSwitcher } from "./language-switcher";
+import { useGuestMode } from "@/hooks/use-guest-mode";
+import { useLocation } from "wouter";
 
 export function LandingPage() {
   const { t } = useTranslation();
+  const { enterGuestMode } = useGuestMode();
+  const [, navigate] = useLocation();
+
+  const handleTryAsGuest = () => {
+    enterGuestMode();
+    navigate("/");
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -45,8 +54,9 @@ export function LandingPage() {
               <Button size="lg" asChild data-testid="button-get-started">
                 <a href="/api/login">{t('landing.hero.getStarted')}</a>
               </Button>
-              <Button size="lg" variant="outline" data-testid="button-learn-more">
-                {t('common.learnMore')}
+              <Button size="lg" variant="outline" onClick={handleTryAsGuest} data-testid="button-try-guest">
+                <PlayCircle className="w-5 h-5 mr-2" />
+                Try as Guest
               </Button>
             </div>
           </div>
@@ -202,12 +212,18 @@ export function LandingPage() {
             <p className="text-muted-foreground mb-8">
               {t('landing.cta.subtitle')}
             </p>
-            <Button size="lg" asChild data-testid="button-cta-signup">
-              <a href="/api/login" className="flex items-center gap-2">
-                <CheckCircle className="w-5 h-5" />
-                {t('landing.cta.button')}
-              </a>
-            </Button>
+            <div className="flex flex-wrap items-center justify-center gap-4">
+              <Button size="lg" asChild data-testid="button-cta-signup">
+                <a href="/api/login" className="flex items-center gap-2">
+                  <CheckCircle className="w-5 h-5" />
+                  {t('landing.cta.button')}
+                </a>
+              </Button>
+              <Button size="lg" variant="outline" onClick={handleTryAsGuest} data-testid="button-cta-guest">
+                <PlayCircle className="w-5 h-5 mr-2" />
+                Try Without Account
+              </Button>
+            </div>
           </div>
         </section>
       </main>

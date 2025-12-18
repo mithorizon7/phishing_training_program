@@ -1,4 +1,4 @@
-import type { Express } from "express";
+import type { Express, Request, Response, NextFunction } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { setupAuth, registerAuthRoutes, isAuthenticated } from "./replit_integrations/auth";
@@ -6,6 +6,75 @@ import { scenariosSeed } from "./scenarios-seed";
 import type { ActionType, OutcomeType, Scenario, UserProgress, BadgeId } from "@shared/schema";
 import { BADGES, insertAssignmentSchema, insertDecisionSchema } from "@shared/schema";
 import { z } from "zod";
+import { randomUUID } from "crypto";
+import cookieParser from "cookie-parser";
+
+// Guest session management - stores guest progress in memory
+const guestSessions: Map<string, {
+  id: string;
+  progress: UserProgress;
+  shifts: Map<string, any>;
+  createdAt: Date;
+}> = new Map();
+
+// Clean up old guest sessions every hour
+setInterval(() => {
+  const now = new Date();
+  for (const [id, session] of guestSessions) {
+    if (now.getTime() - session.createdAt.getTime() > 24 * 60 * 60 * 1000) {
+      guestSessions.delete(id);
+    }
+  }
+}, 60 * 60 * 1000);
+
+// Get or create guest session
+function getGuestSession(req: Request): { id: string; progress: UserProgress; shifts: Map<string, any> } {
+  let guestId = req.cookies?.guestId;
+  
+  if (!guestId || !guestSessions.has(guestId)) {
+    guestId = `guest_${randomUUID()}`;
+    const session = {
+      id: guestId,
+      progress: {
+        id: guestId,
+        userId: guestId,
+        totalShifts: 0,
+        totalDecisions: 0,
+        correctDecisions: 0,
+        falsePositives: 0,
+        compromised: 0,
+        totalReports: 0,
+        correctReports: 0,
+        totalMaliciousSeen: 0,
+        correctMaliciousHandling: 0,
+        totalLegitimateSeen: 0,
+        correctLegitimateHandling: 0,
+        unsafeActions: 0,
+        highConfidenceWrong: 0,
+        currentStreak: 0,
+        longestStreak: 0,
+        totalScore: 0,
+        missedCues: {},
+        earnedBadges: [],
+        lastPlayedAt: null,
+      } as UserProgress,
+      shifts: new Map(),
+      createdAt: new Date(),
+    };
+    guestSessions.set(guestId, session);
+  }
+  
+  return guestSessions.get(guestId)!;
+}
+
+function setGuestCookie(res: Response, guestId: string) {
+  res.cookie('guestId', guestId, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    sameSite: 'lax',
+  });
+}
 
 // Valid actions for runtime validation - single source of truth
 const VALID_ACTIONS: readonly ActionType[] = ["report", "delete", "verify", "proceed"] as const;
@@ -166,12 +235,231 @@ export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
+  // Add cookie parser for guest sessions
+  app.use(cookieParser());
+
   // Set up authentication
   await setupAuth(app);
   registerAuthRoutes(app);
 
   // Seed scenarios
   await seedScenariosIfNeeded();
+
+  // ==================== GUEST MODE ROUTES ====================
+  // These routes allow users to try the app without logging in
+  
+  // Guest progress
+  app.get("/api/guest/progress", async (req: any, res) => {
+    try {
+      const session = getGuestSession(req);
+      setGuestCookie(res, session.id);
+      res.json(session.progress);
+    } catch (error) {
+      console.error("Error fetching guest progress:", error);
+      res.status(500).json({ message: "Failed to fetch progress" });
+    }
+  });
+
+  // Create guest shift
+  app.post("/api/guest/shifts", async (req: any, res) => {
+    try {
+      const session = getGuestSession(req);
+      setGuestCookie(res, session.id);
+      
+      const progress = session.progress;
+      const shiftsCompleted = progress.totalShifts || 0;
+      const accuracy = progress.totalDecisions 
+        ? progress.correctDecisions / progress.totalDecisions 
+        : 0;
+      
+      const scenarios = await storage.getAdaptiveScenarios(10, accuracy, shiftsCompleted);
+      const scenarioIds = scenarios.map(s => s.id);
+      
+      const shiftId = `guest_shift_${randomUUID()}`;
+      const shift = {
+        id: shiftId,
+        userId: session.id,
+        scenarioIds,
+        verificationBudget: 3,
+        verificationsUsed: 0,
+        score: 0,
+        correctDecisions: 0,
+        falsePositives: 0,
+        compromised: 0,
+        completedAt: null,
+        createdAt: new Date(),
+      };
+      
+      session.shifts.set(shiftId, shift);
+      res.json(shift);
+    } catch (error) {
+      console.error("Error creating guest shift:", error);
+      res.status(500).json({ message: "Failed to create shift" });
+    }
+  });
+
+  // Get guest shift by ID
+  app.get("/api/guest/shifts/:id", async (req: any, res) => {
+    try {
+      const session = getGuestSession(req);
+      setGuestCookie(res, session.id);
+      
+      const { id } = req.params;
+      const shift = session.shifts.get(id);
+      
+      if (!shift) {
+        return res.status(404).json({ message: "Shift not found" });
+      }
+      
+      // Get scenarios for this shift
+      const scenarios = await storage.getScenariosByIds(shift.scenarioIds);
+      const orderedScenarios = shift.scenarioIds
+        .map((sid: string) => scenarios.find(s => s.id === sid))
+        .filter(Boolean);
+      
+      res.json({ ...shift, scenarios: orderedScenarios });
+    } catch (error) {
+      console.error("Error fetching guest shift:", error);
+      res.status(500).json({ message: "Failed to fetch shift" });
+    }
+  });
+
+  // Submit guest decision
+  app.post("/api/guest/shifts/:shiftId/decisions", async (req: any, res) => {
+    try {
+      const session = getGuestSession(req);
+      setGuestCookie(res, session.id);
+      
+      const { shiftId } = req.params;
+      
+      const validationResult = submitDecisionSchema.safeParse(req.body);
+      if (!validationResult.success) {
+        return res.status(400).json({ 
+          message: "Invalid input", 
+          errors: validationResult.error.flatten().fieldErrors 
+        });
+      }
+      
+      const { scenarioId, action, confidence } = validationResult.data;
+      
+      const shift = session.shifts.get(shiftId);
+      if (!shift) {
+        return res.status(404).json({ message: "Shift not found" });
+      }
+      
+      const scenario = await storage.getScenarioById(scenarioId);
+      if (!scenario) {
+        return res.status(404).json({ message: "Scenario not found" });
+      }
+      
+      const usedVerification = action === "verify";
+      if (usedVerification && shift.verificationsUsed >= shift.verificationBudget) {
+        return res.status(400).json({ message: "No verifications remaining" });
+      }
+      
+      const { outcome, points } = calculateOutcome(scenario, action, usedVerification);
+      
+      const decision = {
+        id: `guest_decision_${randomUUID()}`,
+        shiftId,
+        scenarioId,
+        userId: session.id,
+        action,
+        confidence,
+        outcome,
+        pointsEarned: points,
+        usedVerification,
+        createdAt: new Date(),
+      };
+      
+      const isCorrect = action === scenario.correctAction;
+      const isFalsePositive = outcome === "false_alarm";
+      const isCompromised = outcome === "compromised";
+      const isReport = action === "report";
+      const isMalicious = scenario.legitimacy === "malicious";
+      const isLegitimate = scenario.legitimacy === "legitimate" || scenario.legitimacy === "suspicious_legitimate";
+      const isCorrectReport = isReport && isMalicious;
+      const isCorrectMaliciousHandling = isMalicious && action !== "proceed";
+      const isUnsafeAction = isMalicious && action === "proceed";
+      const isHighConfidenceWrong = !isCorrect && confidence >= 85;
+      const isCorrectLegitimateHandling = isLegitimate && isCorrect;
+      
+      // Update shift
+      shift.score += points;
+      shift.correctDecisions += isCorrect ? 1 : 0;
+      shift.falsePositives += isFalsePositive ? 1 : 0;
+      shift.compromised += isCompromised ? 1 : 0;
+      shift.verificationsUsed += usedVerification ? 1 : 0;
+      
+      // Update progress
+      const progress = session.progress;
+      const currentStreak = isCompromised ? 0 : (progress.currentStreak || 0) + (isCorrect ? 1 : 0);
+      const longestStreak = Math.max(currentStreak, progress.longestStreak || 0);
+      
+      const missedCues = { ...(progress.missedCues as Record<string, number> || {}) };
+      if (!isCorrect && scenario.cues) {
+        for (const cue of scenario.cues) {
+          missedCues[cue] = (missedCues[cue] || 0) + 1;
+        }
+      }
+      
+      const newBadges = checkAndAwardBadges(progress, scenario, isCorrect, usedVerification);
+      const allBadges = [...(progress.earnedBadges || []), ...newBadges];
+      
+      session.progress = {
+        ...progress,
+        totalDecisions: (progress.totalDecisions || 0) + 1,
+        correctDecisions: (progress.correctDecisions || 0) + (isCorrect ? 1 : 0),
+        falsePositives: (progress.falsePositives || 0) + (isFalsePositive ? 1 : 0),
+        compromised: (progress.compromised || 0) + (isCompromised ? 1 : 0),
+        totalReports: (progress.totalReports || 0) + (isReport ? 1 : 0),
+        correctReports: (progress.correctReports || 0) + (isCorrectReport ? 1 : 0),
+        totalMaliciousSeen: (progress.totalMaliciousSeen || 0) + (isMalicious ? 1 : 0),
+        correctMaliciousHandling: (progress.correctMaliciousHandling || 0) + (isCorrectMaliciousHandling ? 1 : 0),
+        totalLegitimateSeen: (progress.totalLegitimateSeen || 0) + (isLegitimate ? 1 : 0),
+        correctLegitimateHandling: (progress.correctLegitimateHandling || 0) + (isCorrectLegitimateHandling ? 1 : 0),
+        unsafeActions: (progress.unsafeActions || 0) + (isUnsafeAction ? 1 : 0),
+        highConfidenceWrong: (progress.highConfidenceWrong || 0) + (isHighConfidenceWrong ? 1 : 0),
+        currentStreak,
+        longestStreak,
+        totalScore: (progress.totalScore || 0) + points,
+        missedCues,
+        earnedBadges: allBadges,
+      };
+      
+      // Check for chain follow-up
+      let nextScenario: Scenario | undefined;
+      if (scenario.chainId && scenario.chainOrder !== null) {
+        nextScenario = await storage.getNextChainScenario(
+          scenario.chainId, 
+          scenario.chainOrder, 
+          action
+        );
+        
+        if (nextScenario && !shift.scenarioIds.includes(nextScenario.id)) {
+          shift.scenarioIds.push(nextScenario.id);
+        }
+      }
+      
+      res.json({
+        decision,
+        outcome,
+        pointsEarned: points,
+        shift,
+        newBadges,
+        nextChainScenario: nextScenario ? {
+          id: nextScenario.id,
+          chainName: nextScenario.chainName,
+          triggeredBy: action,
+        } : undefined,
+      });
+    } catch (error) {
+      console.error("Error submitting guest decision:", error);
+      res.status(500).json({ message: "Failed to submit decision" });
+    }
+  });
+
+  // ==================== END GUEST MODE ROUTES ====================
 
   // Get user progress
   app.get("/api/progress", isAuthenticated, async (req: any, res) => {

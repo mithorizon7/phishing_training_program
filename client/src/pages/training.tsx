@@ -4,7 +4,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { queryClient, apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-import { useLocation, useParams } from "wouter";
+import { useLocation, useParams, useSearch } from "wouter";
 import { isUnauthorizedError } from "@/lib/auth-utils";
 import { Header } from "@/components/header";
 import { MessageList } from "@/components/inbox/message-list";
@@ -16,6 +16,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { PlayCircle } from "lucide-react";
+import { useGuestMode } from "@/hooks/use-guest-mode";
 import type { Scenario, Shift, ActionType, OutcomeType, Decision } from "@shared/schema";
 
 interface ShiftWithScenarios extends Shift {
@@ -26,8 +27,14 @@ export default function Training() {
   const { t } = useTranslation();
   const { id: shiftId } = useParams<{ id: string }>();
   const { user, isLoading: authLoading, isAuthenticated } = useAuth();
+  const { isGuestMode } = useGuestMode();
   const [, navigate] = useLocation();
+  const searchString = useSearch();
   const { toast } = useToast();
+  
+  const isGuestShift = searchString.includes('guest=true') || isGuestMode;
+  const isActive = isAuthenticated || isGuestMode;
+  const apiPrefix = isGuestShift ? "/api/guest" : "/api";
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [completedIds, setCompletedIds] = useState<string[]>([]);
@@ -42,33 +49,33 @@ export default function Training() {
   const [lensChecks, setLensChecks] = useState<Set<string>>(new Set());
 
   useEffect(() => {
-    if (!authLoading && !isAuthenticated) {
+    if (!authLoading && !isActive) {
       toast({
         title: "Unauthorized",
-        description: "Logging in again...",
+        description: "Please sign in or try as guest.",
         variant: "destructive",
       });
       setTimeout(() => {
-        window.location.href = "/api/login";
+        navigate("/");
       }, 500);
     }
-  }, [authLoading, isAuthenticated, toast]);
+  }, [authLoading, isActive, toast, navigate]);
 
   const { data: shift, isLoading: shiftLoading, refetch: refetchShift } = useQuery<ShiftWithScenarios>({
-    queryKey: ["/api/shifts", shiftId],
-    enabled: isAuthenticated && !!shiftId,
+    queryKey: [isGuestShift ? "/api/guest/shifts" : "/api/shifts", shiftId],
+    enabled: isActive && !!shiftId,
   });
 
   const createShiftMutation = useMutation({
     mutationFn: async () => {
-      const response = await apiRequest("POST", "/api/shifts");
+      const response = await apiRequest("POST", `${apiPrefix}/shifts`);
       return response.json();
     },
     onSuccess: (data) => {
-      navigate(`/training/${data.id}`);
+      navigate(`/training/${data.id}${isGuestShift ? "?guest=true" : ""}`);
     },
     onError: (error) => {
-      if (isUnauthorizedError(error as Error)) {
+      if (isUnauthorizedError(error as Error) && !isGuestMode) {
         toast({
           title: "Unauthorized",
           description: "Logging in again...",
@@ -92,7 +99,7 @@ export default function Training() {
       const scenario = shift?.scenarios[currentIndex];
       if (!scenario || !shift) throw new Error("No scenario selected");
       
-      const response = await apiRequest("POST", `/api/shifts/${shift.id}/decisions`, {
+      const response = await apiRequest("POST", `${apiPrefix}/shifts/${shift.id}/decisions`, {
         scenarioId: scenario.id,
         action,
         confidence,
@@ -111,11 +118,11 @@ export default function Training() {
         });
       }
       refetchShift();
-      queryClient.invalidateQueries({ queryKey: ["/api/progress"] });
+      queryClient.invalidateQueries({ queryKey: [isGuestShift ? "/api/guest/progress" : "/api/progress"] });
       setPendingAction(null);
     },
     onError: (error) => {
-      if (isUnauthorizedError(error as Error)) {
+      if (isUnauthorizedError(error as Error) && !isGuestMode) {
         toast({
           title: "Unauthorized",
           description: "Logging in again...",
@@ -199,7 +206,7 @@ export default function Training() {
     createShiftMutation.mutate();
   };
 
-  if (authLoading) {
+  if (authLoading && !isGuestMode) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <Skeleton className="h-12 w-12 rounded-full" />
@@ -210,7 +217,7 @@ export default function Training() {
   if (!shiftId) {
     return (
       <div className="min-h-screen bg-background">
-        <Header user={user} />
+        <Header user={user} isGuestMode={isGuestMode} />
         <main className="max-w-2xl mx-auto p-6 py-12">
           <Card className="p-8 text-center">
             <h2 className="text-2xl font-bold mb-4">{t('training.readyToTrain.title')}</h2>
@@ -244,6 +251,7 @@ export default function Training() {
         user={user} 
         inShift={true}
         verificationsRemaining={verificationsRemaining}
+        isGuestMode={isGuestMode}
       />
       
       <main className="flex-1 p-4 overflow-hidden">

@@ -32,6 +32,7 @@ interface DashboardProps {
   progress: UserProgress | null;
   isLoading: boolean;
   onStartShift: () => void;
+  isGuestMode?: boolean;
 }
 
 function StatCard({ 
@@ -243,7 +244,7 @@ function BadgeCard({
   );
 }
 
-export function Dashboard({ progress, isLoading, onStartShift }: DashboardProps) {
+export function Dashboard({ progress, isLoading, onStartShift, isGuestMode }: DashboardProps) {
   const accuracy = progress && progress.totalDecisions > 0 
     ? Math.round((progress.correctDecisions / progress.totalDecisions) * 100) 
     : 0;
@@ -288,6 +289,25 @@ export function Dashboard({ progress, isLoading, onStartShift }: DashboardProps)
 
   return (
     <div className="max-w-6xl mx-auto p-6 space-y-8">
+      {isGuestMode && (
+        <Card className="border-amber-500/50 bg-amber-500/5">
+          <CardContent className="py-4">
+            <div className="flex items-center justify-between gap-4 flex-wrap">
+              <div className="flex items-center gap-3">
+                <AlertTriangle className="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0" />
+                <div>
+                  <p className="font-medium text-amber-600 dark:text-amber-400">Guest Mode</p>
+                  <p className="text-sm text-muted-foreground">Your progress is temporary and won't be saved. Sign in to track your learning.</p>
+                </div>
+              </div>
+              <Button variant="outline" asChild data-testid="button-guest-signup">
+                <a href="/api/login">Sign In to Save Progress</a>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold" data-testid="text-dashboard-title">Dashboard</h1>

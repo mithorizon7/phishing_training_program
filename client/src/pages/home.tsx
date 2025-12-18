@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { queryClient, apiRequest } from "@/lib/queryClient";
@@ -8,26 +7,31 @@ import { LandingPage } from "@/components/landing-page";
 import { Dashboard } from "@/components/dashboard";
 import { Header } from "@/components/header";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useGuestMode } from "@/hooks/use-guest-mode";
 import type { UserProgress } from "@shared/schema";
 
 export default function Home() {
   const { user, isLoading: authLoading, isAuthenticated } = useAuth();
+  const { isGuestMode } = useGuestMode();
   const [, navigate] = useLocation();
   const { toast } = useToast();
 
+  const isActive = isAuthenticated || isGuestMode;
+  const apiPrefix = isGuestMode ? "/api/guest" : "/api";
+
   const { data: progress, isLoading: progressLoading } = useQuery<UserProgress | null>({
-    queryKey: ["/api/progress"],
-    enabled: isAuthenticated,
+    queryKey: [isGuestMode ? "/api/guest/progress" : "/api/progress"],
+    enabled: isActive,
   });
 
   const startShiftMutation = useMutation({
     mutationFn: async () => {
-      const response = await apiRequest("POST", "/api/shifts");
+      const response = await apiRequest("POST", `${apiPrefix}/shifts`);
       return response.json();
     },
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["/api/shifts"] });
-      navigate(`/training/${data.id}`);
+      queryClient.invalidateQueries({ queryKey: [`${apiPrefix}/shifts`] });
+      navigate(`/training/${data.id}${isGuestMode ? "?guest=true" : ""}`);
     },
     onError: (error) => {
       toast({
@@ -42,7 +46,7 @@ export default function Home() {
     startShiftMutation.mutate();
   };
 
-  if (authLoading) {
+  if (authLoading && !isGuestMode) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="space-y-4 text-center">
@@ -53,18 +57,19 @@ export default function Home() {
     );
   }
 
-  if (!isAuthenticated) {
+  if (!isActive) {
     return <LandingPage />;
   }
 
   return (
     <div className="min-h-screen bg-background">
-      <Header user={user} />
+      <Header user={user} isGuestMode={isGuestMode} />
       <main>
         <Dashboard 
           progress={progress || null} 
           isLoading={progressLoading}
           onStartShift={handleStartShift}
+          isGuestMode={isGuestMode}
         />
       </main>
     </div>
