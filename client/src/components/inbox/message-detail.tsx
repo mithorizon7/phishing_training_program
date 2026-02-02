@@ -116,8 +116,8 @@ export function MessageDetail({
   const Icon = getChannelIcon(scenario.channel as MessageChannel);
 
   return (
-    <div className="flex flex-col h-full gap-4">
-      <Card className="flex-1 flex flex-col overflow-hidden">
+    <div className="flex flex-col gap-4 pb-2">
+      <Card className="flex flex-col min-h-0">
         <CardHeader className="flex-shrink-0 pb-4">
           <div className="flex items-start gap-4">
             <div className={`w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 ${
@@ -151,7 +151,7 @@ export function MessageDetail({
         
         <Separator />
         
-        <CardContent className="flex-1 overflow-auto py-6">
+        <CardContent className="py-6">
           <div 
             className="prose prose-sm max-w-none dark:prose-invert whitespace-pre-wrap"
             data-testid="text-message-body"

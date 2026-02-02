@@ -290,7 +290,7 @@ export default function Training() {
                   onSelectMessage={setCurrentIndex}
                 />
               </div>
-              <div className="lg:col-span-3 overflow-hidden">
+              <div className="lg:col-span-3 overflow-auto">
                 <MessageDetail
                   scenario={currentScenario}
                   verificationsRemaining={verificationsRemaining}
