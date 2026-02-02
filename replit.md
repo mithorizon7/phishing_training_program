@@ -19,6 +19,9 @@ Preferred communication style: Simple, everyday language.
 - **Styling**: Tailwind CSS with shadcn/ui component library
 - **Build Tool**: Vite with custom plugins for Replit integration
 - **Design System**: Material Design influences with professional productivity tool aesthetics (Inter font family)
+- **Logo Assets**: Two variants in `client/src/assets/images/`:
+  - `logo.png` (small) - Used in navigation headers
+  - `logo-full.png` (full) - Used in landing page hero section
 
 ### Backend Architecture
 - **Runtime**: Node.js with Express
