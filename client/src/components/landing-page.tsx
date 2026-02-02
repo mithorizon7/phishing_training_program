@@ -1,11 +1,13 @@
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Shield, Target, Brain, TrendingUp, Mail, MessageSquare, Phone, CheckCircle, PlayCircle } from "lucide-react";
+import { Target, Brain, TrendingUp, Mail, MessageSquare, Phone, CheckCircle, PlayCircle, Shield } from "lucide-react";
 import { ThemeToggle } from "./theme-toggle";
 import { LanguageSwitcher } from "./language-switcher";
 import { useGuestMode } from "@/hooks/use-guest-mode";
 import { useLocation } from "wouter";
+import logoImage from "@/assets/images/logo.png";
+import logoFullImage from "@/assets/images/logo-full.png";
 
 export function LandingPage() {
   const { t } = useTranslation();
@@ -22,9 +24,7 @@ export function LandingPage() {
       <header className="fixed top-0 left-0 right-0 h-16 border-b bg-background/95 backdrop-blur z-50">
         <div className="max-w-7xl mx-auto h-full flex items-center justify-between px-6 gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-md bg-primary flex items-center justify-center">
-              <Shield className="w-5 h-5 text-primary-foreground" />
-            </div>
+            <img src={logoImage} alt="Inbox Arena" className="w-10 h-10 object-contain" data-testid="img-logo-landing-header" />
             <span className="font-semibold text-lg" data-testid="text-app-title">{t('app.title')}</span>
           </div>
           <div className="flex items-center gap-2">
@@ -40,6 +40,12 @@ export function LandingPage() {
       <main className="pt-16">
         <section className="py-20 px-6">
           <div className="max-w-4xl mx-auto text-center">
+            <img 
+              src={logoFullImage} 
+              alt="Inbox Arena Logo" 
+              className="w-32 h-32 md:w-40 md:h-40 mx-auto mb-8 object-contain" 
+              data-testid="img-logo-hero"
+            />
             <div className="inline-flex items-center gap-2 bg-muted px-4 py-2 rounded-full mb-6">
               <Target className="w-4 h-4 text-muted-foreground" />
               <span className="text-sm text-muted-foreground">{t('landing.hero.badge')}</span>

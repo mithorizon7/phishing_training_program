@@ -8,13 +8,14 @@ import {
   DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
-import { Shield, LogOut, User, LayoutDashboard, PlayCircle, GraduationCap, UserCircle } from "lucide-react";
+import { LogOut, User, LayoutDashboard, PlayCircle, GraduationCap, UserCircle } from "lucide-react";
 import { ThemeToggle } from "./theme-toggle";
 import { LanguageSwitcher } from "./language-switcher";
 import { UserAvatar } from "./user-avatar";
 import { useGuestMode } from "@/hooks/use-guest-mode";
 import type { User as UserType } from "@shared/models/auth";
 import { Link, useLocation } from "wouter";
+import logoImage from "@/assets/images/logo.png";
 
 interface HeaderProps {
   user: UserType | null | undefined;
@@ -36,9 +37,7 @@ export function Header({ user, verificationsRemaining, inShift, isGuestMode: pro
       <div className="h-full max-w-7xl mx-auto flex items-center justify-between px-4 gap-4">
         <div className="flex items-center gap-4">
           <Link href="/" className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-md bg-primary flex items-center justify-center">
-              <Shield className="w-5 h-5 text-primary-foreground" />
-            </div>
+            <img src={logoImage} alt="Inbox Arena" className="w-10 h-10 object-contain" data-testid="img-logo-header" />
             <span className="font-semibold text-lg hidden sm:inline" data-testid="text-header-title">
               {t('app.title')}
             </span>
