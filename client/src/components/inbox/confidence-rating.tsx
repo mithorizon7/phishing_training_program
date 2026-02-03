@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
 import { AlertCircle, CheckCircle } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface ConfidenceRatingProps {
   action: string;
@@ -10,24 +11,25 @@ interface ConfidenceRatingProps {
   onCancel: () => void;
 }
 
-function getConfidenceLabel(value: number): string {
-  if (value <= 60) return "Somewhat sure";
-  if (value <= 75) return "Fairly confident";
-  if (value <= 90) return "Confident";
-  return "Very confident";
+function getConfidenceLabel(value: number, t: (key: string) => string): string {
+  if (value <= 60) return t("training.confidencePanel.labels.somewhatSure");
+  if (value <= 75) return t("training.confidencePanel.labels.fairlyConfident");
+  if (value <= 90) return t("training.confidencePanel.labels.confident");
+  return t("training.confidencePanel.labels.veryConfident");
 }
 
-function getActionLabel(action: string): string {
+function getActionLabel(action: string, t: (key: string) => string): string {
   switch (action) {
-    case "report": return "Report this message";
-    case "delete": return "Delete this message";
-    case "verify": return "Verify via known channel";
-    case "proceed": return "Proceed with the request";
+    case "report": return t("training.confidencePanel.actions.report");
+    case "delete": return t("training.confidencePanel.actions.delete");
+    case "verify": return t("training.confidencePanel.actions.verify");
+    case "proceed": return t("training.confidencePanel.actions.proceed");
     default: return action;
   }
 }
 
 export function ConfidenceRating({ action, onSubmit, onCancel }: ConfidenceRatingProps) {
+  const { t } = useTranslation();
   const [confidence, setConfidence] = useState(75);
 
   return (
@@ -36,18 +38,18 @@ export function ConfidenceRating({ action, onSubmit, onCancel }: ConfidenceRatin
         <CardHeader>
           <CardTitle className="text-lg flex items-center gap-2">
             <AlertCircle className="w-5 h-5 text-primary" />
-            How confident are you?
+            {t("training.confidencePanel.title")}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="p-4 rounded-lg bg-muted/50">
-            <p className="text-sm text-muted-foreground mb-1">Your decision:</p>
-            <p className="font-medium">{getActionLabel(action)}</p>
+            <p className="text-sm text-muted-foreground mb-1">{t("training.confidencePanel.decisionLabel")}</p>
+            <p className="font-medium">{getActionLabel(action, t)}</p>
           </div>
 
           <div className="space-y-4">
             <div className="flex items-center justify-between gap-4">
-              <span className="text-sm text-muted-foreground">Confidence Level</span>
+              <span className="text-sm text-muted-foreground">{t("training.confidencePanel.levelLabel")}</span>
               <span className="font-semibold text-lg">{confidence}%</span>
             </div>
             <Slider
@@ -60,11 +62,11 @@ export function ConfidenceRating({ action, onSubmit, onCancel }: ConfidenceRatin
               data-testid="slider-confidence"
             />
             <div className="flex justify-between gap-4 text-xs text-muted-foreground">
-              <span>50% - Guessing</span>
-              <span>100% - Certain</span>
+              <span>{t("training.confidencePanel.rangeLow")}</span>
+              <span>{t("training.confidencePanel.rangeHigh")}</span>
             </div>
             <p className="text-center text-sm font-medium text-primary">
-              {getConfidenceLabel(confidence)}
+              {getConfidenceLabel(confidence, t)}
             </p>
           </div>
 
@@ -75,7 +77,7 @@ export function ConfidenceRating({ action, onSubmit, onCancel }: ConfidenceRatin
               onClick={onCancel}
               data-testid="button-cancel-confidence"
             >
-              Go Back
+              {t("training.confidencePanel.goBack")}
             </Button>
             <Button 
               className="flex-1"
@@ -83,7 +85,7 @@ export function ConfidenceRating({ action, onSubmit, onCancel }: ConfidenceRatin
               data-testid="button-submit-confidence"
             >
               <CheckCircle className="w-4 h-4 mr-2" />
-              Confirm Decision
+              {t("training.confidencePanel.confirmDecision")}
             </Button>
           </div>
         </CardContent>

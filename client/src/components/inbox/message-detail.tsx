@@ -36,20 +36,21 @@ import {
   Target
 } from "lucide-react";
 import type { Scenario, ActionType, MessageChannel } from "@shared/schema";
+import { useTranslation } from "react-i18next";
 
 interface LensCheck {
   id: string;
-  label: string;
-  description: string;
+  labelKey: string;
+  descriptionKey: string;
   icon: React.ElementType;
 }
 
 const LENS_CHECKS: LensCheck[] = [
-  { id: "sender", label: "Sender Identity", description: "Checked email address, not just display name", icon: User },
-  { id: "links", label: "Link Destinations", description: "Hovered to see actual URL before clicking", icon: LinkIcon },
-  { id: "urgency", label: "Urgency Pressure", description: "Noted any artificial time pressure or threats", icon: Clock },
-  { id: "request", label: "Request Type", description: "Identified what they're asking me to do", icon: Target },
-  { id: "context", label: "Context Check", description: "Considered if this request makes sense", icon: Search },
+  { id: "sender", labelKey: "training.lensTool.checks.sender.label", descriptionKey: "training.lensTool.checks.sender.description", icon: User },
+  { id: "links", labelKey: "training.lensTool.checks.links.label", descriptionKey: "training.lensTool.checks.links.description", icon: LinkIcon },
+  { id: "urgency", labelKey: "training.lensTool.checks.urgency.label", descriptionKey: "training.lensTool.checks.urgency.description", icon: Clock },
+  { id: "request", labelKey: "training.lensTool.checks.request.label", descriptionKey: "training.lensTool.checks.request.description", icon: Target },
+  { id: "context", labelKey: "training.lensTool.checks.context.label", descriptionKey: "training.lensTool.checks.context.description", icon: Search },
 ];
 
 interface MessageDetailProps {
@@ -72,14 +73,14 @@ function getChannelIcon(channel: MessageChannel) {
   }
 }
 
-function getChannelLabel(channel: MessageChannel) {
+function getChannelLabel(channel: MessageChannel, t: (key: string) => string) {
   switch (channel) {
-    case "email": return "Email";
-    case "sms": return "SMS Message";
-    case "call": return "Call Transcript";
-    case "teams": return "Teams Message";
-    case "slack": return "Slack Message";
-    default: return "Message";
+    case "email": return t("training.message.channelLabel.email");
+    case "sms": return t("training.message.channelLabel.sms");
+    case "call": return t("training.message.channelLabel.call");
+    case "teams": return t("training.message.channelLabel.teams");
+    case "slack": return t("training.message.channelLabel.slack");
+    default: return t("training.message.channelLabel.default");
   }
 }
 
@@ -91,6 +92,7 @@ export function MessageDetail({
   lensChecks = new Set(),
   onLensCheck
 }: MessageDetailProps) {
+  const { t } = useTranslation();
   const [showRealSender, setShowRealSender] = useState(false);
   const [showLinkTarget, setShowLinkTarget] = useState(false);
 
@@ -108,9 +110,9 @@ export function MessageDetail({
         <div className="flex-1 flex items-center justify-center text-center p-8">
           <div>
             <Mail className="w-16 h-16 text-muted-foreground/30 mx-auto mb-4" />
-            <h3 className="font-medium text-muted-foreground mb-2">Select a Message</h3>
+            <h3 className="font-medium text-muted-foreground mb-2">{t("training.message.selectTitle")}</h3>
             <p className="text-sm text-muted-foreground">
-              Choose a message from the inbox to review
+              {t("training.message.selectSubtitle")}
             </p>
           </div>
         </div>
@@ -118,7 +120,9 @@ export function MessageDetail({
     );
   }
 
-  const senderIdentifierLabel = scenario.senderEmail?.includes("@") ? "Email Address" : "Sender ID";
+  const senderIdentifierLabel = scenario.senderEmail?.includes("@")
+    ? t("training.message.senderIdentifier.email")
+    : t("training.message.senderIdentifier.generic");
 
   const Icon = getChannelIcon(scenario.channel as MessageChannel);
 
@@ -140,7 +144,7 @@ export function MessageDetail({
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-1 flex-wrap">
                 <Badge variant="outline" className="text-xs">
-                  {getChannelLabel(scenario.channel as MessageChannel)}
+                  {getChannelLabel(scenario.channel as MessageChannel, t)}
                 </Badge>
                 <span className="text-xs text-muted-foreground">{scenario.timestamp}</span>
               </div>
@@ -166,12 +170,12 @@ export function MessageDetail({
             {scenario.body}
           </div>
           
-          {scenario.hasAttachment && scenario.attachmentName && (
+              {scenario.hasAttachment && scenario.attachmentName && (
             <div className="mt-6 p-4 rounded-lg bg-muted/50 flex items-center gap-3">
               <Paperclip className="w-5 h-5 text-muted-foreground" />
               <div className="flex-1">
                 <p className="text-sm font-medium">{scenario.attachmentName}</p>
-                <p className="text-xs text-muted-foreground">Attachment</p>
+                <p className="text-xs text-muted-foreground">{t("training.message.attachment")}</p>
               </div>
             </div>
           )}
@@ -182,7 +186,7 @@ export function MessageDetail({
         <CardHeader className="pb-2">
           <h3 className="font-semibold text-sm flex items-center gap-2">
             <Eye className="w-4 h-4" />
-            Inspection Panel
+            {t("training.message.inspectionPanel")}
           </h3>
         </CardHeader>
         <CardContent className="pt-0">
@@ -192,13 +196,13 @@ export function MessageDetail({
                 <AccordionTrigger className="text-sm py-3">
                   <div className="flex items-center gap-2">
                     <User className="w-4 h-4" />
-                    Sender Details
+                    {t("training.message.senderDetails")}
                   </div>
                 </AccordionTrigger>
                 <AccordionContent>
                   <div className="space-y-3 text-sm">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="text-muted-foreground">Display Name:</span>
+                      <span className="text-muted-foreground">{t("training.message.displayName")}:</span>
                       <span className="font-medium">{scenario.senderName}</span>
                     </div>
                     {scenario.senderEmail && (
@@ -210,7 +214,7 @@ export function MessageDetail({
                               {scenario.senderEmail}
                             </code>
                           ) : (
-                            <span className="text-muted-foreground italic">Hidden</span>
+                            <span className="text-muted-foreground italic">{t("training.message.hidden")}</span>
                           )}
                           <Button 
                             variant="ghost" 
@@ -230,7 +234,7 @@ export function MessageDetail({
                     )}
                     {scenario.senderPhone && (
                       <div className="flex items-center justify-between gap-2">
-                        <span className="text-muted-foreground">Phone Number:</span>
+                        <span className="text-muted-foreground">{t("training.message.phoneNumber")}:</span>
                         <code className="text-xs bg-muted px-2 py-1 rounded font-mono">
                           {scenario.senderPhone}
                         </code>
@@ -238,7 +242,7 @@ export function MessageDetail({
                     )}
                     {scenario.replyTo && scenario.replyTo !== scenario.senderEmail && (
                       <div className="flex items-center justify-between gap-2">
-                        <span className="text-muted-foreground">Reply-To:</span>
+                        <span className="text-muted-foreground">{t("training.message.replyTo")}:</span>
                         <code className="text-xs bg-destructive/10 text-destructive px-2 py-1 rounded font-mono">
                           {scenario.replyTo}
                         </code>
@@ -254,26 +258,26 @@ export function MessageDetail({
                 <AccordionTrigger className="text-sm py-3">
                   <div className="flex items-center gap-2">
                     <LinkIcon className="w-4 h-4" />
-                    Link Analysis
+                    {t("training.message.linkAnalysis")}
                   </div>
                 </AccordionTrigger>
                 <AccordionContent>
                   <div className="space-y-3 text-sm">
                     {scenario.linkText && (
                       <div className="flex items-center justify-between gap-2">
-                        <span className="text-muted-foreground">Link Text:</span>
+                        <span className="text-muted-foreground">{t("training.message.linkText")}:</span>
                         <span className="text-primary underline">{scenario.linkText}</span>
                       </div>
                     )}
                     <div className="flex items-center justify-between gap-2">
-                      <span className="text-muted-foreground">Actual URL:</span>
+                      <span className="text-muted-foreground">{t("training.message.actualUrl")}:</span>
                       <div className="flex items-center gap-2">
                         {showLinkTarget ? (
                           <code className="text-xs bg-muted px-2 py-1 rounded font-mono max-w-[200px] truncate">
                             {scenario.linkUrl}
                           </code>
                         ) : (
-                          <span className="text-muted-foreground italic">Hidden</span>
+                          <span className="text-muted-foreground italic">{t("training.message.hidden")}</span>
                         )}
                         <Button 
                           variant="ghost" 
@@ -300,14 +304,14 @@ export function MessageDetail({
                 <AccordionTrigger className="text-sm py-3">
                   <div className="flex items-center gap-2">
                     <QrCode className="w-4 h-4" />
-                    QR Code Analysis
+                    {t("training.message.qrAnalysis")}
                   </div>
                 </AccordionTrigger>
                 <AccordionContent>
                   <div className="space-y-3 text-sm">
                     <div className="p-3 rounded-lg bg-destructive/10 border border-destructive/20">
                       <p className="text-xs text-destructive mb-2 font-medium">
-                        QR codes are links you cannot easily preview
+                        {t("training.message.qrWarning")}
                       </p>
                       <code className="text-xs font-mono break-all">
                         {scenario.qrCodeUrl}
@@ -327,13 +331,13 @@ export function MessageDetail({
             <div className="flex items-center justify-between gap-2">
               <h3 className="font-semibold text-sm flex items-center gap-2">
                 <Search className="w-4 h-4" />
-                Lens Tool
+                {t("training.lensTool.title")}
                 <Badge variant={lensComplete ? "default" : "secondary"} className="text-xs">
                   {lensChecks.size}/{LENS_CHECKS.length}
                 </Badge>
               </h3>
               {!lensComplete && (
-                <span className="text-xs text-amber-600 dark:text-amber-400">Check at least 3 before deciding</span>
+                <span className="text-xs text-amber-600 dark:text-amber-400">{t("training.lensTool.subtitle")}</span>
               )}
             </div>
             <Progress value={lensProgress} className="h-1.5 mt-2" />
@@ -359,9 +363,9 @@ export function MessageDetail({
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-1.5">
                         <Icon className="w-3.5 h-3.5 text-muted-foreground flex-shrink-0" />
-                        <span className="text-xs font-medium truncate">{check.label}</span>
+                        <span className="text-xs font-medium truncate">{t(check.labelKey)}</span>
                       </div>
-                      <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">{check.description}</p>
+                      <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">{t(check.descriptionKey)}</p>
                     </div>
                   </div>
                 );
@@ -374,9 +378,9 @@ export function MessageDetail({
       <Card className="flex-shrink-0">
         <CardContent className="py-4">
           <div className="flex items-center justify-between gap-2 mb-4">
-            <p className="text-sm text-muted-foreground">What action will you take?</p>
+            <p className="text-sm text-muted-foreground">{t("training.actions.prompt")}</p>
             <Badge variant="outline" className="text-xs">
-              {verificationsRemaining} verifications left
+              {t("training.actions.verificationsLeft", { count: verificationsRemaining })}
             </Badge>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -388,7 +392,7 @@ export function MessageDetail({
               data-testid="button-action-report"
             >
               <Shield className="w-4 h-4 mr-2" />
-              Report
+              {t("training.actions.report")}
             </Button>
             <Button
               variant="outline"
@@ -398,7 +402,7 @@ export function MessageDetail({
               data-testid="button-action-delete"
             >
               <Trash2 className="w-4 h-4 mr-2" />
-              Delete
+              {t("training.actions.delete")}
             </Button>
             <Button
               variant="outline"
@@ -408,7 +412,7 @@ export function MessageDetail({
               data-testid="button-action-verify"
             >
               <CheckCircle className="w-4 h-4 mr-2" />
-              Verify
+              {t("training.actions.verify")}
             </Button>
             <Button
               variant="destructive"
@@ -418,7 +422,7 @@ export function MessageDetail({
               data-testid="button-action-proceed"
             >
               <ArrowRight className="w-4 h-4 mr-2" />
-              Proceed
+              {t("training.actions.proceed")}
             </Button>
           </div>
         </CardContent>

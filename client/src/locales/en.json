@@ -13,13 +13,18 @@
     "delete": "Delete",
     "confirm": "Confirm",
     "close": "Close",
-    "active": "Active"
+    "active": "Active",
+    "toggleTheme": "Toggle theme",
+    "user": "User"
   },
   "app": {
     "title": "Inbox Arena",
     "tagline": "Phishing Training Platform"
   },
   "landing": {
+    "alt": {
+      "logo": "Inbox Arena"
+    },
     "badge": "Phishing training program",
     "hero": {
       "title": "Practice real-world phishing decisions in minutes",
@@ -97,6 +102,29 @@
     "title": "Dashboard",
     "subtitle": "Track your progress and start training",
     "startShift": "Start New Shift",
+    "sessionOnly": {
+      "title": "Session-Only Training",
+      "subtitle": "Progress resets when you leave. This experience is designed to be completed in one sitting."
+    },
+    "trainingTracks": {
+      "title": "Training Tracks",
+      "subtitle": "Complete structured modules with specific scenarios and passing scores",
+      "empty": "No tracks available yet.",
+      "status": {
+        "passed": "Passed",
+        "completed": "Completed",
+        "notStarted": "Not started"
+      },
+      "action": {
+        "start": "Start",
+        "retry": "Retry",
+        "retake": "Retake"
+      },
+      "scenarioCount": "{count, plural, one {# scenario} other {# scenarios}}",
+      "passingScore": "Passing score: {score, number}%",
+      "lastScorePassed": "Last score: {score, number}% (passed)",
+      "lastScoreNeedsRetry": "Last score: {score, number}% (needs retry)"
+    },
     "securityScore": {
       "title": "Security Score",
       "description": "Measures your ability to detect and block malicious content",
@@ -131,7 +159,33 @@
     },
     "badges": {
       "title": "Skill Badges",
-      "subtitle": "Earn badges by demonstrating security awareness skills"
+      "subtitle": "Earn badges by demonstrating security awareness skills",
+      "items": {
+        "domain_detective": {
+          "name": "Domain Detective",
+          "description": "Spotted 10 domain mismatches"
+        },
+        "verification_pro": {
+          "name": "Verification Pro",
+          "description": "Used verification correctly 20 times"
+        },
+        "bec_blocker": {
+          "name": "BEC Blocker",
+          "description": "Blocked 15 business email compromise attempts"
+        },
+        "urgency_immune": {
+          "name": "Urgency Immune",
+          "description": "Resisted 25 urgency-based attacks"
+        },
+        "streak_master": {
+          "name": "Streak Master",
+          "description": "Achieved a 20-decision safe streak"
+        },
+        "perfect_shift": {
+          "name": "Perfect Shift",
+          "description": "Completed a shift with 100% accuracy"
+        }
+      }
     },
     "areasToImprove": {
       "title": "Areas to Improve",
@@ -166,8 +220,13 @@
     "incidentResponse": {
       "title": "Incident Response Training",
       "subtitle": "Learn what to do when something goes wrong",
+      "description": "Even experts make mistakes. Practice the critical steps for reporting and recovering from security incidents.",
       "button": "Practice Report & Recover"
     }
+  },
+  "assignments": {
+    "fallbackTitle": "Training module",
+    "fallbackDescription": "Module details are unavailable in this language."
   },
   "training": {
     "readyToTrain": {
@@ -179,7 +238,11 @@
     "inbox": {
       "title": "Inbox",
       "newMessage": "New Message",
-      "noMessages": "No messages in inbox"
+      "noMessages": "No messages in inbox",
+      "all": "All",
+      "done": "Done",
+      "emptyAll": "No messages to process",
+      "emptyChannel": "No {channel} messages in this shift"
     },
     "message": {
       "from": "From",
@@ -187,7 +250,33 @@
       "subject": "Subject",
       "date": "Date",
       "phone": "Phone",
-      "selectMessage": "Select a message to view"
+      "selectMessage": "Select a message to view",
+      "selectTitle": "Select a Message",
+      "selectSubtitle": "Choose a message from the inbox to review",
+      "senderIdentifier": {
+        "email": "Email Address",
+        "generic": "Sender ID"
+      },
+      "attachment": "Attachment",
+      "inspectionPanel": "Inspection Panel",
+      "senderDetails": "Sender Details",
+      "displayName": "Display Name",
+      "hidden": "Hidden",
+      "phoneNumber": "Phone Number",
+      "replyTo": "Reply-To",
+      "linkAnalysis": "Link Analysis",
+      "linkText": "Link Text",
+      "actualUrl": "Actual URL",
+      "qrAnalysis": "QR Code Analysis",
+      "qrWarning": "QR codes are links you cannot easily preview",
+      "channelLabel": {
+        "email": "Email",
+        "sms": "SMS Message",
+        "call": "Call Transcript",
+        "teams": "Teams Message",
+        "slack": "Slack Message",
+        "default": "Message"
+      }
     },
     "actions": {
       "report": "Report",
@@ -197,13 +286,36 @@
       "reportDescription": "Flag as suspicious and escalate to security team",
       "deleteDescription": "Remove from inbox without reporting",
       "verifyDescription": "Contact sender through a known channel to confirm",
-      "proceedDescription": "Take the requested action (click link, open attachment, etc.)"
+      "proceedDescription": "Take the requested action (click link, open attachment, etc.)",
+      "prompt": "What action will you take?",
+      "verificationsLeft": "{count, plural, one {# verification left} other {# verifications left}}"
     },
     "confidence": {
       "title": "How confident are you?",
       "low": "Not sure",
       "medium": "Fairly confident",
       "high": "Very confident"
+    },
+    "confidencePanel": {
+      "title": "How confident are you?",
+      "decisionLabel": "Your decision:",
+      "levelLabel": "Confidence Level",
+      "rangeLow": "50% - Guessing",
+      "rangeHigh": "100% - Certain",
+      "goBack": "Go Back",
+      "confirmDecision": "Confirm Decision",
+      "labels": {
+        "somewhatSure": "Somewhat sure",
+        "fairlyConfident": "Fairly confident",
+        "confident": "Confident",
+        "veryConfident": "Very confident"
+      },
+      "actions": {
+        "report": "Report this message",
+        "delete": "Delete this message",
+        "verify": "Verify via known channel",
+        "proceed": "Proceed with the request"
+      }
     },
     "feedback": {
       "correct": "Correct!",
@@ -216,6 +328,35 @@
       "explanation": "Explanation",
       "cuesMissed": "Cues you may have missed"
     },
+    "outcomes": {
+      "safe": "Safe Decision",
+      "compromised": "Compromised",
+      "delayedWork": "Work Delayed",
+      "falseAlarm": "False Alarm"
+    },
+    "actionsPast": {
+      "reported": "report this message",
+      "deleted": "delete this message",
+      "verified": "verify via known channel",
+      "proceeded": "proceed with the request"
+    },
+    "feedbackPanel": {
+      "cueTooltip": "Suspicious cue: {cue}",
+      "decisionSummary": "You chose to {action}.",
+      "pointsLabel": "points",
+      "messageWithCues": "The Message (with highlighted cues)",
+      "whyThisMatters": "Why This Matters",
+      "quickCheck": {
+        "title": "Quick Check: Which clue would you look for first next time?",
+        "subtitle": "Select the most important indicator you would check first when reviewing a similar message.",
+        "confirm": "Confirm Selection",
+        "successTitle": "Great choice!",
+        "successBody": "Looking for \"{cue}\" is a smart first step. Building this habit will help you quickly identify suspicious messages in the future."
+      },
+      "cuesToRemember": "Cues to Remember",
+      "cuesNone": "This was a legitimate message with no suspicious cues.",
+      "correctAction": "Correct action was:"
+    },
     "lensTool": {
       "title": "Inspection Checklist",
       "subtitle": "Check at least 3 items before deciding",
@@ -224,12 +365,40 @@
       "lookForUrgency": "Look for urgency/authority",
       "checkRequests": "Check for unusual requests",
       "verifyExpected": "Verify expected communication",
-      "checked": "{count, number} of {total, number} checked"
+      "checked": "{count, number} of {total, number} checked",
+      "checks": {
+        "sender": {
+          "label": "Sender Identity",
+          "description": "Checked email address, not just display name"
+        },
+        "links": {
+          "label": "Link Destinations",
+          "description": "Hovered to see actual URL before clicking"
+        },
+        "urgency": {
+          "label": "Urgency Pressure",
+          "description": "Noted any artificial time pressure or threats"
+        },
+        "request": {
+          "label": "Request Type",
+          "description": "Identified what they're asking me to do"
+        },
+        "context": {
+          "label": "Context Check",
+          "description": "Considered if this request makes sense"
+        }
+      }
     },
     "shiftComplete": {
       "title": "Shift Complete!",
       "accuracy": "Accuracy",
       "pointsEarned": "Points Earned",
+      "totalPoints": "Total Points",
+      "correctDecisions": "Correct Decisions",
+      "falsePositives": "False Positives",
+      "compromised": "Compromised",
+      "verificationsUsed": "Verifications Used",
+      "perfectShift": "Perfect Shift!",
       "messagesProcessed": "Messages Processed",
       "backToDashboard": "Back to Dashboard",
       "startNewShift": "Start New Shift"
@@ -240,37 +409,151 @@
     }
   },
   "recover": {
-    "title": "Report & Recover Drill",
-    "subtitle": "Practice incident response steps",
+    "title": "Report and Recover",
+    "subtitle": "Learn what to do when something goes wrong",
+    "backToDashboard": "Back to Dashboard",
     "intro": {
       "title": "Incident Response Training",
-      "description": "You've just discovered a potential security incident. Practice the critical steps to report and recover.",
-      "startDrill": "Start Drill"
+      "description": "Even the best of us make mistakes. What matters is how quickly and effectively you respond. Practice the critical steps for different scenarios."
     },
-    "stages": {
-      "detect": {
-        "title": "Stage 1: Detect & Document",
-        "description": "What did you observe? Document the incident details."
+    "labels": {
+      "critical": "Critical",
+      "criticalStepsCount": "{count, plural, one {# critical step} other {# critical steps}}"
+    },
+    "why": {
+      "title": "Why This Matters",
+      "description": "The FBI reports that quick action can help recover funds in Business Email Compromise cases. The difference between a minor incident and a major breach often comes down to how fast you report and respond. Practice these steps so they become second nature."
+    },
+    "prompt": {
+      "title": "What should you do next?",
+      "subtitle": "Select all the steps you would take to respond to this incident. Critical steps are essential for damage control."
+    },
+    "actions": {
+      "changeScenario": "Change Scenario",
+      "checkResponse": "Check My Response"
+    },
+    "results": {
+      "successTitle": "Great Response!",
+      "successDescription": "You identified all the critical recovery steps. This quick action can make the difference between a close call and a disaster.",
+      "partialTitle": "Some Critical Steps Missed",
+      "partialDescription": "In a real incident, missing critical steps could make things worse. Review the steps you missed.",
+      "scoreLabel": "Recovery Score",
+      "criticalStepsLabel": "Critical Steps: {completed, number}/{total, number}",
+      "keyTakeaway": "Key Takeaway",
+      "takeaways": {
+        "clicked_link": "Speed matters - disconnecting quickly can prevent malware from spreading or exfiltrating data. Always report even if you're unsure, as IT can assess the real risk.",
+        "entered_credentials": "Password changes must happen immediately from a trusted device. Enable MFA everywhere - it's your best protection even if credentials are stolen.",
+        "sent_money": "The first hour is critical for fund recovery. Banks can sometimes recall wire transfers if notified fast enough. Never delete any evidence.",
+        "downloaded_file": "Don't try to be a hero - well-meaning actions like deleting files or rebooting can destroy forensic evidence or trigger dormant malware."
       },
-      "contain": {
-        "title": "Stage 2: Contain",
-        "description": "Take immediate action to limit the damage."
+      "tryAnother": "Try Another Scenario",
+      "backToTraining": "Back to Training"
+    },
+    "footer": {
+      "stepsSelected": "{selected, number} of {total, number} steps selected",
+      "criticalSummary": "{completed, number}/{total, number} critical"
+    },
+    "scenarios": {
+      "clicked_link": {
+        "title": "You Clicked a Suspicious Link",
+        "description": "You realized the link was suspicious after clicking. The page looked like a login portal.",
+        "steps": {
+          "disconnect": {
+            "title": "Disconnect from network",
+            "description": "Turn off WiFi or unplug ethernet to stop any ongoing data transfer"
+          },
+          "report": {
+            "title": "Report to IT/Security",
+            "description": "Call your IT helpdesk or security team immediately using a known number"
+          },
+          "scan": {
+            "title": "Run security scan",
+            "description": "Run antivirus/malware scan to check for drive-by downloads or exploits"
+          },
+          "document": {
+            "title": "Document what happened",
+            "description": "Note the URL, what you saw, and any actions you took"
+          }
+        }
       },
-      "report": {
-        "title": "Stage 3: Report",
-        "description": "Notify the appropriate parties."
+      "entered_credentials": {
+        "title": "You Entered Your Password",
+        "description": "You entered your username and password on what turned out to be a fake login page.",
+        "steps": {
+          "change_password": {
+            "title": "Change password immediately",
+            "description": "Go directly to the real site (type URL manually) and change your password"
+          },
+          "report": {
+            "title": "Report to IT/Security",
+            "description": "Call IT immediately - they may need to check for account compromise"
+          },
+          "mfa": {
+            "title": "Enable/review MFA",
+            "description": "Ensure multi-factor authentication is enabled; review any new devices"
+          },
+          "check_accounts": {
+            "title": "Check linked accounts",
+            "description": "If you reuse passwords (don't!), change them on other sites too"
+          },
+          "monitor": {
+            "title": "Monitor for suspicious activity",
+            "description": "Watch for unusual emails, login alerts, or account changes"
+          }
+        }
       },
-      "recover": {
-        "title": "Stage 4: Recover",
-        "description": "Take steps to restore normal operations."
+      "sent_money": {
+        "title": "You Transferred Money",
+        "description": "You sent a wire transfer or payment based on what you now realize was a fraudulent request.",
+        "steps": {
+          "bank": {
+            "title": "Contact your bank immediately",
+            "description": "Call your bank's fraud line RIGHT NOW - time is critical for recovery"
+          },
+          "report_it": {
+            "title": "Report to IT/Security",
+            "description": "They need to know about the breach and may need to alert others"
+          },
+          "report_fbi": {
+            "title": "File IC3 complaint (FBI)",
+            "description": "Report to ic3.gov - especially for business email compromise over $10,000"
+          },
+          "document": {
+            "title": "Preserve all evidence",
+            "description": "Save emails, messages, and transaction records - do not delete anything"
+          },
+          "notify": {
+            "title": "Notify affected parties",
+            "description": "If vendor/partner was impersonated, alert them about the fraud"
+          }
+        }
+      },
+      "downloaded_file": {
+        "title": "You Downloaded a File",
+        "description": "You downloaded and may have opened an attachment or file from a suspicious source.",
+        "steps": {
+          "disconnect": {
+            "title": "Disconnect immediately",
+            "description": "Unplug network cable and disable WiFi to contain potential malware"
+          },
+          "no_touch": {
+            "title": "Don't try to fix it yourself",
+            "description": "Don't delete files or restart - this may make forensics harder"
+          },
+          "report": {
+            "title": "Report to IT/Security",
+            "description": "Call IT immediately - they have tools to assess and contain threats"
+          },
+          "scan": {
+            "title": "Let IT run scans",
+            "description": "IT may need to run specialized tools or even reimage the device"
+          },
+          "change_passwords": {
+            "title": "Change passwords (from clean device)",
+            "description": "After IT clears you, change passwords from a different device"
+          }
+        }
       }
-    },
-    "complete": {
-      "title": "Drill Complete!",
-      "score": "Score: {score, number} points",
-      "feedback": "You completed all critical incident response steps.",
-      "backToDashboard": "Back to Dashboard",
-      "tryAgain": "Try Again"
     }
   },
   "channels": {
@@ -290,6 +573,11 @@
     "networkError": "Network error. Please check your connection.",
     "unauthorized": "Please sign in to continue.",
     "notFound": "Page not found.",
-    "shiftFailed": "Failed to start a new shift. Please try again."
+    "notFoundTitle": "404 Page Not Found",
+    "notFoundHint": "Did you forget to add the page to the router?",
+    "shiftFailed": "Failed to start a new shift. Please try again.",
+    "completeShiftFailed": "Failed to complete shift.",
+    "submitDecisionFailed": "Failed to submit decision.",
+    "assignmentStartFailed": "Failed to start assignment. Please try again."
   }
 }

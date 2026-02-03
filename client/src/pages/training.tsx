@@ -1,7 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useQuery, useMutation } from "@tanstack/react-query";
-import { queryClient, apiRequest } from "@/lib/queryClient";
+import { useQuery } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { useLocation, useParams } from "wouter";
 import { Header } from "@/components/header";
@@ -14,19 +13,21 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { PlayCircle } from "lucide-react";
-import type { Scenario, Shift, ActionType, OutcomeType, Decision } from "@shared/schema";
-
-interface ShiftWithScenarios extends Shift {
-  scenarios: Scenario[];
-  completedScenarioIds?: string[];
-}
+import type { Scenario, ActionType, OutcomeType } from "@shared/schema";
+import { localizeScenario } from "@/lib/localize-scenario";
+import { useTrainingSession } from "@/lib/training-session";
+import { selectAdaptiveScenarios, type LocalShift } from "@/lib/training-engine";
 
 export default function Training() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { id: shiftId } = useParams<{ id: string }>();
   const [, navigate] = useLocation();
   const { toast } = useToast();
-  const apiPrefix = "/api/guest";
+  const { progress, shift, startShift, recordDecision, finalizeShift } = useTrainingSession();
+
+  const { data: scenarioLibrary, isLoading: scenariosLoading } = useQuery<Scenario[]>({
+    queryKey: ["/api/scenarios"],
+  });
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [completedIds, setCompletedIds] = useState<string[]>([]);
@@ -38,95 +39,89 @@ export default function Training() {
     pointsEarned: number;
   } | null>(null);
   const [showComplete, setShowComplete] = useState(false);
-  const [hasCompletedShift, setHasCompletedShift] = useState(false);
   const [lensChecks, setLensChecks] = useState<Set<string>>(new Set());
 
-  const { data: shift, isLoading: shiftLoading, refetch: refetchShift } = useQuery<ShiftWithScenarios>({
-    queryKey: ["/api/guest/shifts", shiftId],
-    enabled: !!shiftId,
-  });
+  const activeShift = useMemo<LocalShift | null>(() => {
+    if (!shift) return null;
+    if (shiftId && shift.id !== shiftId) return null;
+    return shift;
+  }, [shift, shiftId]);
 
-  const createShiftMutation = useMutation({
-    mutationFn: async () => {
-      const response = await apiRequest("POST", `${apiPrefix}/shifts`);
-      return response.json();
-    },
-    onSuccess: (data) => {
-      navigate(`/training/${data.id}`);
-    },
-    onError: (error) => {
+  const displayShift = useMemo(() => {
+    if (!activeShift) return null;
+    return {
+      ...activeShift,
+      scenarios: activeShift.scenarios.map((scenario) => localizeScenario(scenario, t)),
+    };
+  }, [activeShift, t, i18n.language]);
+
+  const shiftLoading = scenariosLoading && !!shiftId && !activeShift;
+
+  const createShift = () => {
+    if (!scenarioLibrary || scenarioLibrary.length === 0) {
       toast({
         title: t("common.error"),
         description: t("errors.shiftFailed"),
         variant: "destructive",
       });
-    },
-  });
+      return;
+    }
 
-  const completeShiftMutation = useMutation({
-    mutationFn: async () => {
-      if (!shift) throw new Error("No shift selected");
-      const response = await apiRequest("POST", `${apiPrefix}/shifts/${shift.id}/complete`);
-      return response.json();
-    },
-    onSuccess: () => {
-      setHasCompletedShift(true);
-      refetchShift();
-      queryClient.invalidateQueries({ queryKey: ["/api/guest/progress"] });
-    },
-    onError: () => {
-      toast({
-        title: t("common.error"),
-        description: t("errors.completeShiftFailed"),
-        variant: "destructive",
-      });
-    },
-  });
+    const accuracy = progress.totalDecisions > 0
+      ? progress.correctDecisions / progress.totalDecisions
+      : 0;
 
-  const submitDecisionMutation = useMutation({
-    mutationFn: async ({ action, confidence }: { action: ActionType; confidence: number }) => {
-      const scenario = shift?.scenarios[currentIndex];
-      if (!scenario || !shift) throw new Error("No scenario selected");
-      
-      const response = await apiRequest("POST", `${apiPrefix}/shifts/${shift.id}/decisions`, {
-        scenarioId: scenario.id,
-        action,
-        confidence,
-      });
-      return response.json();
-    },
-    onSuccess: (data: { decision: Decision; outcome: OutcomeType; pointsEarned: number; shift: Shift }) => {
-      const scenario = shift?.scenarios[currentIndex];
-      if (scenario) {
-        setCompletedIds(prev => prev.includes(scenario.id) ? prev : [...prev, scenario.id]);
-        setLastDecision({
-          scenario,
-          action: data.decision.action as ActionType,
-          outcome: data.outcome,
-          pointsEarned: data.pointsEarned,
-        });
-      }
-      refetchShift();
-      queryClient.invalidateQueries({ queryKey: ["/api/guest/progress"] });
-      setPendingAction(null);
-    },
-    onError: (error) => {
-      toast({
-        title: t("common.error"),
-        description: t("errors.submitDecisionFailed"),
-        variant: "destructive",
-      });
-      setPendingAction(null);
-    },
-  });
+    const scenarios = selectAdaptiveScenarios(
+      scenarioLibrary,
+      10,
+      accuracy,
+      progress.totalShifts || 0
+    );
+
+    const nextShift = startShift({ scenarios });
+    setCurrentIndex(0);
+    setCompletedIds([]);
+    setShowComplete(false);
+    navigate(`/training/${nextShift.id}`);
+  };
 
   const handleAction = (action: ActionType) => {
     setPendingAction(action);
   };
 
   const handleConfidenceSubmit = (confidence: number) => {
-    if (pendingAction) {
-      submitDecisionMutation.mutate({ action: pendingAction, confidence });
+    if (!pendingAction || !displayShift || !activeShift) {
+      return;
+    }
+
+    const scenario = displayShift.scenarios[currentIndex];
+    if (!scenario) {
+      setPendingAction(null);
+      return;
+    }
+
+    try {
+      const result = recordDecision({
+        scenario,
+        action: pendingAction,
+        confidence,
+        scenarioLibrary: scenarioLibrary || activeShift.scenarios,
+      });
+      setCompletedIds(result.shift.completedScenarioIds);
+      setLastDecision({
+        scenario,
+        action: pendingAction,
+        outcome: result.outcome,
+        pointsEarned: result.pointsEarned,
+      });
+    } catch (error) {
+      toast({
+        title: t("common.error"),
+        description: t("errors.submitDecisionFailed"),
+        variant: "destructive",
+      });
+    } finally {
+      setPendingAction(null);
     }
   };
 
@@ -137,15 +132,15 @@ export default function Training() {
   const handleContinueFromFeedback = () => {
     setLastDecision(null);
     
-    if (shift) {
-      const nextIncompleteIndex = shift.scenarios.findIndex(
+    if (displayShift) {
+      const nextIncompleteIndex = displayShift.scenarios.findIndex(
         (s, i) => i > currentIndex && !completedIds.includes(s.id)
       );
       
       if (nextIncompleteIndex >= 0) {
         setCurrentIndex(nextIncompleteIndex);
       } else {
-        const anyIncomplete = shift.scenarios.findIndex(
+        const anyIncomplete = displayShift.scenarios.findIndex(
           s => !completedIds.includes(s.id)
         );
         if (anyIncomplete >= 0) {
@@ -178,42 +173,33 @@ export default function Training() {
   }, [currentIndex]);
 
   useEffect(() => {
-    if (shift?.completedScenarioIds) {
-      setCompletedIds(shift.completedScenarioIds);
+    if (activeShift?.completedScenarioIds) {
+      setCompletedIds(activeShift.completedScenarioIds);
+    } else {
+      setCompletedIds([]);
     }
-  }, [shift?.completedScenarioIds]);
+  }, [activeShift?.completedScenarioIds, activeShift?.id]);
 
   const handlePlayAgain = () => {
     setShowComplete(false);
     setCompletedIds([]);
     setCurrentIndex(0);
-    createShiftMutation.mutate();
+    createShift();
   };
 
   useEffect(() => {
-    setHasCompletedShift(false);
-  }, [shiftId]);
-
-  useEffect(() => {
-    if (shift?.completedAt) {
-      setHasCompletedShift(true);
+    if (activeShift?.completedAt) {
       setShowComplete(true);
     }
-  }, [shift?.completedAt]);
+  }, [activeShift?.completedAt]);
 
   useEffect(() => {
-    if (
-      showComplete &&
-      shift &&
-      !hasCompletedShift &&
-      !completeShiftMutation.isPending &&
-      !completeShiftMutation.isError
-    ) {
-      completeShiftMutation.mutate();
+    if (showComplete && activeShift && !activeShift.completedAt) {
+      finalizeShift();
     }
-  }, [showComplete, shift, hasCompletedShift, completeShiftMutation]);
+  }, [showComplete, activeShift, finalizeShift]);
 
-  if (!shiftId) {
+  if (!activeShift && !shiftLoading) {
     return (
       <div className="min-h-screen bg-background">
         <Header />
@@ -225,12 +211,12 @@ export default function Training() {
             </p>
             <Button 
               size="lg" 
-              onClick={() => createShiftMutation.mutate()}
-              disabled={createShiftMutation.isPending}
+              onClick={createShift}
+              disabled={scenariosLoading}
               data-testid="button-start-training"
             >
               <PlayCircle className="w-5 h-5 mr-2" />
-              {createShiftMutation.isPending ? t('training.readyToTrain.startingButton') : t('training.readyToTrain.startButton')}
+              {scenariosLoading ? t('training.readyToTrain.startingButton') : t('training.readyToTrain.startButton')}
             </Button>
           </Card>
         </main>
@@ -238,10 +224,10 @@ export default function Training() {
     );
   }
 
-  const scenarios = shift?.scenarios || [];
+  const scenarios = displayShift?.scenarios || [];
   const currentScenario = scenarios[currentIndex] || null;
-  const verificationsRemaining = shift 
-    ? shift.verificationBudget - shift.verificationsUsed 
+  const verificationsRemaining = activeShift 
+    ? activeShift.verificationBudget - activeShift.verificationsUsed 
     : 0;
 
   return (
@@ -292,7 +278,7 @@ export default function Training() {
                   scenario={currentScenario}
                   verificationsRemaining={verificationsRemaining}
                   onAction={handleAction}
-                  disabled={submitDecisionMutation.isPending || completedIds.includes(currentScenario?.id || "")}
+                  disabled={pendingAction !== null || completedIds.includes(currentScenario?.id || "")}
                   lensChecks={lensChecks}
                   onLensCheck={handleLensCheck}
                 />
@@ -320,9 +306,9 @@ export default function Training() {
         />
       )}
 
-      {showComplete && shift && (
+      {showComplete && activeShift && (
         <ShiftComplete
-          shift={shift}
+          shift={activeShift}
           onGoHome={handleGoHome}
           onPlayAgain={handlePlayAgain}
         />

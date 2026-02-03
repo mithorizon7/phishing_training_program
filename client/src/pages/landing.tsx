@@ -103,7 +103,7 @@ export default function Landing() {
               <LanguageSwitcher />
               <ThemeToggle />
               <Button asChild size="sm" variant="ghost" className="hidden sm:inline-flex">
-                <Link href="/" data-testid="link-landing-dashboard">
+                <Link href="/dashboard" data-testid="link-landing-dashboard">
                   {t("landing.hero.secondaryCta")}
                 </Link>
               </Button>
@@ -137,7 +137,7 @@ export default function Landing() {
                     </Link>
                   </Button>
                   <Button asChild size="lg" variant="outline" data-testid="button-landing-dashboard">
-                    <Link href="/">
+                    <Link href="/dashboard">
                       {t("landing.hero.secondaryCta")}
                     </Link>
                   </Button>

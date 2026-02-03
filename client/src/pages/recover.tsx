@@ -17,75 +17,77 @@ import {
   Trophy
 } from "lucide-react";
 import { Link } from "wouter";
+import { useTranslation } from "react-i18next";
 
 type ScenarioType = "clicked_link" | "entered_credentials" | "sent_money" | "downloaded_file";
 
 interface RecoveryStep {
   id: string;
-  title: string;
-  description: string;
+  titleKey: string;
+  descriptionKey: string;
   icon: React.ElementType;
   critical: boolean;
 }
 
 interface DrillScenario {
   id: ScenarioType;
-  title: string;
-  description: string;
+  titleKey: string;
+  descriptionKey: string;
   steps: RecoveryStep[];
 }
 
 const DRILL_SCENARIOS: DrillScenario[] = [
   {
     id: "clicked_link",
-    title: "You Clicked a Suspicious Link",
-    description: "You realized the link was suspicious after clicking. The page looked like a login portal.",
+    titleKey: "recover.scenarios.clicked_link.title",
+    descriptionKey: "recover.scenarios.clicked_link.description",
     steps: [
-      { id: "disconnect", title: "Disconnect from network", description: "Turn off WiFi or unplug ethernet to stop any ongoing data transfer", icon: Wifi, critical: true },
-      { id: "report", title: "Report to IT/Security", description: "Call your IT helpdesk or security team immediately using a known number", icon: Phone, critical: true },
-      { id: "scan", title: "Run security scan", description: "Run antivirus/malware scan to check for drive-by downloads or exploits", icon: Shield, critical: true },
-      { id: "document", title: "Document what happened", description: "Note the URL, what you saw, and any actions you took", icon: FileText, critical: false },
+      { id: "disconnect", titleKey: "recover.scenarios.clicked_link.steps.disconnect.title", descriptionKey: "recover.scenarios.clicked_link.steps.disconnect.description", icon: Wifi, critical: true },
+      { id: "report", titleKey: "recover.scenarios.clicked_link.steps.report.title", descriptionKey: "recover.scenarios.clicked_link.steps.report.description", icon: Phone, critical: true },
+      { id: "scan", titleKey: "recover.scenarios.clicked_link.steps.scan.title", descriptionKey: "recover.scenarios.clicked_link.steps.scan.description", icon: Shield, critical: true },
+      { id: "document", titleKey: "recover.scenarios.clicked_link.steps.document.title", descriptionKey: "recover.scenarios.clicked_link.steps.document.description", icon: FileText, critical: false },
     ],
   },
   {
     id: "entered_credentials",
-    title: "You Entered Your Password",
-    description: "You entered your username and password on what turned out to be a fake login page.",
+    titleKey: "recover.scenarios.entered_credentials.title",
+    descriptionKey: "recover.scenarios.entered_credentials.description",
     steps: [
-      { id: "change_password", title: "Change password immediately", description: "Go directly to the real site (type URL manually) and change your password", icon: Key, critical: true },
-      { id: "report", title: "Report to IT/Security", description: "Call IT immediately - they may need to check for account compromise", icon: Phone, critical: true },
-      { id: "mfa", title: "Enable/review MFA", description: "Ensure multi-factor authentication is enabled; review any new devices", icon: Shield, critical: true },
-      { id: "check_accounts", title: "Check linked accounts", description: "If you reuse passwords (don't!), change them on other sites too", icon: Key, critical: false },
-      { id: "monitor", title: "Monitor for suspicious activity", description: "Watch for unusual emails, login alerts, or account changes", icon: FileText, critical: false },
+      { id: "change_password", titleKey: "recover.scenarios.entered_credentials.steps.change_password.title", descriptionKey: "recover.scenarios.entered_credentials.steps.change_password.description", icon: Key, critical: true },
+      { id: "report", titleKey: "recover.scenarios.entered_credentials.steps.report.title", descriptionKey: "recover.scenarios.entered_credentials.steps.report.description", icon: Phone, critical: true },
+      { id: "mfa", titleKey: "recover.scenarios.entered_credentials.steps.mfa.title", descriptionKey: "recover.scenarios.entered_credentials.steps.mfa.description", icon: Shield, critical: true },
+      { id: "check_accounts", titleKey: "recover.scenarios.entered_credentials.steps.check_accounts.title", descriptionKey: "recover.scenarios.entered_credentials.steps.check_accounts.description", icon: Key, critical: false },
+      { id: "monitor", titleKey: "recover.scenarios.entered_credentials.steps.monitor.title", descriptionKey: "recover.scenarios.entered_credentials.steps.monitor.description", icon: FileText, critical: false },
     ],
   },
   {
     id: "sent_money",
-    title: "You Transferred Money",
-    description: "You sent a wire transfer or payment based on what you now realize was a fraudulent request.",
+    titleKey: "recover.scenarios.sent_money.title",
+    descriptionKey: "recover.scenarios.sent_money.description",
     steps: [
-      { id: "bank", title: "Contact your bank immediately", description: "Call your bank's fraud line RIGHT NOW - time is critical for recovery", icon: Phone, critical: true },
-      { id: "report_it", title: "Report to IT/Security", description: "They need to know about the breach and may need to alert others", icon: Phone, critical: true },
-      { id: "report_fbi", title: "File IC3 complaint (FBI)", description: "Report to ic3.gov - especially for business email compromise over $10,000", icon: Shield, critical: false },
-      { id: "document", title: "Preserve all evidence", description: "Save emails, messages, and transaction records - do not delete anything", icon: FileText, critical: false },
-      { id: "notify", title: "Notify affected parties", description: "If vendor/partner was impersonated, alert them about the fraud", icon: Phone, critical: false },
+      { id: "bank", titleKey: "recover.scenarios.sent_money.steps.bank.title", descriptionKey: "recover.scenarios.sent_money.steps.bank.description", icon: Phone, critical: true },
+      { id: "report_it", titleKey: "recover.scenarios.sent_money.steps.report_it.title", descriptionKey: "recover.scenarios.sent_money.steps.report_it.description", icon: Phone, critical: true },
+      { id: "report_fbi", titleKey: "recover.scenarios.sent_money.steps.report_fbi.title", descriptionKey: "recover.scenarios.sent_money.steps.report_fbi.description", icon: Shield, critical: false },
+      { id: "document", titleKey: "recover.scenarios.sent_money.steps.document.title", descriptionKey: "recover.scenarios.sent_money.steps.document.description", icon: FileText, critical: false },
+      { id: "notify", titleKey: "recover.scenarios.sent_money.steps.notify.title", descriptionKey: "recover.scenarios.sent_money.steps.notify.description", icon: Phone, critical: false },
     ],
   },
   {
     id: "downloaded_file",
-    title: "You Downloaded a File",
-    description: "You downloaded and may have opened an attachment or file from a suspicious source.",
+    titleKey: "recover.scenarios.downloaded_file.title",
+    descriptionKey: "recover.scenarios.downloaded_file.description",
     steps: [
-      { id: "disconnect", title: "Disconnect immediately", description: "Unplug network cable and disable WiFi to contain potential malware", icon: Wifi, critical: true },
-      { id: "no_touch", title: "Don't try to fix it yourself", description: "Don't delete files or restart - this may make forensics harder", icon: XCircle, critical: true },
-      { id: "report", title: "Report to IT/Security", description: "Call IT immediately - they have tools to assess and contain threats", icon: Phone, critical: true },
-      { id: "scan", title: "Let IT run scans", description: "IT may need to run specialized tools or even reimage the device", icon: Shield, critical: false },
-      { id: "change_passwords", title: "Change passwords (from clean device)", description: "After IT clears you, change passwords from a different device", icon: Key, critical: false },
+      { id: "disconnect", titleKey: "recover.scenarios.downloaded_file.steps.disconnect.title", descriptionKey: "recover.scenarios.downloaded_file.steps.disconnect.description", icon: Wifi, critical: true },
+      { id: "no_touch", titleKey: "recover.scenarios.downloaded_file.steps.no_touch.title", descriptionKey: "recover.scenarios.downloaded_file.steps.no_touch.description", icon: XCircle, critical: true },
+      { id: "report", titleKey: "recover.scenarios.downloaded_file.steps.report.title", descriptionKey: "recover.scenarios.downloaded_file.steps.report.description", icon: Phone, critical: true },
+      { id: "scan", titleKey: "recover.scenarios.downloaded_file.steps.scan.title", descriptionKey: "recover.scenarios.downloaded_file.steps.scan.description", icon: Shield, critical: false },
+      { id: "change_passwords", titleKey: "recover.scenarios.downloaded_file.steps.change_passwords.title", descriptionKey: "recover.scenarios.downloaded_file.steps.change_passwords.description", icon: Key, critical: false },
     ],
   },
 ];
 
 export default function RecoverDrill() {
+  const { t } = useTranslation();
   const [selectedScenario, setSelectedScenario] = useState<DrillScenario | null>(null);
   const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
   const [showResults, setShowResults] = useState(false);
@@ -150,12 +152,12 @@ export default function RecoverDrill() {
       <div className="max-w-4xl mx-auto p-6 space-y-8">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold" data-testid="text-recover-title">Report and Recover</h1>
-            <p className="text-muted-foreground">Learn what to do when something goes wrong</p>
+            <h1 className="text-2xl font-bold" data-testid="text-recover-title">{t("recover.title")}</h1>
+            <p className="text-muted-foreground">{t("recover.subtitle")}</p>
           </div>
-          <Link href="/dashboard">
+          <Link href="/">
             <Button variant="outline" data-testid="link-back-dashboard">
-              Back to Dashboard
+              {t("recover.backToDashboard")}
             </Button>
           </Link>
         </div>
@@ -164,11 +166,10 @@ export default function RecoverDrill() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <AlertTriangle className="w-5 h-5 text-destructive" />
-              Incident Response Training
+              {t("recover.intro.title")}
             </CardTitle>
             <CardDescription>
-              Even the best of us make mistakes. What matters is how quickly and effectively you respond. 
-              Practice the critical steps for different scenarios.
+              {t("recover.intro.description")}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -181,11 +182,11 @@ export default function RecoverDrill() {
                   data-testid={`card-scenario-${scenario.id}`}
                 >
                   <CardContent className="pt-6">
-                    <h3 className="font-semibold mb-2">{scenario.title}</h3>
-                    <p className="text-sm text-muted-foreground">{scenario.description}</p>
+                    <h3 className="font-semibold mb-2">{t(scenario.titleKey)}</h3>
+                    <p className="text-sm text-muted-foreground">{t(scenario.descriptionKey)}</p>
                     <div className="mt-4 flex items-center justify-between gap-2">
                       <Badge variant="outline">
-                        {scenario.steps.filter(s => s.critical).length} critical steps
+                        {t("recover.labels.criticalStepsCount", { count: scenario.steps.filter(s => s.critical).length })}
                       </Badge>
                       <ArrowRight className="w-4 h-4 text-muted-foreground flex-shrink-0" />
                     </div>
@@ -201,12 +202,8 @@ export default function RecoverDrill() {
             <div className="flex items-start gap-4">
               <Shield className="w-8 h-8 text-primary flex-shrink-0" />
               <div>
-                <h3 className="font-semibold mb-2">Why This Matters</h3>
-                <p className="text-sm text-muted-foreground">
-                  The FBI reports that quick action can help recover funds in Business Email Compromise cases. 
-                  The difference between a minor incident and a major breach often comes down to how fast you 
-                  report and respond. Practice these steps so they become second nature.
-                </p>
+                <h3 className="font-semibold mb-2">{t("recover.why.title")}</h3>
+                <p className="text-sm text-muted-foreground">{t("recover.why.description")}</p>
               </div>
             </div>
           </CardContent>
@@ -235,22 +232,24 @@ export default function RecoverDrill() {
               )}
             </div>
             <CardTitle>
-              {allCriticalDone ? "Great Response!" : "Some Critical Steps Missed"}
+              {allCriticalDone ? t("recover.results.successTitle") : t("recover.results.partialTitle")}
             </CardTitle>
             <CardDescription>
               {allCriticalDone 
-                ? "You identified all the critical recovery steps. This quick action can make the difference between a close call and a disaster."
-                : "In a real incident, missing critical steps could make things worse. Review the steps you missed."}
+                ? t("recover.results.successDescription")
+                : t("recover.results.partialDescription")}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="text-center">
               <div className="text-4xl font-bold" data-testid="text-recovery-score">{score}/100</div>
-              <p className="text-muted-foreground">Recovery Score</p>
+              <p className="text-muted-foreground">{t("recover.results.scoreLabel")}</p>
             </div>
 
             <div className="space-y-3">
-              <p className="text-sm font-medium">Critical Steps: {criticalCompleted}/{totalCritical}</p>
+              <p className="text-sm font-medium">
+                {t("recover.results.criticalStepsLabel", { completed: criticalCompleted, total: totalCritical })}
+              </p>
               {selectedScenario.steps.map((step) => {
                 const completed = completedSteps.has(step.id);
                 const Icon = step.icon;
@@ -269,13 +268,13 @@ export default function RecoverDrill() {
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
                         <span className={`font-medium text-sm ${!completed && step.critical ? "text-destructive" : ""}`}>
-                          {step.title}
+                          {t(step.titleKey)}
                         </span>
                         {step.critical && (
-                          <Badge variant={completed ? "default" : "destructive"}>Critical</Badge>
+                          <Badge variant={completed ? "default" : "destructive"}>{t("recover.labels.critical")}</Badge>
                         )}
                       </div>
-                      <p className="text-xs text-muted-foreground">{step.description}</p>
+                      <p className="text-xs text-muted-foreground">{t(step.descriptionKey)}</p>
                     </div>
                   </div>
                 );
@@ -284,20 +283,12 @@ export default function RecoverDrill() {
 
             <Card className="bg-muted/30">
               <CardContent className="pt-4 pb-4">
-                <p className="text-sm font-medium mb-2">Key Takeaway</p>
+                <p className="text-sm font-medium mb-2">{t("recover.results.keyTakeaway")}</p>
                 <p className="text-sm text-muted-foreground">
-                  {selectedScenario.id === "clicked_link" && 
-                    "Speed matters - disconnecting quickly can prevent malware from spreading or exfiltrating data. Always report even if you're unsure, as IT can assess the real risk."
-                  }
-                  {selectedScenario.id === "entered_credentials" && 
-                    "Password changes must happen immediately from a trusted device. Enable MFA everywhere - it's your best protection even if credentials are stolen."
-                  }
-                  {selectedScenario.id === "sent_money" && 
-                    "The first hour is critical for fund recovery. Banks can sometimes recall wire transfers if notified fast enough. Never delete any evidence."
-                  }
-                  {selectedScenario.id === "downloaded_file" && 
-                    "Don't try to be a hero - well-meaning actions like deleting files or rebooting can destroy forensic evidence or trigger dormant malware."
-                  }
+                  {selectedScenario.id === "clicked_link" && t("recover.results.takeaways.clicked_link")}
+                  {selectedScenario.id === "entered_credentials" && t("recover.results.takeaways.entered_credentials")}
+                  {selectedScenario.id === "sent_money" && t("recover.results.takeaways.sent_money")}
+                  {selectedScenario.id === "downloaded_file" && t("recover.results.takeaways.downloaded_file")}
                 </p>
               </CardContent>
             </Card>
@@ -305,11 +296,11 @@ export default function RecoverDrill() {
             <div className="flex gap-3">
               <Button variant="outline" className="flex-1" onClick={handleReset} data-testid="button-try-again">
                 <RotateCcw className="w-4 h-4 mr-2" />
-                Try Another Scenario
+                {t("recover.results.tryAnother")}
               </Button>
               <Link href="/training" className="flex-1">
                 <Button className="w-full" data-testid="button-back-training">
-                  Back to Training
+                  {t("recover.results.backToTraining")}
                 </Button>
               </Link>
             </div>
@@ -323,11 +314,11 @@ export default function RecoverDrill() {
     <div className="max-w-2xl mx-auto p-6 space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl font-bold">{selectedScenario.title}</h1>
-          <p className="text-muted-foreground text-sm">{selectedScenario.description}</p>
+          <h1 className="text-xl font-bold">{t(selectedScenario.titleKey)}</h1>
+          <p className="text-muted-foreground text-sm">{t(selectedScenario.descriptionKey)}</p>
         </div>
         <Button variant="ghost" onClick={handleReset} data-testid="button-change-scenario">
-          Change Scenario
+          {t("recover.actions.changeScenario")}
         </Button>
       </div>
 
@@ -336,9 +327,9 @@ export default function RecoverDrill() {
           <div className="flex items-start gap-3">
             <AlertTriangle className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
             <div>
-              <p className="font-medium text-sm">What should you do next?</p>
+              <p className="font-medium text-sm">{t("recover.prompt.title")}</p>
               <p className="text-sm text-muted-foreground mt-1">
-                Select all the steps you would take to respond to this incident. Critical steps are essential for damage control.
+                {t("recover.prompt.subtitle")}
               </p>
             </div>
           </div>
@@ -371,12 +362,12 @@ export default function RecoverDrill() {
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
-                      <span className="font-medium">{step.title}</span>
+                      <span className="font-medium">{t(step.titleKey)}</span>
                       {step.critical && (
-                        <Badge variant="outline">Critical</Badge>
+                        <Badge variant="outline">{t("recover.labels.critical")}</Badge>
                       )}
                     </div>
-                    <p className="text-sm text-muted-foreground">{step.description}</p>
+                    <p className="text-sm text-muted-foreground">{t(step.descriptionKey)}</p>
                   </div>
                 </div>
               </CardContent>
@@ -388,10 +379,16 @@ export default function RecoverDrill() {
       <div className="sticky bottom-0 z-50 bg-background pt-4 pb-2 border-t">
         <div className="flex items-center justify-between gap-4 mb-4">
           <span className="text-sm text-muted-foreground">
-            {completedSteps.size} of {selectedScenario.steps.length} steps selected
+            {t("recover.footer.stepsSelected", {
+              selected: completedSteps.size,
+              total: selectedScenario.steps.length
+            })}
           </span>
           <span className="text-sm font-medium flex-shrink-0">
-            {getCriticalStepsCompleted()}/{getTotalCriticalSteps()} critical
+            {t("recover.footer.criticalSummary", {
+              completed: getCriticalStepsCompleted(),
+              total: getTotalCriticalSteps()
+            })}
           </span>
         </div>
         <Button 
@@ -401,7 +398,7 @@ export default function RecoverDrill() {
           disabled={completedSteps.size === 0}
           data-testid="button-submit-recovery"
         >
-          Check My Response
+          {t("recover.actions.checkResponse")}
         </Button>
       </div>
     </div>

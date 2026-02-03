@@ -1,0 +1,809 @@
+{
+  "scn_001": {
+    "senderName": "IT Security Team",
+    "body": "Dear Employee,\n\nWe have detected unusual activity on your corporate account. Your access will be suspended within 24 hours unless you verify your identity immediately.\n\nClick here to verify your account: https://company-login.secure-verify.com/auth\n\nThis is an automated security measure. Failure to comply will result in permanent account suspension.\n\nThank you for your prompt attention to this matter.\n\nIT Security Team",
+    "timestamp": "2 hours ago",
+    "explanation": "This is a classic phishing email using urgency and fear to pressure you into clicking. The domain 'company-support.net' is not your actual company domain, and the link goes to 'secure-verify.com' which is a common phishing pattern. Legitimate IT security teams will never threaten immediate account suspension via email.",
+    "cues": [
+      "urgent language",
+      "threat of suspension",
+      "suspicious domain",
+      "generic greeting"
+    ],
+    "subject": "URGENT: Your account will be suspended in 24 hours",
+    "linkText": "Click here to verify your account"
+  },
+  "scn_002": {
+    "senderName": "Dr. Amanda Peterson (CEO)",
+    "body": "Hi,\n\nI need your help with something urgent and confidential. I'm stuck in back-to-back meetings all day and can't make a call right now.\n\nI need you to purchase 10 Amazon gift cards ($100 each) for a client appreciation surprise. This needs to happen today before 5pm.\n\nPlease buy them, scratch off the back to reveal the codes, and text me photos of the codes at 555-0199. I'll reimburse you from petty cash tomorrow.\n\nKeep this between us - it's a surprise!\n\nThanks,\nAmanda\n\nSent from my iPhone",
+    "timestamp": "45 minutes ago",
+    "explanation": "This is a Business Email Compromise (BEC) attack. The CEO would never ask for gift cards via email, especially to be texted to a personal number. The reply-to address goes to a personal Gmail account, not the corporate domain. Always verify unusual financial requests through a known channel - call the person's office number directly.",
+    "cues": [
+      "unusual request",
+      "urgency",
+      "gift cards",
+      "text codes to personal number",
+      "keep it secret",
+      "reply-to mismatch",
+      "fake CEO"
+    ],
+    "subject": "Quick favor needed - confidential"
+  },
+  "scn_003": {
+    "senderName": "IT Department",
+    "body": "Hello,\n\nThis is a reminder that scheduled system maintenance will occur this Saturday from 2:00 AM to 6:00 AM EST.\n\nDuring this time, the following systems will be unavailable:\n- Email (Outlook/Exchange)\n- VPN access\n- Internal file shares\n\nNo action is required on your part. Systems will be restored by 6:00 AM.\n\nIf you have questions, please contact the IT Help Desk at extension 4357 or visit the IT portal at https://intranet.yourcompany.com/it-support.\n\nThank you for your patience.\n\nIT Operations Team",
+    "timestamp": "Yesterday",
+    "explanation": "This is a legitimate system maintenance notification from IT. The sender email matches your company domain, there's no urgent action required, no suspicious links (the intranet link is internal), and it provides a known contact method (extension 4357) for questions. Safe to delete or archive.",
+    "cues": [],
+    "subject": "Scheduled system maintenance - Saturday 2am-6am",
+    "linkText": "IT portal"
+  },
+  "scn_004": {
+    "senderName": "Accounts Payable",
+    "body": "Dear Finance Team,\n\nPlease find attached the invoice for consulting services rendered in November.\n\nAmount Due: $12,450.00\nDue Date: December 20, 2024\n\nWire transfer details have been updated. Please use the following new banking information:\n\nBank: First National Trust\nAccount: 847291038\nRouting: 021000089\n\nPlease process payment by end of business today to avoid late fees.\n\nBest regards,\nAccounts Payable Department",
+    "timestamp": "3 hours ago",
+    "explanation": "This is a spoofing attack using a lookalike domain. 'yourcompany-billing.com' is NOT the same as 'yourcompany.com'. The request to update banking information for wire transfers is a major red flag. Attackers often intercept legitimate invoice conversations and insert new banking details. Always verify banking changes through a known phone number, never through email.",
+    "cues": [
+      "lookalike domain",
+      "updated banking info",
+      "wire transfer urgency",
+      "end of day deadline"
+    ],
+    "subject": "Invoice #INV-2024-8847 - Payment Required",
+    "attachmentName": "Invoice_INV-2024-8847.pdf"
+  },
+  "scn_005": {
+    "senderName": "Unknown",
+    "body": "UPS: Your package is waiting for delivery. There's a $2.99 redelivery fee due to address issues. Pay now to schedule: bit.ly/ups-redeliver-fee",
+    "timestamp": "1 hour ago",
+    "explanation": "This is a smishing (SMS phishing) attack. UPS does not send texts requesting small fees via shortened URLs. The small amount ($2.99) is designed to seem harmless, but the link will steal your payment information. Legitimate delivery companies contact you through their official apps or your account on their website.",
+    "cues": [
+      "unsolicited text",
+      "small fee request",
+      "shortened URL",
+      "urgency"
+    ],
+    "linkText": "bit.ly/ups-redeliver-fee"
+  },
+  "scn_006": {
+    "senderName": "Unknown",
+    "body": "Hey! It's Sarah from the conference last week. Did you get home okay? Let me know if you want to grab coffee sometime and catch up!",
+    "timestamp": "30 minutes ago",
+    "explanation": "This is the beginning of a 'wrong number' scam. The attacker pretends to have the wrong number, but if you respond, they'll engage in friendly conversation before eventually pivoting to investment scams (often cryptocurrency) or romance fraud. Never engage with unsolicited messages from unknown numbers, even if they seem friendly.",
+    "cues": [
+      "wrong number pretense",
+      "overly familiar",
+      "vague reference"
+    ]
+  },
+  "scn_007": {
+    "senderName": "QuickBooks Payments",
+    "body": "You've received an invoice from ABC Consulting Services.\n\nInvoice #: 1847\nAmount due: $3,200.00\nDue date: December 28, 2024\n\nView and pay this invoice: https://app.qbo.intuit.com/invoice/v4/123456789\n\nThis invoice was sent from ABC Consulting Services using QuickBooks.\n\nQuestions about this invoice? Contact ABC Consulting directly.\n\nIntuit QuickBooks\nMenlo Park, CA",
+    "timestamp": "Yesterday",
+    "explanation": "This appears to be a legitimate QuickBooks invoice notification. However, invoice emails are commonly spoofed. The best practice is to verify: Do you have an active relationship with ABC Consulting? Was this invoice expected? If unsure, log into QuickBooks directly (not through the email link) or contact your accounts payable team to confirm.",
+    "cues": [],
+    "subject": "Invoice from ABC Consulting Services",
+    "linkText": "View and pay this invoice"
+  },
+  "scn_008": {
+    "senderName": "Microsoft Support",
+    "body": "[CALL TRANSCRIPT]\n\nCaller: \"Hello, this is Mike from Microsoft Technical Support. We've detected critical security threats on your computer that need immediate attention. Our security monitoring system shows your device has been compromised by malware.\"\n\n\"I need you to go to your computer right now. Don't worry, I'll walk you through fixing this. First, press the Windows key and R at the same time...\"\n\n\"Now type in 'eventvwr' and tell me what errors you see. Those red warnings are the malware infections I was telling you about.\"\n\n\"To remove these threats, I'll need you to download our support tool from TeamViewer.com so I can access your computer remotely and clean it up for you.\"",
+    "timestamp": "10 minutes ago",
+    "explanation": "This is a tech support scam (vishing). Microsoft never makes unsolicited calls about computer problems. The 'errors' in Event Viewer are normal system logs, not malware. The goal is to get remote access to your computer to install actual malware or steal information. Hang up immediately and report the number.",
+    "cues": [
+      "unsolicited tech support call",
+      "claims of detected threats",
+      "requests remote access",
+      "urgency and fear",
+      "Microsoft doesn't call you"
+    ]
+  },
+  "scn_009": {
+    "senderName": "Microsoft 365",
+    "body": "Microsoft 365\n\nUnusual sign-in activity\n\nWe detected something unusual about a recent sign-in to your Microsoft account.\n\nSign-in details:\nCountry/region: Russia\nIP address: 185.159.82.xxx\nDate: December 15, 2024 3:47 AM\nPlatform: Windows\nBrowser: Chrome\n\nIf this was you, you can ignore this message.\n\nIf this wasn't you, please secure your account:\n\n[Secure my account]\n\nThanks,\nThe Microsoft account team\n\nThis is an automated message. Please do not reply.",
+    "timestamp": "4 hours ago",
+    "explanation": "This is a sophisticated phishing email. While it looks professional, the sender domain 'microsoft365.net' is NOT owned by Microsoft (they use 'microsoft.com'). The email creates fear about a Russian sign-in to pressure you into clicking. If you're concerned about your account, go directly to account.microsoft.com - never click email links.",
+    "cues": [
+      "suspicious domain microsoft365.net",
+      "foreign sign-in claim",
+      "fear of account compromise",
+      "secure account button"
+    ],
+    "subject": "Action required: Unusual sign-in activity",
+    "linkText": "Secure my account"
+  },
+  "scn_010": {
+    "senderName": "HR Benefits Team",
+    "body": "Dear Team Member,\n\nThis is a friendly reminder that open enrollment for 2025 benefits ends this Friday, December 20th at 11:59 PM.\n\nIf you haven't made your selections yet, please log into the benefits portal to review your options:\n- Medical, dental, and vision plans\n- Life insurance\n- 401(k) contribution changes\n- FSA/HSA elections\n\nTo make changes: Log into Workday > Benefits > Open Enrollment\n\nIf you have questions, please contact the Benefits team:\n- Email: benefits@yourcompany.com\n- Phone: ext. 2847\n- Office hours: Mon-Fri 9am-5pm in Building A, Room 204\n\nIf you don't make any changes, your current elections will roll over (except FSA, which requires annual re-enrollment).\n\nBest regards,\nHR Benefits Team",
+    "timestamp": "1 day ago",
+    "explanation": "This is a legitimate HR communication about open enrollment. The sender email matches your company domain, it references internal systems (Workday) correctly, provides multiple verified contact methods (extension number, physical office location), and the request aligns with normal annual HR processes. Safe to proceed with accessing Workday directly.",
+    "cues": [],
+    "subject": "Open Enrollment Reminder - Deadline Friday"
+  },
+  "scn_011": {
+    "senderName": "Robert Chen - CFO",
+    "body": "I need you to process an urgent wire transfer for an acquisition we're closing today. This is highly confidential - do not discuss with anyone else on the team.\n\nAmount: $47,500\nBeneficiary: Atlas Consulting Group\nBank: Chase Bank\nAccount: 829174650\nRouting: 021000021\n\nThe deal must close by 4pm EST or we lose the opportunity. Please confirm once sent.\n\nI'm in meetings all afternoon so email is best.\n\nRobert Chen\nChief Financial Officer",
+    "timestamp": "1 hour ago",
+    "explanation": "This is a Business Email Compromise (BEC) attack targeting wire fraud. Red flags: The reply-to address goes to a personal Outlook account, not the corporate email. The 'confidential' framing prevents you from checking with others. The CFO being unavailable for calls is suspicious. Always verify large wire transfers by calling the executive's known office number, never by replying to the email.",
+    "cues": [
+      "urgent wire request",
+      "confidential pressure",
+      "reply-to mismatch",
+      "unavailable for calls",
+      "acquisition pretext"
+    ],
+    "subject": "Confidential - Urgent wire needed"
+  },
+  "scn_012": {
+    "senderName": "Parking Services",
+    "body": "CAMPUS PARKING NOTICE\n\nAll employees must re-register their vehicles by December 31, 2024 using our new digital system.\n\nScan the QR code below with your phone to complete registration:\n\n[QR CODE IMAGE]\n\nRegistration takes only 2 minutes and requires:\n- Vehicle information\n- License plate number\n- Payment method for 2025 permit\n\nFailure to register may result in parking citations starting January 1, 2025.\n\nCampus Parking Services",
+    "timestamp": "2 days ago",
+    "explanation": "This is QR code phishing ('quishing'). QR codes are essentially links you cannot preview before scanning. The sender domain 'campus-services.org' is suspicious - verify your actual campus parking contact. The QR code likely leads to a fake payment page. For any parking registration, go directly to your company's known parking portal or contact the facilities team.",
+    "cues": [
+      "unfamiliar sender domain",
+      "QR code",
+      "deadline pressure",
+      "requests payment info"
+    ],
+    "subject": "Updated Parking Registration Required"
+  },
+  "scn_013": {
+    "senderName": "Google Workspace",
+    "body": "Your organization has enabled a new productivity app that requires your authorization.\n\nApp: DocuSign Integration Pro\nPublisher: Verified Business Partner\nPermissions requested:\n- Read and compose emails\n- Access Google Drive files\n- View and manage calendar events\n\nThis integration will enhance your workflow by connecting DocuSign with your Google Workspace.\n\n[AUTHORIZE APP]\n\nIf you did not request this integration, please contact your IT administrator.\n\nThis notification was sent by Google Workspace.",
+    "timestamp": "3 hours ago",
+    "explanation": "This is OAuth consent phishing. Attackers create malicious apps that request permission to access your email and files. The sender domain 'google-workspace-apps.net' is NOT Google. Legitimate Google OAuth prompts appear directly in your browser, not via email links. The broad permissions (email, drive, calendar) would give attackers complete account access. Never authorize apps through email links.",
+    "cues": [
+      "OAuth consent request",
+      "broad permissions",
+      "fake Google domain",
+      "third-party sender"
+    ],
+    "subject": "Action Required: Approve New App Integration",
+    "linkText": "AUTHORIZE APP"
+  },
+  "scn_014": {
+    "senderName": "Slack",
+    "body": "Hi there,\n\nYour workspace admin has installed the Zoom app for your Slack workspace.\n\nWhat this means for you:\n- You can start Zoom meetings directly from Slack channels\n- Meeting links will be automatically shared in conversations\n- No additional action required from you\n\nIf you have questions about this installation, please contact your workspace administrator.\n\nThe Slack Team",
+    "timestamp": "1 week ago",
+    "explanation": "This is a legitimate notification from Slack about an admin-installed integration. The sender domain 'slack.com' is correct, it requires no action from you, and it directs questions to your admin rather than asking you to click suspicious links. This is simply an informational notice about a workspace change.",
+    "cues": [],
+    "subject": "Your team admin installed Zoom for Slack"
+  },
+  "scn_015": {
+    "senderName": "LinkedIn",
+    "body": "Hi there,\n\nSarah Mitchell, VP of Business Development at Horizon Partners, would like to connect with you on LinkedIn.\n\nSarah's note: \"Hi! I noticed we both attended the Digital Transformation Summit last month. I really enjoyed the panel discussion on AI in enterprise - would love to continue the conversation!\"\n\n12 mutual connections including:\n- James Rodriguez (Your colleague)\n- Michelle Thompson \n- David Kim\n\n[Accept Invitation]  [View Profile]\n\nYou're receiving connection invitations at this email address. Unsubscribe from these emails.\n\nLinkedIn Corporation, 1000 W Maude Ave, Sunnyvale, CA 94085",
+    "timestamp": "4 hours ago",
+    "explanation": "This is AI-generated spear phishing that uses personal context to seem legitimate. The domain 'linkedin-mail.net' is NOT LinkedIn (real domain: linkedin.com). Attackers use AI to research targets and craft personalized messages mentioning real events you attended and colleagues. Always check sender domains carefully and access LinkedIn directly through linkedin.com, not email links.",
+    "cues": [
+      "fake LinkedIn domain",
+      "personalized context",
+      "urgency through social proof",
+      "AI-generated personal note"
+    ],
+    "subject": "Sarah Mitchell wants to connect - 12 mutual connections",
+    "linkText": "Accept Invitation"
+  },
+  "scn_016": {
+    "senderName": "Adobe Document Cloud",
+    "body": "Hello,\n\nA document requires your electronic signature.\n\nDocument: Q4 2024 Service Agreement Amendment\nFrom: Patterson & Associates Legal\nPages: 3\nExpires: December 18, 2024\n\nThis amendment updates the renewal terms per our discussion last Thursday. Key changes include the extended payment terms you requested.\n\n[Review and Sign Document]\n\nDocument ID: ASG-2024-8847291\nSent via Adobe Sign - the trusted e-signature solution\n\nThis message was sent to you because you are listed as a signer on this document.",
+    "timestamp": "6 hours ago",
+    "explanation": "This is sophisticated AI-generated phishing impersonating Adobe Sign. The domain 'adobesign-documents.com' is NOT Adobe (real domain: adobe.com or adobesign.com). The message references a fake prior conversation to build trust. Real Adobe Sign emails come from '@adobesign.com' and you can verify documents by logging into your Adobe account directly.",
+    "cues": [
+      "fake Adobe domain",
+      "deadline pressure",
+      "reference to prior conversation",
+      "sophisticated formatting"
+    ],
+    "subject": "Contract Amendment - Your signature needed",
+    "linkText": "Review and Sign Document"
+  },
+  "scn_017": {
+    "senderName": "Unknown Caller",
+    "body": "[VOICEMAIL TRANSCRIPT]\n\n\"Hi, this is Michael from Chase Bank's fraud prevention team. We've detected some unusual activity on your business account ending in 4872. \n\nThere were three transactions totaling $12,847 that we need to verify with you immediately. These charges appear to be from an overseas merchant.\n\nPlease call us back at 1-888-555-0142 within the next 2 hours to prevent your account from being frozen. Have your account number and the last 4 of your social ready for verification.\n\nThis is an urgent security matter. Thank you.\"\n\n[END VOICEMAIL]",
+    "timestamp": "25 minutes ago",
+    "explanation": "This voicemail shows signs of AI-generated voice phishing (vishing). Fraudsters use AI to clone voices and create convincing bank representative calls. Red flags: They provide a callback number (not the number on your card), create urgency, and request sensitive information. Never call back numbers from voicemails - use the number on your bank card or statement instead.",
+    "cues": [
+      "AI-generated voice clone",
+      "urgency",
+      "callback to unknown number",
+      "requests sensitive info"
+    ],
+    "subject": "Voicemail from your bank's fraud department"
+  },
+  "scn_018": {
+    "senderName": "Microsoft",
+    "body": "Microsoft account\nUnusual sign-in activity\n\nWe noticed a new sign-in to your Microsoft account.\n\nDetails:\nCountry/region: United States\nIP address: 192.168.1.xxx\nPlatform: Windows 11\nBrowser: Microsoft Edge\n\nIf this was you, you can ignore this message.\n\nIf this wasn't you, please secure your account:\n1. Sign in to your Microsoft account at account.microsoft.com\n2. Go to Security > Sign-in activity\n3. Review and revoke any suspicious sessions\n\nIf you need help, visit support.microsoft.com.\n\nThe Microsoft account team",
+    "timestamp": "Yesterday",
+    "explanation": "This is a legitimate security notification from Microsoft. The sender domain '@microsoft.com' is correct. The email provides information without demanding urgent action, tells you to go directly to account.microsoft.com (not through a link), and provides official support channels. This is a helpful security notification to review if you don't recognize the sign-in.",
+    "cues": [],
+    "subject": "New sign-in to your Microsoft account",
+    "linkText": "account.microsoft.com"
+  },
+  "scn_019": {
+    "senderName": "USPS",
+    "body": "USPS: Your package cannot be delivered due to incomplete address information. \n\nTo reschedule delivery, scan the QR code or visit: usps-redelivery.info/track\n\nYour tracking: 9400111899223847562\n\nReply STOP to opt out",
+    "timestamp": "1 hour ago",
+    "explanation": "This is SMS phishing (smishing) with a QR code. The domain 'usps-redelivery.info' is NOT USPS (real domain: usps.com). USPS does not send QR codes via SMS for redelivery. The tracking number format looks legitimate but is randomly generated. Always track packages directly at usps.com using tracking numbers from your original order confirmation.",
+    "cues": [
+      "fake USPS domain",
+      "QR code in SMS",
+      "address problem pretext",
+      "short URL"
+    ],
+    "subject": "Package delivery notification"
+  },
+  "scn_020": {
+    "senderName": "Microsoft",
+    "body": "Your Microsoft verification code is: 847291\n\nIf you didn't request this code, someone may be trying to access your account. \n\nReply HELP for assistance or visit microsoft-security-alert.com to secure your account.\n\nThis code expires in 10 minutes.",
+    "timestamp": "2 minutes ago",
+    "explanation": "This is an MFA interception attack. While the code may be real (an attacker triggered it), the link to 'microsoft-security-alert.com' is malicious. Real Microsoft MFA codes never include links. If you receive an unexpected MFA code, someone is attempting to access your account RIGHT NOW. Change your password immediately through the official Microsoft website and enable additional security measures.",
+    "cues": [
+      "MFA interception attempt",
+      "fake Microsoft domain",
+      "real-time attack indicator"
+    ],
+    "subject": "Security verification code",
+    "linkText": "microsoft-security-alert.com"
+  },
+  "scn_021": {
+    "senderName": "OpenSea",
+    "body": "Great news!\n\nA buyer has made an offer on your NFT collection.\n\nCollection: Bored Ape Yacht Club #8847\nOffer: 12.5 ETH (approximately $28,750)\nBuyer: CryptoWhale.eth (Verified Collector)\nExpires: 24 hours\n\n[Accept Offer]  [Counter Offer]\n\nThis offer is significantly above floor price. Act fast to secure this deal!\n\nLog in with your wallet to review the offer details.\n\nOpenSea - The largest NFT marketplace",
+    "timestamp": "30 minutes ago",
+    "explanation": "This is cryptocurrency/NFT phishing. The domain 'opensea-nft.io' is NOT OpenSea (real domain: opensea.io). Clicking 'Accept Offer' leads to a fake wallet connection that steals your cryptocurrency. The 'above floor price' language creates FOMO. Never connect your wallet through email links - always access OpenSea directly by typing the URL.",
+    "cues": [
+      "fake OpenSea domain",
+      "wallet connection request",
+      "high-value lure",
+      "urgency"
+    ],
+    "subject": "You received an offer for your NFT collection!",
+    "linkText": "Accept Offer"
+  },
+  "scn_022": {
+    "senderName": "Unknown",
+    "body": "Hey Jennifer! Are we still on for coffee tomorrow at 3pm? I found that cafe you mentioned downtown.",
+    "timestamp": "2 hours ago",
+    "explanation": "This is the first stage of a 'pig butchering' scam. Scammers send 'wrong number' texts to initiate conversation. If you reply, even to correct them, they'll apologize and try to befriend you. The goal is building a relationship before introducing investment fraud. Best action: don't engage, just delete.",
+    "cues": [
+      "unsolicited message",
+      "wrong name",
+      "pig butchering initial contact"
+    ],
+    "subject": "Wrong number text"
+  },
+  "scn_023": {
+    "senderName": "Unknown",
+    "body": "Oh sorry! Wrong number lol. But you seem friendly! I'm Amy from San Diego. Since we're texting anyway, what do you do for work? I'm in crypto trading and just made $15K this month!",
+    "timestamp": "1 hour ago",
+    "explanation": "Classic escalation in a pig butchering scam. After the 'wrong number' hook, they pivot to mentioning impressive financial gains to spark interest. This is social engineering - they're profiling you for investment fraud. The extraordinary gains mentioned are bait. Report and block this number.",
+    "cues": [
+      "unsolicited financial advice",
+      "mentions crypto gains",
+      "building rapport",
+      "too friendly stranger"
+    ],
+    "subject": "Follow-up after wrong number"
+  },
+  "scn_024": {
+    "senderName": "Amy",
+    "body": "I hope you don't mind me texting again! I was thinking about our chat and wanted to share something special.\n\nMy uncle in Hong Kong taught me his trading system. I've tripled my savings in 6 months! I've never shared this with strangers but you seem really genuine.\n\nWould you be interested in learning? I can guide you. Start with just $500 on this platform: crypto-elite-trading.com\n\nLet me know! -Amy",
+    "timestamp": "30 minutes ago",
+    "explanation": "Final stage of pig butchering - the investment pitch. Red flags: Stranger offering 'secret' trading knowledge, unrealistic returns (tripled savings), unknown platform, and emotional manipulation ('you seem genuine'). This platform will steal your money. These scams have cost victims billions globally. Report immediately.",
+    "cues": [
+      "unsolicited investment advice",
+      "guaranteed returns",
+      "foreign connection story",
+      "unknown trading platform",
+      "pressure to invest"
+    ],
+    "subject": "Investment opportunity"
+  },
+  "scn_025": {
+    "senderName": "Mark Thompson (CEO)",
+    "body": "Hi,\n\nAre you at your desk? I need to ask you something but I'm about to go into a board meeting.\n\nMark\nSent from my iPhone",
+    "timestamp": "15 minutes ago",
+    "explanation": "This is the opening of a BEC (Business Email Compromise) attack. The message is intentionally vague to get you to respond. Notice the reply-to goes to a Gmail account. Before responding, verify through a known channel like calling the CEO's assistant or office number directly.",
+    "cues": [
+      "executive impersonation",
+      "reply-to mismatch",
+      "vague urgent request",
+      "fake CEO email"
+    ],
+    "subject": "Quick question"
+  },
+  "scn_026": {
+    "senderName": "Mark Thompson (CEO)",
+    "body": "Perfect, you're there.\n\nI need you to pick up some gift cards as thank-you gifts for our key clients. Get 5 Amazon cards at $200 each ($1000 total).\n\nThis is time-sensitive - I need the card numbers texted to me at 555-0147 before 5pm. I'll reimburse you from the exec budget tomorrow.\n\nCan you handle this? I'm counting on you.\n\nMark",
+    "timestamp": "10 minutes ago",
+    "explanation": "Classic BEC gift card scam. The attacker establishes contact, then requests untraceable gift cards. Major red flags: CEOs don't buy gift cards this way, the request bypasses normal procurement, card numbers texted to a personal phone are unrecoverable, and the 'trust' language ('counting on you') is manipulation. Report immediately.",
+    "cues": [
+      "gift card request",
+      "text card numbers",
+      "time pressure",
+      "skip normal processes",
+      "personal reimbursement promise"
+    ],
+    "subject": "Re: Quick question"
+  },
+  "scn_027": {
+    "senderName": "Mark Thompson (CEO)",
+    "body": "I'm glad you're being cautious, but this is really me and I need this handled immediately.\n\nActually, forget the gift cards. I need you to process a wire transfer instead - $47,500 to finalize an acquisition before market close.\n\nWire to:\nMeridian Consulting Group\nChase Bank\nRouting: 021000021\nAccount: 847291650\n\nDo NOT discuss this with anyone - it's confidential until announced. Send me confirmation when done.\n\nMark",
+    "timestamp": "5 minutes ago",
+    "explanation": "Escalation after encountering resistance. The attacker pivoted from gift cards to wire fraud - a more lucrative target. The 'confidential' framing isolates you from verification. The urgency around 'market close' is manufactured pressure. This follows the pattern of real attacks that have cost companies millions. Report to security immediately.",
+    "cues": [
+      "escalated urgency",
+      "wire transfer request",
+      "confidentiality demand",
+      "pressure after pushback",
+      "new banking details"
+    ],
+    "subject": "Re: Quick question - URGENT"
+  },
+  "scn_028": {
+    "senderName": "Microsoft Security Alert",
+    "body": "[AUTOMATED VOICE MESSAGE]\n\nCRITICAL SECURITY ALERT. This is Microsoft Windows. Your computer has been compromised. Viruses have been detected that are stealing your banking information and personal files.\n\nDO NOT SHUT DOWN YOUR COMPUTER. This may cause permanent data loss.\n\nCall Microsoft Support immediately at 1-888-555-0199 to speak with a certified technician. Failure to call within 30 minutes will result in your computer being permanently disabled.\n\nYour case number is: MS-8847291\n\nThis is an urgent security matter requiring immediate attention.",
+    "timestamp": "5 minutes ago",
+    "explanation": "This is a tech support scam. Microsoft never calls users about viruses. Red flags: Automated fear-based message, threats of 'permanent' damage, urgent callback request, and a fake case number. If you call, scammers will try to get remote access to your computer and your payment info. Report and ignore.",
+    "cues": [
+      "unsolicited security warning",
+      "Microsoft impersonation",
+      "fake case number",
+      "threat of data loss",
+      "callback number"
+    ],
+    "subject": "Voicemail: Computer security warning"
+  },
+  "scn_029": {
+    "senderName": "Microsoft Support (James)",
+    "body": "[CALL TRANSCRIPT]\n\n\"Thank you for calling Microsoft Support, this is James, case number MS-8847291. I see here your computer has been flagged for a critical security breach.\n\nI'll need you to download our remote support tool so I can assess the damage. Go to anydesk-support.com and click 'Connect with Technician.'\n\nWhile that downloads, I'll need to verify your identity. Can you confirm your full name, date of birth, and the last four digits of your Social Security number?\n\nDon't worry, this is standard Microsoft verification procedure. I'm here to help protect your computer.\"",
+    "timestamp": "Just now",
+    "explanation": "The scam continues with remote access and identity theft. 'AnyDesk' is real software, but the domain is fake. Once connected, they can install malware, steal files, and drain accounts. Microsoft never asks for SSN or uses third-party sites for support. Hang up immediately and report. If you gave any info, change passwords and monitor accounts.",
+    "cues": [
+      "remote access request",
+      "fake support domain",
+      "requests personal information",
+      "fake verification procedure"
+    ],
+    "subject": "Tech support call transcript"
+  },
+  "scn_030": {
+    "senderName": "Sarah Martinez (VP Operations)",
+    "body": "Hi,\n\nI know this is last minute, but I need your approval signature on the Q4 budget reforecast before the board meeting at 2pm today.\n\nThe document is in the shared Finance folder: S:\\Finance\\2024\\Q4 Budget Reforecast Final.xlsx\n\nPlease review and sign using DocuSign (you should have received a separate notification from our official DocuSign account).\n\nIf you have questions, I'm at my desk - call me at ext. 3847.\n\nThanks for understanding the rush!\n\nSarah",
+    "timestamp": "45 minutes ago",
+    "explanation": "This is a legitimate urgent request. Key indicators: The sender email matches the company domain with correct reply-to, references internal systems (S: drive, DocuSign), provides a verifiable contact method (internal extension), and the urgency is proportionate to a real business need (board meeting). Real deadlines exist - the goal is recognizing legitimate urgency vs manufactured pressure.",
+    "cues": [],
+    "subject": "URGENT: Need signature before board meeting at 2pm"
+  },
+  "scn_031": {
+    "senderName": "IT Security",
+    "body": "Dear Employee,\n\nYour network password will expire in 3 days.\n\nTo change your password:\n1. Press Ctrl+Alt+Delete on your computer\n2. Select \"Change a password\"\n3. Enter your current password, then your new password twice\n\nPassword requirements:\n- Minimum 12 characters\n- Mix of uppercase, lowercase, numbers, and symbols\n- Cannot reuse last 10 passwords\n\nIf you need assistance, contact the IT Help Desk at helpdesk@yourcompany.com or ext. 4357.\n\nDo NOT reply to this email with your password.\n\nIT Security Team",
+    "timestamp": "This morning",
+    "explanation": "This is a legitimate IT notification. Key indicators: Correct company domain, instructs you to change password locally (Ctrl+Alt+Delete) rather than through a link, explicitly says NOT to share your password, and provides known internal contacts. Compare this to phishing which asks you to click links or enter credentials on a webpage.",
+    "cues": [],
+    "subject": "Action Required: Password expires in 3 days"
+  },
+  "scn_032": {
+    "senderName": "Apex Software Solutions",
+    "body": "Dear Accounts Payable,\n\nThis is a friendly reminder that invoice #INV-2024-1156 for $8,750.00 is now 15 days past due.\n\nInvoice details:\n- Invoice #: INV-2024-1156\n- Invoice date: November 15, 2024\n- Due date: November 30, 2024\n- Amount: $8,750.00\n- Service: Annual software license renewal\n\nPlease process payment at your earliest convenience to avoid service interruption on December 31, 2024.\n\nPayment can be made via:\n- ACH transfer (details on file)\n- Check payable to Apex Software Solutions\n- Credit card via our secure portal at https://pay.apexsoftware.com\n\nIf you have questions, contact our AR team at ar@apexsoftware.com or (555) 847-2910.\n\nThank you for your business.\n\nJennifer Walsh\nAccounts Receivable\nApex Software Solutions",
+    "timestamp": "Yesterday",
+    "explanation": "This appears to be a legitimate past-due notice but warrants verification. Best practice: Check if Apex Software is a known vendor in your system, verify the invoice number matches your records, and confirm payment details haven't changed. The request itself isn't suspicious, but vendor invoices are commonly spoofed. A quick verification call protects against invoice fraud.",
+    "cues": [],
+    "subject": "Past due invoice - Account #AC-7841",
+    "linkText": "our secure portal"
+  },
+  "scn_033": {
+    "senderName": "Chase Bank",
+    "body": "Chase Fraud: Did you attempt a $847.00 purchase at AMAZON.COM on 12/15? Reply YES or NO. If not you, we'll block your card. Msg&data rates may apply.",
+    "timestamp": "10 minutes ago",
+    "explanation": "This is a legitimate fraud alert format from Chase. Key indicators: The number matches Chase's known fraud line, it asks for simple YES/NO (no links or personal info), and describes a specific transaction. However, it's always safer to verify: Call the number on the back of your card rather than replying to the text. This protects against sophisticated spoofing.",
+    "cues": [],
+    "subject": "Fraud alert"
+  },
+  "scn_034": {
+    "senderName": "Human Resources",
+    "body": "All Employees,\n\nEffective immediately, please note the following changes to our travel and expense policy:\n\nKEY CHANGES:\n1. All travel bookings must use our new portal: Concur (travel.yourcompany.com)\n2. Expense reports over $500 require manager + VP approval\n3. Personal credit cards are no longer reimbursable for travel\n\nWHY NOW:\nDue to recent audit findings, we must implement these controls immediately to maintain compliance with our SOX obligations.\n\nWHAT YOU NEED TO DO:\n- Complete the Concur training by Friday (link in Workday Learning)\n- Submit any outstanding expense reports under the old policy by December 20\n\nQuestions? Contact hr@yourcompany.com or attend Friday's town hall at 3pm.\n\nThank you for your understanding.\n\nHR Team",
+    "timestamp": "2 hours ago",
+    "explanation": "This is a legitimate policy update, despite the urgent tone. Key indicators: Correct company domain, references internal systems (Workday, known portal), provides context (audit findings), offers multiple verification channels (email, town hall), and doesn't ask for credentials or payments. Organizations do have legitimate urgent policy changes.",
+    "cues": [],
+    "subject": "IMPORTANT: New expense policy effective immediately",
+    "linkText": "Concur"
+  },
+  "scn_035": {
+    "senderName": "Microsoft Outlook",
+    "body": "You've been invited to a meeting:\n\nQ1 Planning Discussion\n\nWhen: Tuesday, December 17, 2024 2:00 PM - 3:00 PM\nWhere: Microsoft Teams meeting\n\nOrganizer: Tom Richards (t.richards@clientcompany.com)\nAttendees: You, Sarah Martinez, Finance Team\n\nNote from organizer:\n\"Hi team - as discussed in last week's call, let's align on Q1 priorities and budget allocation. I've attached the draft planning template for review beforehand.\"\n\n[Accept]  [Tentative]  [Decline]\n\nJoin Microsoft Teams Meeting\nMeeting ID: 284 847 291#\nPasscode: Q1Plan",
+    "timestamp": "3 hours ago",
+    "explanation": "This calendar invite is likely legitimate but worth verifying since it's from an external contact. Check: Do you have a relationship with ClientCompany? Does this align with a discussion from last week? When uncertain about external meeting requests, confirm with your internal colleague (Sarah Martinez) that this meeting was expected. Calendar invites can be used for phishing.",
+    "cues": [],
+    "subject": "Meeting Request: Q1 Planning Discussion",
+    "attachmentName": "Q1_Planning_Template.xlsx"
+  },
+  "scn_036": {
+    "senderName": "David Chen - ABC Supplies",
+    "body": "Hi,\n\nFollowing up on our conversation about PO #4847. I've attached the invoice as requested.\n\nIMPORTANT: Please note our banking information has changed. Our old bank (First National) was acquired, so please use these new details for all future payments:\n\nNew Bank: Horizon Trust\nAccount Name: ABC Supplies LLC\nAccount: 847291650\nRouting: 021000089\n\nPlease update your records and process this invoice to the new account. Let me know if you have any questions!\n\nThanks,\nDavid Chen\nABC Supplies\n\n---\nOn Dec 10, David Chen wrote:\n> Great talking with you about the Q4 order. I'll send over the invoice\n> by end of week. Thanks for your continued business!\n\nOn Dec 10, you wrote:\n> Hi David, can you send the invoice for PO #4847? We're processing\n> December payments this week.",
+    "timestamp": "1 hour ago",
+    "explanation": "This is a reply-chain hijack attack. The email appears to be a continued conversation, but look carefully at the domain: 'abc-suppIies.com' uses a capital I instead of lowercase L. Attackers monitor vendor relationships, then insert themselves with spoofed domains and fake banking changes. ALWAYS verify banking changes by calling the vendor's known phone number from your records, never from the email.",
+    "cues": [
+      "look-alike domain",
+      "banking info change",
+      "fake reply chain",
+      "domain uses capital I instead of lowercase l"
+    ],
+    "subject": "Re: PO #4847 - Invoice and updated payment info",
+    "attachmentName": "Invoice_PO4847.pdf"
+  },
+  "scn_037": {
+    "senderName": "DocuSign",
+    "body": "DocuSign\n\nHello,\n\nMarcus Chen has sent you a document to review and sign.\n\nDocument: NDA - Confidential Agreement\nSent by: Marcus Chen (m.chen@horizonventures.com)\nExpires: December 20, 2024\n\nThis NDA is required before our meeting next Tuesday to discuss the potential partnership opportunity. Please review and sign at your earliest convenience.\n\nREVIEW DOCUMENT\n\nThis email was sent to you by Marcus Chen through DocuSign Electronic Signature Service.\n\nQuestions? Contact the sender directly.\n\nDocuSign, Inc. | 221 Main Street, Suite 1550 | San Francisco, CA 94105",
+    "timestamp": "2 hours ago",
+    "explanation": "This is a highly sophisticated phishing email with perfect grammar and formatting. While docusign.net is a legitimate DocuSign domain, the red flags are contextual: Do you know Marcus Chen? Are you expecting this NDA? Do you have a meeting scheduled? Attackers use real DocuSign formatting to steal credentials. When in doubt, contact the supposed sender through a known channel before signing anything.",
+    "cues": [
+      "unexpected document",
+      "suspicious sender domain",
+      "no prior context"
+    ],
+    "subject": "Document Ready for Signature: NDA - Confidential Agreement",
+    "linkText": "REVIEW DOCUMENT"
+  },
+  "scn_038": {
+    "senderName": "IT Service Desk",
+    "body": "IT Service Announcement\n\nDear Colleague,\n\nAs part of our ongoing security improvements, your Multi-Factor Authentication (MFA) enrollment requires an update.\n\nWhat's happening:\nWe're migrating to Microsoft Authenticator for enhanced security. Your current MFA method will be deprecated on December 31, 2024.\n\nAction required:\nPlease complete your MFA migration by visiting our secure portal. The process takes approximately 5 minutes.\n\nComplete MFA Migration\n\nTimeline:\n- Now - December 20: Complete migration (recommended)\n- December 21 - 30: Migration required\n- December 31: Legacy MFA disabled\n\nIf you experience issues, contact the IT Service Desk at helpdesk@yourcompany.com or call ext. 4357.\n\nThank you for your cooperation.\n\nIT Security Team\nYour Company",
+    "timestamp": "This morning",
+    "explanation": "This is sophisticated MFA phishing. The sender domain 'yourcompany-it.net' is NOT your company's domain. Attackers know MFA migrations happen, so they create fake ones. Red flags: External domain, link to complete migration (real IT would use internal systems), and the urgency. Legitimate MFA changes come from your actual IT domain and direct you to internal portals you already use.",
+    "cues": [
+      "look-alike domain",
+      "MFA phishing",
+      "manufactured deadline"
+    ],
+    "subject": "Scheduled: Multi-Factor Authentication Upgrade",
+    "linkText": "Complete MFA Migration"
+  },
+  "scn_039": {
+    "senderName": "Concur Travel",
+    "body": "Concur Travel\n\nYour trip has been booked.\n\nTraveler: Jennifer Walsh\nConfirmation: ABCD12\n\nOUTBOUND FLIGHT\nDecember 18, 2024\nUnited Airlines UA 847\nDepart: JFK 8:00 AM\nArrive: SFO 11:30 AM (local)\n\nRETURN FLIGHT\nDecember 20, 2024\nUnited Airlines UA 1156\nDepart: SFO 6:00 PM\nArrive: JFK 2:30 AM +1 (local)\n\nTotal Cost: $847.00\n\nView or Modify Booking\n\nNeed to make changes? Log in to Concur Travel to update your itinerary.\n\nConcur Travel Services\nSAP Concur",
+    "timestamp": "4 hours ago",
+    "explanation": "This is travel-themed phishing. The domain 'concur-solutions.com' is NOT SAP Concur (real domain: concur.com). Even if you do travel, attackers send fake bookings hoping you'll click to 'view' them. Check: Did you book this trip? Is this your correct name? Always access Concur through your company's known travel portal or bookmark, never through email links.",
+    "cues": [
+      "fake Concur domain",
+      "unexpected booking",
+      "credential harvesting"
+    ],
+    "subject": "Flight Confirmation: New York to San Francisco - Dec 18",
+    "linkText": "View or Modify Booking"
+  },
+  "scn_040": {
+    "senderName": "IT Support - Michael",
+    "body": "Hi there,\n\nI'm from the IT support team and we've detected some unusual login attempts on your account from an unfamiliar location.\n\nTo keep your account secure, I need you to click this link and verify your credentials right away:\n\nhttps://teams-microsoft-verify.com/auth/login\n\nIf you don't verify within the next 30 minutes, your account will be temporarily locked for security reasons.\n\nPlease let me know once you've completed the verification!\n\nThanks,\nMichael\nIT Support",
+    "timestamp": "15 minutes ago",
+    "explanation": "This is Teams-based phishing. Red flags: The sender email is from an external domain 'external-ithelp.com' not your company. Real IT support would not contact you through Teams with external credentials. The link 'teams-microsoft-verify.com' is NOT Microsoft. Never click verification links sent through chat - go directly to your company's IT portal.",
+    "cues": [
+      "external sender",
+      "urgency",
+      "suspicious link domain",
+      "threat of account lock",
+      "unsolicited request"
+    ],
+    "subject": "Urgent: Your account needs verification",
+    "linkText": "Verification Link"
+  },
+  "scn_041": {
+    "senderName": "Sarah Chen",
+    "body": "Hey team,\n\nJust wanted to give everyone a quick update on the Q4 project timeline.\n\nWe're on track to hit our December 20th deadline. I've updated the shared docs with the latest milestones.\n\nA few things to note:\n- Design review is scheduled for Thursday 2pm\n- Dev freeze starts December 15th\n- Please update your status in the project tracker by EOD Friday\n\nLet me know if you have any blockers!\n\nSarah",
+    "timestamp": "1 hour ago",
+    "explanation": "This is a legitimate internal Teams message. The sender is from your company domain (@yourcompany.com), the content is routine project communication with no unusual requests, no links to click, and references internal processes. This is normal workplace communication.",
+    "cues": [],
+    "subject": "Q4 Project Update"
+  },
+  "scn_042": {
+    "senderName": "HR-Payroll-Bot",
+    "body": "Congratulations!\n\nYou've been selected for a year-end performance bonus of $2,500. \n\nTo receive your bonus in the next payroll cycle, you must confirm your direct deposit information within 48 hours.\n\nClick here to verify your banking details:\nhttps://hr-portal-bonuses.com/verify-deposit\n\nThis is an automated message from the HR Payroll Integration.\n\nHuman Resources",
+    "timestamp": "30 minutes ago",
+    "explanation": "This is Slack-based phishing using a fake bonus lure. Red flags: The sender is from an external domain 'slack-hr-integrations.io', not your company. Real HR would never ask you to 'verify banking details' through a Slack bot with an external link. Bonus notifications come through official HR channels and payroll systems you already use.",
+    "cues": [
+      "financial lure",
+      "deadline pressure",
+      "external link",
+      "asking for banking details",
+      "automated bot pretense"
+    ],
+    "subject": "Year-End Bonus Approval Required",
+    "linkText": "Verify Banking Details"
+  },
+  "scn_043": {
+    "senderName": "Standup Bot",
+    "body": "Good morning!\n\nIt's time for your daily standup update. Please share:\n\n1. What did you accomplish yesterday?\n2. What are you working on today?\n3. Any blockers?\n\nPost your update in #dev-standups\n\nHave a great day!",
+    "timestamp": "8:00 AM",
+    "explanation": "This is a legitimate Slack bot reminder. The sender is from your company's Slack workspace (@yourcompany.slack.com), it's a routine standup reminder with no links to click or actions required outside of normal workflow. This is standard automated workplace communication.",
+    "cues": [],
+    "subject": "Daily Standup Reminder"
+  },
+  "scn_044": {
+    "senderName": "David Thompson (Finance)",
+    "body": "Hi,\n\nI've shared the Q4 budget review document with you. Please review before our meeting tomorrow.\n\nDocument: Q4_Budget_Review_Final.xlsx\n\nClick here to open in SharePoint:\nhttps://yourcompany-sharepoint.com/docs/budget-review\n\nLet me know if you have any questions about the figures.\n\nBest,\nDavid Thompson\nFinance Department",
+    "timestamp": "2 hours ago",
+    "explanation": "This is sophisticated Teams phishing using a look-alike domain. The sender appears to be internal but 'yourcompany-finance.com' is NOT 'yourcompany.com' - attackers add words to domains to trick you. The SharePoint link 'yourcompany-sharepoint.com' is also fake (real SharePoint is sharepoint.com or your tenant). Always verify by checking the full sender domain and hovering over links before clicking.",
+    "cues": [
+      "look-alike domain",
+      "spoofed internal name",
+      "external SharePoint link",
+      "manufactured urgency"
+    ],
+    "subject": "Shared Document: Budget Review Q4",
+    "linkText": "Open in SharePoint"
+  },
+  "scn_045": {
+    "senderName": "Alex from Vendor Solutions",
+    "body": "Hi there,\n\nFollowing up on our call from last week about the software renewal.\n\nI know the deadline is coming up on Friday, so I wanted to make sure we're on track to get the PO processed.\n\nCan you confirm whether your procurement team has approved the renewal? Happy to jump on a quick call if that would help move things along.\n\nThanks,\nAlex\nVendor Solutions\nAccount Manager",
+    "timestamp": "Yesterday",
+    "explanation": "This appears to be a legitimate vendor follow-up but contains some elements that could be concerning (external sender, deadline pressure, procurement mention). The appropriate action is to verify - check your calendar for the referenced call, or contact your procurement team to confirm this is an active vendor relationship. Not every external contact is malicious, but verification is prudent.",
+    "cues": [
+      "external sender",
+      "deadline mention",
+      "procurement request"
+    ],
+    "subject": "Following up on our call"
+  },
+  "scn_046": {
+    "senderName": "Jennifer Walsh",
+    "body": "Hey,\n\nSomething came up and I need to reschedule our 1:1 that was set for Thursday at 3pm.\n\nWould Friday morning work for you instead? I'm free between 9-11am.\n\nLet me know what works best!\n\nJen",
+    "timestamp": "3 hours ago",
+    "explanation": "This is a legitimate Teams message from a colleague. The sender is from your company domain (@yourcompany.com), the request is routine (rescheduling a meeting), there are no links or unusual requests. This is normal workplace communication.",
+    "cues": [],
+    "subject": "Need to reschedule our 1:1"
+  },
+  "scn_047": {
+    "senderName": "Slack Security",
+    "body": "SECURITY ALERT\n\nWe detected a sign-in to your Slack account from an unrecognized device:\n\nLocation: Moscow, Russia\nDevice: Windows PC\nTime: 2:47 AM (your time)\n\nIf this wasn't you, your account may be compromised.\n\nSecure your account immediately:\nhttps://slack-security-center.net/secure-account\n\nIf this was you, you can ignore this message.\n\nSlack Security Team",
+    "timestamp": "5 minutes ago",
+    "explanation": "This is a fear-based phishing attack using a fake security alert. Red flags: The sender domain 'slack-workspace-security.net' is NOT Slack (real Slack is slack.com). The 'Moscow, Russia' location is designed to scare you into clicking without thinking. Real Slack security alerts come from slack.com and direct you to your actual Slack settings, not external websites.",
+    "cues": [
+      "fear-based urgency",
+      "fake security alert",
+      "suspicious domain",
+      "external sender",
+      "foreign location scare"
+    ],
+    "subject": "Unusual Sign-in Activity Detected",
+    "linkText": "Secure Your Account"
+  },
+  "scn_048": {
+    "senderName": "IT Department",
+    "body": "Hello,\n\nYour network password will expire in 7 days on December 23rd.\n\nTo change your password:\n1. Press Ctrl+Alt+Delete on your workstation\n2. Select \"Change a password\"\n3. Follow the prompts\n\nIf you need assistance, contact the IT Help Desk at ext. 4357 or visit the IT portal at https://it.yourcompany.com\n\nThank you,\nIT Department",
+    "timestamp": "9:00 AM",
+    "explanation": "This is a legitimate IT notification. The sender is from your company domain (@yourcompany.com), provides safe instructions (Ctrl+Alt+Delete method doesn't involve clicking links), and includes legitimate contact information (internal extension, official portal). Real IT communications often remind users about password policies.",
+    "cues": [],
+    "subject": "Password Expiration Reminder - 7 Days"
+  },
+  "scn_049": {
+    "senderName": "Robert Chen",
+    "body": "Hi,\n\nI'd like to schedule your quarterly review for next week. Please let me know which of these times work for you:\n\n- Tuesday 2:00 PM\n- Wednesday 10:00 AM\n- Thursday 3:00 PM\n\nWe'll meet in my office (Building A, Room 302). Please bring your project updates and any topics you'd like to discuss.\n\nThanks,\nRobert",
+    "timestamp": "Yesterday",
+    "explanation": "This is a routine workplace email from a manager. The sender is from your company domain, the request is normal (scheduling a review meeting), there are no links to click or unusual requests. This is standard workplace communication.",
+    "cues": [],
+    "subject": "Quarterly Review - Please confirm availability"
+  },
+  "scn_050": {
+    "senderName": "Your Company",
+    "body": "Your verification code is 847291. This code expires in 10 minutes. If you didn't request this code, please contact IT security.",
+    "timestamp": "Just now",
+    "explanation": "This is a legitimate two-factor authentication code. Key indicators: It's a response to an action YOU initiated (logging in), comes from a short code number typical of automated systems, doesn't ask you to click any links, and includes a warning about contacting security if unexpected. Only use this code if you just attempted to log in.",
+    "cues": []
+  },
+  "scn_051": {
+    "senderName": "Finance Department",
+    "body": "Dear Team,\n\nThis is a reminder that all Q4 expense reports must be submitted by this Friday, December 20th.\n\nPlease submit your reports through the standard Concur portal at concur.yourcompany.com (accessible from our intranet).\n\nRequired documentation:\n- Itemized receipts for all expenses over $25\n- Manager approval for any single expense over $500\n- Completed expense category coding\n\nQuestions? Contact the Finance team at finance@yourcompany.com or ext. 2200.\n\nThank you,\nFinance Department",
+    "timestamp": "2 days ago",
+    "explanation": "This is a legitimate finance department communication. The sender uses your company domain, references internal systems (Concur portal on company intranet), includes normal business deadlines, and provides legitimate contact methods. Note the internal portal URL uses your company domain.",
+    "cues": [],
+    "subject": "Reminder: Q4 Expense Reports Due Friday"
+  },
+  "scn_052": {
+    "senderName": "IT Help Desk",
+    "body": "IT Help Desk calling regarding your support ticket #45892 about the printer issue.\n\n\"Hi, this is Marcus from IT Help Desk returning your call about the printer on the 3rd floor. I see you submitted a ticket this morning about paper jams.\n\nI've checked the maintenance schedule and our technician can come by tomorrow between 10 and 11 AM. Will someone be available to show them to the printer?\n\nIf you need to reschedule, just update the ticket or call us back at extension 4357. Thanks!\"",
+    "timestamp": "2 hours ago",
+    "explanation": "This is a legitimate IT support callback. Key indicators: References a specific ticket number YOU created, matches details of an issue you reported, provides scheduling information rather than asking for credentials or remote access, and offers to be contacted through normal channels. This is standard IT support workflow.",
+    "cues": [],
+    "subject": "Return call regarding your ticket #45892"
+  },
+  "scn_053": {
+    "senderName": "Amanda Liu",
+    "body": "Hey!\n\nI finished the first draft of the client proposal we discussed in yesterday's meeting. Can you take a look when you get a chance?\n\nI've saved it in our shared team folder: Teams > Marketing Team > Client Proposals > Acme Corp Draft v1\n\nLet me know if you have any questions or suggestions. Hoping to finalize by Thursday.\n\nThanks!\nAmanda",
+    "timestamp": "1 hour ago",
+    "explanation": "This is a legitimate internal Teams message. The sender is from your company domain, references a meeting you attended, directs you to an existing shared folder rather than an external link, and makes a normal work request. This is standard team collaboration.",
+    "cues": [],
+    "subject": "Draft proposal for review"
+  },
+  "scn_054": {
+    "senderName": "Sprint Bot",
+    "body": "Reminder: Sprint 24 Planning is tomorrow at 10:00 AM in Conference Room B.\n\nPlease come prepared with:\n- Your completed stories from Sprint 23\n- Any blockers or dependencies for upcoming work\n- Capacity availability for the next 2 weeks\n\nSee you there!",
+    "timestamp": "Yesterday",
+    "explanation": "This is a legitimate Slack bot reminder from your company workspace. The sender is from your company's Slack (@yourcompany.slack.com), it's a routine meeting reminder with no links or unusual requests, and references normal agile workflow processes your team uses.",
+    "cues": [],
+    "subject": "Sprint Planning Tomorrow"
+  },
+  "scn_055": {
+    "senderName": "TechConf 2025",
+    "body": "Thank you for registering for TechConf 2025!\n\nRegistration Details:\nName: [Your Name]\nRegistration Type: Full Conference Pass\nDates: March 15-17, 2025\nLocation: San Francisco Convention Center\n\nYour confirmation number is: TC2025-78432\n\nWhat's next:\n- You'll receive hotel booking information in a separate email\n- Conference schedule will be available on our app starting February 1st\n- Badge pickup opens March 14th at 4:00 PM\n\nQuestions? Reply to this email or visit techconf2025.com/help\n\nWe look forward to seeing you!\nTechConf Team",
+    "timestamp": "3 days ago",
+    "explanation": "This is a legitimate conference registration confirmation. Key indicators: You (or your company) initiated this registration, the details match what you signed up for, and it's informational without asking for additional credentials or payment. Always verify by checking if you actually registered for this event.",
+    "cues": [],
+    "subject": "Registration Confirmed - TechConf 2025"
+  },
+  "scn_056": {
+    "senderName": "Payroll Department",
+    "body": "Your direct deposit has been processed.\n\nPay Period: December 1 - December 15, 2024\nPayment Date: December 20, 2024\nNet Amount: $2,847.63\n\nYour funds will be deposited to the bank account ending in ****4521.\n\nTo view your complete pay stub, log in to the employee portal at hr.yourcompany.com\n\nIf you have questions about your paycheck, contact Payroll at payroll@yourcompany.com or ext. 2100.\n\nThank you,\nPayroll Department",
+    "timestamp": "Today",
+    "explanation": "This is a legitimate payroll notification. The sender uses your company domain, references your actual bank account (only last 4 digits shown), matches your regular pay schedule, and directs you to the internal HR portal. Legitimate payroll never asks you to 'verify' banking details via email links.",
+    "cues": [],
+    "subject": "Direct Deposit Confirmation - Pay Period 12/1-12/15"
+  },
+  "scn_057": {
+    "senderName": "UPS",
+    "body": "UPS: Your package is out for delivery today. Tracking: 1Z999AA10123456784. Track at ups.com or reply STOP to end texts.",
+    "timestamp": "8:30 AM",
+    "explanation": "This is a legitimate UPS delivery notification. Key indicators: You're expecting a package, the tracking number format is correct (1Z followed by 16 characters is standard UPS), it directs you to the official ups.com domain (not a link), and includes an opt-out option. To verify, go directly to ups.com and enter the tracking number manually.",
+    "cues": []
+  },
+  "scn_058": {
+    "senderName": "Mike Torres - Acme Supplies",
+    "body": "Hi,\n\nFollowing up on our previous conversation about the Q4 order.\n\nWe've recently changed banks and need to update our payment information. Please use the following details for this invoice and all future payments:\n\nBank: First National Bank\nAccount Name: Acme Supplies LLC\nRouting: 021000089\nAccount: 4829571036\n\nThe attached invoice reflects our new payment details. Please process payment by December 20th to avoid any delays in your January shipment.\n\nThanks for your continued partnership!\n\nMike Torres\nAccounts Receivable\nAcme Supplies\n\n-------- Original Message --------\nFrom: purchasing@yourcompany.com\nTo: mike.torres@acme-supplies.com\nSubject: Q4 Supply Order #7823\n\nHi Mike, confirming receipt of the Q4 order...",
+    "timestamp": "3 hours ago",
+    "explanation": "This is a reply-chain hijack attack. Critical red flags: The sender domain is 'acme-supplies.net' but the original conversation was with 'acme-supplies.com' - attackers registered a look-alike domain. The Reply-To goes to a completely different domain. Bank account change requests in email threads are a major BEC pattern. ALWAYS verify bank changes by calling the vendor using a number from your records, not from the email.",
+    "cues": [
+      "reply-to mismatch",
+      "bank account change request",
+      "look-alike domain",
+      "urgency",
+      "deadline pressure"
+    ],
+    "subject": "RE: RE: Q4 Supply Order #7823 - Updated Payment Details"
+  },
+  "scn_059": {
+    "senderName": "Legal Team - Wilson & Associates",
+    "body": "Good afternoon,\n\nAs discussed in our call last week, we've finalized the contract amendments you requested.\n\nPlease review the attached final version and sign using our secure document portal:\nhttps://wilson-legal-portal.com/sign/contract-8829\n\nThis link expires in 48 hours for security purposes. We need your signature before the December 22nd board meeting.\n\nLet me know if you have any questions.\n\nBest regards,\nPatricia Williams\nSenior Partner\nWilson & Associates\n\n-------- Original Message --------\nFrom: legal@yourcompany.com\nTo: pwilliams@wilsonlaw.com\nSubject: Contract Review\n\nPatricia, following up on our discussion about the partnership agreement...",
+    "timestamp": "Yesterday",
+    "explanation": "This is a sophisticated reply-chain hijack. The original conversation was with 'wilsonlaw.com' but this email comes from 'wilson-associates.co' - a different domain entirely. The link goes to 'wilson-legal-portal.com' which is not associated with the real law firm. Attackers inserted themselves into an ongoing conversation. Always verify by calling known contacts before signing documents or clicking links from ongoing threads that request action.",
+    "cues": [
+      "reply-to mismatch",
+      "look-alike domain",
+      "external portal link",
+      "deadline pressure",
+      "spoofed thread"
+    ],
+    "subject": "RE: Contract Review - Final Signature Needed",
+    "linkText": "Secure Document Portal"
+  },
+  "scn_060": {
+    "senderName": "Billing - TechServe Solutions",
+    "body": "Hi Team,\n\nAttached is our December invoice for IT support services as discussed.\n\nIMPORTANT: We've switched to a new payment portal for faster processing. Please use this link to pay:\nhttps://techserve-pay.com/invoice/dec-2024-yourcompany\n\nOur old portal is being phased out, so please update your bookmarks.\n\nInvoice Amount: $4,750.00\nDue Date: December 27, 2024\n\nLet us know if you need anything else!\n\nTechServe Solutions Billing\n\n-------- Original Message --------\nFrom: accounts@yourcompany.com  \nTo: billing@techserve.com\nSubject: RE: Monthly Service Invoice\n\nThanks for the November invoice, payment has been processed...",
+    "timestamp": "1 day ago",
+    "explanation": "This is a reply-chain hijack targeting your accounts payable process. Red flags: Original thread was with 'techserve.com' but this comes from 'techserve-solutions.net'. The Reply-To is yet another domain. Claims about 'new payment portals' are classic invoice fraud tactics. Before paying any invoice that mentions changed payment methods, call the vendor using contact information from your original contract or a verified source.",
+    "cues": [
+      "reply-to mismatch",
+      "look-alike domain",
+      "new payment portal",
+      "urgency",
+      "spoofed thread"
+    ],
+    "subject": "RE: RE: RE: Monthly Service Invoice - December 2024",
+    "linkText": "New Payment Portal"
+  },
+  "scn_061": {
+    "senderName": "Microsoft SharePoint",
+    "body": "A document has been shared with you.\n\nDocument: Q4 Financial Report.xlsx\nShared by: CFO Office\nView in: SecureDoc Viewer\n\nTo access this document, click below:\nhttps://login.microsoftonline.com/oauth2/authorize?client_id=8f7a3b2c...&scope=Files.ReadWrite.All+Mail.Read+offline_access\n\nNote: You may need to grant the SecureDoc Viewer app permission to access your files.\n\nMicrosoft SharePoint",
+    "timestamp": "2 hours ago",
+    "explanation": "This is OAuth consent phishing. While the login page is real Microsoft, you're being asked to grant a third-party app ('SecureDoc Viewer') dangerous permissions: Files.ReadWrite.All (read/modify all your files), Mail.Read (read all email), and offline_access (persistent access). Legitimate document sharing doesn't require you to install apps. Never grant broad permissions to unfamiliar apps. Report and request the document through official channels.",
+    "cues": [
+      "excessive permissions request",
+      "third-party app consent",
+      "vague app name",
+      "broad scope access"
+    ],
+    "subject": "Document shared with you: Q4 Financial Report.xlsx",
+    "linkText": "View Document"
+  },
+  "scn_062": {
+    "senderName": "Google Workspace",
+    "body": "A new app is requesting access to your Google Workspace account.\n\nApp: MeetingSync Pro\nRequested by: IT Department\nPurpose: Sync all calendar events across platforms\n\nPermissions requested:\n- Read, write, and delete all calendar events\n- Access contacts\n- Send emails on your behalf\n\nClick here to review and approve:\nhttps://accounts.google.com/o/oauth2/auth?client_id=meetingsync-pro&scope=calendar+contacts+gmail.send\n\nIf you didn't request this, you can ignore this email.\n\nGoogle Workspace Security",
+    "timestamp": "30 minutes ago",
+    "explanation": "This is OAuth consent phishing exploiting a fake IT request. Critical red flags: The app requests permission to send emails on your behalf and delete calendar events - these are dangerous permissions rarely needed by legitimate apps. 'Requested by IT Department' is social engineering. Real IT would announce new tools through official channels, not individual emails. Never approve apps that can send email as you or delete your data.",
+    "cues": [
+      "excessive permissions request",
+      "send emails on your behalf",
+      "delete access",
+      "unsolicited app request"
+    ],
+    "subject": "New calendar integration request: MeetingSync Pro",
+    "linkText": "Review and Approve"
+  },
+  "scn_063": {
+    "senderName": "Microsoft Support",
+    "body": "Caller claimed to be from Microsoft Technical Support.\n\n\"Hello, this is John from Microsoft Technical Support. We've detected that your computer is sending error reports to our servers and may be infected with a virus.\n\nI can help you fix this right now, but I'll need you to go to your computer. Can you do that?\n\nFirst, press the Windows key and R at the same time. Now type 'eventvwr' and press Enter. Do you see a list of errors? Those red and yellow warnings are what we're detecting.\n\nTo remove the virus, I need you to go to a website and download our security tool. Go to remote-fix-support.com and click the download button. This will let us connect to your computer and remove the threats.\n\nDon't worry, this is a free service from Microsoft for all Windows users.\"",
+    "timestamp": "10 minutes ago",
+    "explanation": "This is a classic tech support scam. Microsoft NEVER makes unsolicited calls about computer problems. The Event Viewer always shows errors/warnings - that's normal, not evidence of a virus. They want you to install remote access software that gives them control of your computer. Never give remote access to unsolicited callers. Hang up and report.",
+    "cues": [
+      "unsolicited call",
+      "remote access request",
+      "fake Microsoft",
+      "event viewer trick",
+      "fear tactics"
+    ],
+    "subject": "Incoming call: Microsoft Technical Support"
+  },
+  "scn_064": {
+    "senderName": "Windows Defender Security",
+    "body": "WINDOWS DEFENDER SECURITY ALERT\n\nYour computer has been infected with 47 viruses!\n\nThreats detected:\n- Trojan.GenericKD.46845231\n- Spyware.PasswordStealer.A\n- Ransomware.WannaCry.variant\n\nYOUR FILES ARE AT RISK OF ENCRYPTION\n\nTo prevent data loss, call Microsoft Certified Technicians immediately:\n\nTOLL-FREE: 1-888-555-0199\n\nDo NOT turn off your computer\nDo NOT close this window\nDo NOT ignore this warning\n\nReference Code: MS-ERROR-0x80070422\n\nThis is an automated security alert from Windows Defender.",
+    "timestamp": "Just now",
+    "explanation": "This is a tech support scam using a fake security alert. Windows Defender doesn't send emails like this and doesn't include phone numbers to call. The 'threats detected' are fake names designed to sound scary. Calling the number connects you to scammers who will try to sell fake services or gain remote access. Real antivirus alerts appear in Windows itself, not emails. Delete this immediately.",
+    "cues": [
+      "fake security alert",
+      "call now pressure",
+      "fake phone number",
+      "technical-sounding errors",
+      "fear tactics"
+    ],
+    "subject": "CRITICAL: Your PC is infected - Immediate action required"
+  },
+  "scn_065": {
+    "senderName": "IT Security Department",
+    "body": "Caller claimed to be from company IT Security.\n\n\"Hi, this is Kevin from IT Security. We've detected unusual login activity on your account from an IP address in China. \n\nFor your protection, we need to verify your identity and reset your credentials immediately. This is time-sensitive - if we don't secure your account in the next 15 minutes, we'll have to disable it completely.\n\nI'm going to need you to confirm your current password so I can verify it's really you, then we'll set up a new one together. What's your current password?\n\nAlso, have you received any multi-factor authentication codes in the last few minutes? If you get one while we're on the phone, please read it to me so I can verify the account reset is working correctly.\"",
+    "timestamp": "Just now",
+    "explanation": "This is a sophisticated vishing attack impersonating IT. CRITICAL: Legitimate IT will NEVER ask for your password or MFA codes - these are the keys to your account. The 'China IP' story is designed to scare you into acting without thinking. If IT needs to reset your password, they have backend tools. Hang up immediately and report this to your real IT security team using a known contact method.",
+    "cues": [
+      "password request",
+      "MFA code request",
+      "urgency",
+      "foreign location scare",
+      "time pressure"
+    ],
+    "subject": "Incoming call: IT Security Urgent"
+  },
+  "scn_066": {
+    "senderName": "Unknown",
+    "body": "Hey! It's Sarah from the conference last week. Just wanted to follow up on our conversation about investment opportunities. Are you still interested?",
+    "timestamp": "Yesterday 6:32 PM",
+    "explanation": "This is the opening move of a 'wrong number' scam (also called 'pig butchering'). The sender pretends to have the wrong number but mentions something enticing (investment opportunities). The goal is to start a conversation. The safe response is to not engage at all - delete or ignore. Responding, even to say 'wrong number,' confirms your number is active and invites further contact.",
+    "cues": [
+      "unsolicited contact",
+      "claims prior relationship",
+      "investment mention"
+    ]
+  },
+  "scn_067": {
+    "senderName": "Unknown",
+    "body": "Oh I'm so sorry! Wrong number! But since we're chatting anyway - I hope you're having a great day! I'm actually a financial advisor and help people with cryptocurrency investments. Funny how life works sometimes, right?",
+    "timestamp": "Yesterday 6:45 PM",
+    "explanation": "This is stage 2 of the scam. After you replied, they 'apologize' for the wrong number but immediately pivot to their real goal: getting you interested in cryptocurrency. The 'funny how life works' framing is designed to make the conversation feel like fate. Continue to not engage - delete and block.",
+    "cues": [
+      "unsolicited contact",
+      "pivots to sales pitch",
+      "cryptocurrency mention",
+      "manufactured coincidence"
+    ]
+  },
+  "scn_068": {
+    "senderName": "Unknown",
+    "body": "I totally get being cautious - that's actually smart! But I've been helping clients make 30-40% returns monthly through a special trading platform. My uncle runs it and it's been amazing. I could show you my account if you want - no pressure! What do you do for work?",
+    "timestamp": "Today 10:15 AM",
+    "explanation": "Now the scam is in full swing. Red flags everywhere: 30-40% monthly returns are impossible in legitimate investing, the 'uncle's platform' is a fraud, and they're asking personal questions to build a profile on you. This is the classic 'pig butchering' pattern where scammers build relationships before stealing money. Report and block.",
+    "cues": [
+      "unrealistic returns",
+      "personal questions",
+      "informal investment platform",
+      "social engineering"
+    ]
+  },
+  "scn_069": {
+    "senderName": "Unknown",
+    "body": "OMG you work in tech?! That's perfect - you'll totally understand how this platform works! \n\nLook, I really like you and want to help you out. The minimum to start is only $500 but my uncle said he could waive it for you since you're my friend now.\n\nHere's the link to create your account: crypto-invest-portal.com/signup\n\nYou can start with just $200 as a test. I promise you'll see returns within 24 hours! \n\nWhat payment method works best for you - Zelle, Venmo, or crypto?",
+    "timestamp": "Today 2:30 PM",
+    "explanation": "This is the ask - the goal all along. Every element is a red flag: guaranteed 24-hour returns, special deal because you're 'friends,' asking for payment via untraceable methods (Zelle, Venmo, crypto), and directing you to a fraudulent platform. This is investment fraud. Report immediately, block the number, and do not send any money. If you've already sent money, contact your bank immediately.",
+    "cues": [
+      "payment request",
+      "guaranteed returns",
+      "fake urgency",
+      "unknown platform",
+      "special deal"
+    ],
+    "linkText": "Investment Portal"
+  }
+}

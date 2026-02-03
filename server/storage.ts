@@ -90,6 +90,8 @@ export interface IStorage {
 
   // Assignment Completions
   getAssignmentCompletions(assignmentId: string): Promise<AssignmentCompletion[]>;
+  getAssignmentCompletionsByUser(userId: string): Promise<AssignmentCompletion[]>;
+  getAssignmentCompletionByShiftId(shiftId: string): Promise<AssignmentCompletion | undefined>;
   createAssignmentCompletion(completion: InsertAssignmentCompletion): Promise<AssignmentCompletion>;
   updateAssignmentCompletion(id: string, updates: Partial<AssignmentCompletion>): Promise<AssignmentCompletion | undefined>;
 
@@ -472,6 +474,18 @@ export class DatabaseStorage implements IStorage {
   async getAssignmentCompletions(assignmentId: string): Promise<AssignmentCompletion[]> {
     return db.select().from(assignmentCompletions)
       .where(eq(assignmentCompletions.assignmentId, assignmentId));
+  }
+
+  async getAssignmentCompletionsByUser(userId: string): Promise<AssignmentCompletion[]> {
+    return db.select().from(assignmentCompletions)
+      .where(eq(assignmentCompletions.userId, userId))
+      .orderBy(desc(assignmentCompletions.completedAt));
+  }
+
+  async getAssignmentCompletionByShiftId(shiftId: string): Promise<AssignmentCompletion | undefined> {
+    const [completion] = await db.select().from(assignmentCompletions)
+      .where(eq(assignmentCompletions.shiftId, shiftId));
+    return completion;
   }
 
   async createAssignmentCompletion(completion: InsertAssignmentCompletion): Promise<AssignmentCompletion> {

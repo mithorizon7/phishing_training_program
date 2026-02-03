@@ -2194,7 +2194,8 @@ What payment method works best for you - Zelle, Venmo, or crypto?`,
 ];
 
 // Calculate difficulty scores dynamically using NIST Phish Scale
-export const scenariosSeed: InsertScenario[] = rawScenarios.map(scenario => ({
+export const scenariosSeed: InsertScenario[] = rawScenarios.map((scenario, index) => ({
   ...scenario,
+  i18nKey: `scn_${String(index + 1).padStart(3, '0')}`,
   difficultyScore: calculateNISTDifficulty(scenario.cues),
 }));

@@ -16,6 +16,7 @@ export type OutcomeType = "safe" | "compromised" | "delayed_work" | "false_alarm
 // Scenarios table - the message library
 export const scenarios = pgTable("scenarios", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  i18nKey: varchar("i18n_key", { length: 100 }),
   channel: varchar("channel", { length: 20 }).notNull().$type<MessageChannel>(),
   senderName: varchar("sender_name", { length: 255 }).notNull(),
   senderEmail: varchar("sender_email", { length: 255 }),
@@ -48,6 +49,7 @@ export const scenarios = pgTable("scenarios", {
 export const shifts = pgTable("shifts", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   userId: varchar("user_id").notNull(),
+  assignmentId: varchar("assignment_id"),
   startedAt: timestamp("started_at").defaultNow().notNull(),
   completedAt: timestamp("completed_at"),
   scenarioIds: text("scenario_ids").array().notNull(),
@@ -103,6 +105,7 @@ export const userProgress = pgTable("user_progress", {
 // Assignments table - instructor-created training modules
 export const assignments = pgTable("assignments", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  i18nKey: varchar("i18n_key", { length: 100 }),
   title: varchar("title", { length: 255 }).notNull(),
   description: text("description"),
   createdBy: varchar("created_by").notNull(),

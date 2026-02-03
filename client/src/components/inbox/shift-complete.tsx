@@ -12,6 +12,7 @@ import {
   RotateCcw
 } from "lucide-react";
 import type { Shift } from "@shared/schema";
+import { useTranslation } from "react-i18next";
 
 interface ShiftCompleteProps {
   shift: Shift;
@@ -20,6 +21,7 @@ interface ShiftCompleteProps {
 }
 
 export function ShiftComplete({ shift, onGoHome, onPlayAgain }: ShiftCompleteProps) {
+  const { t } = useTranslation();
   const totalMessages = shift.scenarioIds.length;
   const accuracy = totalMessages > 0 
     ? Math.round((shift.correctDecisions / totalMessages) * 100) 
@@ -39,9 +41,9 @@ export function ShiftComplete({ shift, onGoHome, onPlayAgain }: ShiftCompletePro
                 isPerfect ? 'text-chart-2' : accuracy >= 70 ? 'text-primary' : 'text-chart-4'
               }`} />
             </div>
-            <CardTitle className="text-2xl">Shift Complete!</CardTitle>
+            <CardTitle className="text-2xl">{t("training.shiftComplete.title")}</CardTitle>
             {isPerfect && (
-              <Badge className="mt-2 bg-chart-2 text-white">Perfect Shift!</Badge>
+              <Badge className="mt-2 bg-chart-2 text-white">{t("training.shiftComplete.perfectShift")}</Badge>
             )}
           </CardHeader>
 
@@ -50,12 +52,12 @@ export function ShiftComplete({ shift, onGoHome, onPlayAgain }: ShiftCompletePro
               <div className="text-5xl font-bold text-primary mb-2" data-testid="text-final-score">
                 {shift.score}
               </div>
-              <p className="text-muted-foreground">Total Points</p>
+              <p className="text-muted-foreground">{t("training.shiftComplete.totalPoints")}</p>
             </div>
 
             <div className="space-y-3">
               <div className="flex items-center justify-between gap-4">
-                <span className="text-sm text-muted-foreground">Accuracy</span>
+                <span className="text-sm text-muted-foreground">{t("training.shiftComplete.accuracy")}</span>
                 <span className="font-semibold">{accuracy}%</span>
               </div>
               <Progress value={accuracy} className="h-2" />
@@ -69,7 +71,7 @@ export function ShiftComplete({ shift, onGoHome, onPlayAgain }: ShiftCompletePro
                     {shift.correctDecisions}
                   </span>
                 </div>
-                <p className="text-xs text-muted-foreground">Correct Decisions</p>
+                <p className="text-xs text-muted-foreground">{t("training.shiftComplete.correctDecisions")}</p>
               </div>
               
               <div className="p-4 rounded-lg bg-muted/50 text-center">
@@ -79,7 +81,7 @@ export function ShiftComplete({ shift, onGoHome, onPlayAgain }: ShiftCompletePro
                     {shift.falsePositives}
                   </span>
                 </div>
-                <p className="text-xs text-muted-foreground">False Positives</p>
+                <p className="text-xs text-muted-foreground">{t("training.shiftComplete.falsePositives")}</p>
               </div>
               
               <div className="p-4 rounded-lg bg-muted/50 text-center">
@@ -89,7 +91,7 @@ export function ShiftComplete({ shift, onGoHome, onPlayAgain }: ShiftCompletePro
                     {shift.compromised}
                   </span>
                 </div>
-                <p className="text-xs text-muted-foreground">Compromised</p>
+                <p className="text-xs text-muted-foreground">{t("training.shiftComplete.compromised")}</p>
               </div>
               
               <div className="p-4 rounded-lg bg-muted/50 text-center">
@@ -99,7 +101,7 @@ export function ShiftComplete({ shift, onGoHome, onPlayAgain }: ShiftCompletePro
                     {shift.verificationsUsed}
                   </span>
                 </div>
-                <p className="text-xs text-muted-foreground">Verifications Used</p>
+                <p className="text-xs text-muted-foreground">{t("training.shiftComplete.verificationsUsed")}</p>
               </div>
             </div>
 
@@ -111,7 +113,7 @@ export function ShiftComplete({ shift, onGoHome, onPlayAgain }: ShiftCompletePro
                 data-testid="button-go-home"
               >
                 <Home className="w-4 h-4 mr-2" />
-                Dashboard
+                {t("training.shiftComplete.backToDashboard")}
               </Button>
               <Button 
                 className="flex-1"
@@ -119,7 +121,7 @@ export function ShiftComplete({ shift, onGoHome, onPlayAgain }: ShiftCompletePro
                 data-testid="button-play-again"
               >
                 <RotateCcw className="w-4 h-4 mr-2" />
-                New Shift
+                {t("training.shiftComplete.startNewShift")}
               </Button>
             </div>
           </CardContent>

@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Mail, MessageSquare, Phone, Paperclip, Clock, Users, Hash } from "lucide-react";
 import type { Scenario, MessageChannel } from "@shared/schema";
+import { useTranslation } from "react-i18next";
 
 interface MessageListProps {
   scenarios: Scenario[];
@@ -35,6 +36,7 @@ function MessageRow({
   isCompleted: boolean;
   onClick: () => void;
 }) {
+  const { t } = useTranslation();
   const Icon = getChannelIcon(scenario.channel as MessageChannel);
   
   return (
@@ -67,7 +69,7 @@ function MessageRow({
               <Paperclip className="w-3.5 h-3.5 text-muted-foreground flex-shrink-0" />
             )}
             {isCompleted && (
-              <Badge variant="secondary" className="text-xs flex-shrink-0">Done</Badge>
+              <Badge variant="secondary" className="text-xs flex-shrink-0">{t("training.inbox.done")}</Badge>
             )}
           </div>
           {scenario.subject && (
@@ -95,6 +97,7 @@ export function MessageList({
   onSelectMessage,
   isLoading 
 }: MessageListProps) {
+  const { t } = useTranslation();
   const emailScenarios = scenarios.filter(s => s.channel === 'email');
   const smsScenarios = scenarios.filter(s => s.channel === 'sms');
   const callScenarios = scenarios.filter(s => s.channel === 'call');
@@ -113,7 +116,7 @@ export function MessageList({
         <div className="border-b px-2 sm:px-4 pt-4">
           <TabsList className="w-full flex flex-wrap gap-1">
             <TabsTrigger value="all" className="flex-1 min-w-fit" data-testid="tab-all">
-              All ({scenarios.length})
+              {t("training.inbox.all")} ({scenarios.length})
             </TabsTrigger>
             <TabsTrigger value="email" className="flex-1 min-w-fit" data-testid="tab-email">
               <Mail className="w-4 h-4 sm:mr-1" />
@@ -255,14 +258,16 @@ export function MessageList({
   );
 }
 
-function EmptyState({ channel }: { channel?: string }) {
+function EmptyState({ channel }: { channel?: MessageChannel }) {
+  const { t } = useTranslation();
+  const channelLabel = channel ? t(`channels.${channel}`) : "";
   return (
     <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
       <Mail className="w-12 h-12 text-muted-foreground/50 mb-4" />
       <p className="text-muted-foreground">
         {channel 
-          ? `No ${channel} messages in this shift`
-          : "No messages to process"
+          ? t("training.inbox.emptyChannel", { channel: channelLabel })
+          : t("training.inbox.emptyAll")
         }
       </p>
     </div>

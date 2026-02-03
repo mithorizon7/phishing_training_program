@@ -1,5 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import type { User } from "@shared/models/auth";
+import { useTranslation } from "react-i18next";
 
 interface UserAvatarProps {
   user: User | null | undefined;
@@ -32,6 +33,7 @@ function getAvatarColor(userId: string | undefined): string {
 }
 
 export function UserAvatar({ user, size = "md", className = "" }: UserAvatarProps) {
+  const { t } = useTranslation();
   const sizeClasses = {
     sm: "h-7 w-7 text-xs",
     md: "h-9 w-9 text-sm",
@@ -40,7 +42,7 @@ export function UserAvatar({ user, size = "md", className = "" }: UserAvatarProp
 
   return (
     <Avatar className={`${sizeClasses[size]} ${className}`} data-testid="img-user-avatar">
-      <AvatarImage src={user?.profileImageUrl || undefined} alt={user?.firstName || "User"} />
+      <AvatarImage src={user?.profileImageUrl || undefined} alt={user?.firstName || t("common.user")} />
       <AvatarFallback className={`${getAvatarColor(user?.id)} text-white font-medium`}>
         {getInitials(user)}
       </AvatarFallback>

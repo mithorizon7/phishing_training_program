@@ -1,0 +1,809 @@
+{
+  "scn_001": {
+    "senderName": "IT drošības komanda",
+    "subject": "STEIDZAMI: Jūsu konts tiks apturēts 24 stundu laikā",
+    "timestamp": "Pirms 2 stundām",
+    "body": "Cienījamais darbiniek,\n\nMēs esam konstatējuši neparastu aktivitāti jūsu korporatīvajā kontā. Jūsu piekļuve tiks apturēta 24 stundu laikā, ja jūs nekavējoties nepārbaudīsiet savu identitāti.\n\nNoklikšķiniet šeit, lai apstiprinātu savu kontu: https://company-login.secure-verify.com/auth\n\nTas ir automatizēts drošības pasākums. Neievērošanas gadījumā konts tiks apturēts uz pastāvīgu laiku.\n\nPaldies par jūsu operatīvu rīcību šajā jautājumā.\n\nIT drošības komanda",
+    "explanation": "Šis ir klasisks pikšķerēšanas e‑pasts, kas izmanto steidzamību un bailes, lai piespiestu jūs noklikšķināt. Domēns “company-support.net” nav jūsu īstais uzņēmuma domēns, un saite ved uz “secure-verify.com”, kas ir tipisks pikšķerēšanas raksts. Likumīgas IT drošības komandas nekad nedraudēs ar tūlītēju konta apturēšanu e‑pastā.",
+    "cues": [
+      "steidzama valoda",
+      "draudi par konta apturēšanu",
+      "aizdomīgs domēns",
+      "vispārīgs sveiciens"
+    ],
+    "linkText": "Noklikšķiniet šeit, lai apstiprinātu savu kontu"
+  },
+  "scn_002": {
+    "senderName": "Dr. Amanda Peterson (CEO)",
+    "subject": "Vajadzīga ātra palīdzība — konfidenciāli",
+    "timestamp": "Pirms 45 minūtēm",
+    "body": "Labdien,\n\nMan vajadzīga tava palīdzība ar kaut ko steidzamu un konfidenciālu. Es visu dienu esmu sapulcēs un šobrīd nevaru piezvanīt.\n\nMan vajag, lai tu nopērc 10 Amazon dāvanu kartes (katra 100 $) klienta pateicības pārsteigumam. Tas jāizdara šodien līdz plkst. 17:00.\n\nLūdzu, nopērc tās, nokasi aizmuguri, lai redzētu kodus, un nosūti man kodu fotogrāfijas pa īsziņu uz 555‑0199. Es rīt atdošu naudu no sīknaudas.\n\nPaturi to starp mums — tas ir pārsteigums!\n\nPaldies,\nAmanda\n\nNosūtīts no mana iPhone",
+    "explanation": "Šis ir Business Email Compromise (BEC) uzbrukums. Izpilddirektors nekad nelūgtu dāvanu kartes pa e‑pastu, īpaši lai kodus sūtītu uz privātu tālruņa numuru. Atbildes adrese ir personīgais Gmail, nevis uzņēmuma domēns. Vienmēr pārbaudiet neparastus finanšu pieprasījumus pa zināmu kanālu — piezvaniet tieši uz biroja numuru.",
+    "cues": [
+      "neparasts pieprasījums",
+      "steidzamība",
+      "dāvanu kartes",
+      "kodu sūtīšana uz privātu numuru",
+      "lūgums turēt noslēpumā",
+      "atbildes adrese neatbilst",
+      "viltots CEO"
+    ]
+  },
+  "scn_003": {
+    "senderName": "IT nodaļa",
+    "subject": "Plānota sistēmu uzturēšana — sestdien 2:00–6:00",
+    "timestamp": "Vakar",
+    "body": "Labdien,\n\nAtgādinām, ka šajā sestdienā no 2:00 līdz 6:00 pēc EST notiks plānoti sistēmu uzturēšanas darbi.\n\nŠajā laikā nebūs pieejamas:\n- E‑pasts (Outlook/Exchange)\n- VPN piekļuve\n- Iekšējie failu koplietojumi\n\nNo jums nav nepieciešama nekāda rīcība. Sistēmas tiks atjaunotas līdz 6:00.\n\nJa ir jautājumi, lūdzu, sazinieties ar IT palīdzības dienestu pa iekšējo numuru 4357 vai apmeklējiet IT portālu: https://intranet.yourcompany.com/it-support.\n\nPaldies par sapratni.\n\nIT operāciju komanda",
+    "explanation": "Šis ir likumīgs IT uzturēšanas paziņojums. Sūtītāja e‑pasta adrese atbilst uzņēmuma domēnam, nav steidzamas darbības, nav aizdomīgu saišu (intraneta saite ir iekšēja), un norādīts zināms kontaktkanāls (iekšējais numurs 4357) jautājumiem. Droši var dzēst vai arhivēt.",
+    "cues": [],
+    "linkText": "IT portāls"
+  },
+  "scn_004": {
+    "senderName": "Maksājumu nodaļa",
+    "subject": "Rēķins #INV-2024-8847 — nepieciešama apmaksa",
+    "timestamp": "Pirms 3 stundām",
+    "body": "Cienījamā finanšu komanda,\n\nPielikumā ir rēķins par novembrī sniegtajiem konsultāciju pakalpojumiem.\n\nMaksājamā summa: 12 450,00 $\nApmaksas termiņš: 2024. gada 20. decembris\n\nBankas pārskaitījuma rekvizīti ir atjaunoti. Lūdzu, izmantojiet šādu jauno bankas informāciju:\n\nBanka: First National Trust\nKonts: 847291038\nRouting: 021000089\n\nLūdzu, veiciet maksājumu līdz šodienas darba dienas beigām, lai izvairītos no kavējuma maksas.\n\nAr cieņu,\nMaksājumu nodaļa",
+    "explanation": "Šis ir domēna viltojuma uzbrukums ar līdzīgu domēnu. “yourcompany-billing.com” NAV tas pats, kas “yourcompany.com”. Lūgums atjaunināt bankas rekvizītus pārskaitījumiem ir būtisks sarkanais karogs. Uzbrucēji bieži pārtver rēķinu saraksti un ievieto jaunus bankas datus. Vienmēr pārbaudiet bankas izmaiņas, zvanot uz zināmu tālruņa numuru, nevis pa e‑pastu.",
+    "cues": [
+      "līdzīgs domēns",
+      "atjaunināti bankas rekvizīti",
+      "steidzams pārskaitījums",
+      "termins līdz dienas beigām"
+    ],
+    "attachmentName": "Invoice_INV-2024-8847.pdf"
+  },
+  "scn_005": {
+    "senderName": "Nezināms",
+    "timestamp": "Pirms 1 stundas",
+    "body": "UPS: Jūsu sūtījums gaida piegādi. Adreses problēmu dēļ jāmaksā 2,99 $ par atkārtotu piegādi. Samaksājiet tagad, lai ieplānotu: bit.ly/ups-redeliver-fee",
+    "explanation": "Šis ir smishing (SMS pikšķerēšana) uzbrukums. UPS nesūta īsziņas ar prasību maksāt nelielu maksu, izmantojot saīsinātas saites. Nelielā summa (2,99 $) ir domāta, lai izskatītos nekaitīga, bet saite nozags jūsu maksājuma informāciju. Likumīgi piegādes uzņēmumi sazinās caur oficiālajām lietotnēm vai jūsu kontu viņu mājaslapā.",
+    "cues": [
+      "neprasīta īsziņa",
+      "nelielas maksas pieprasījums",
+      "saīsināta URL",
+      "steidzamība"
+    ],
+    "linkText": "bit.ly/ups-redeliver-fee"
+  },
+  "scn_006": {
+    "senderName": "Nezināms",
+    "timestamp": "Pirms 30 minūtēm",
+    "body": "Sveiki! Te ir Sāra no pagājušās nedēļas konferences. Vai tikāt mājās kārtībā? Dodiet ziņu, ja vēlaties kādreiz iedzert kafiju un parunāt!",
+    "explanation": "Tas ir “nepareizā numura” krāpšanas sākums. Uzbrucējs izliekas, ka sajaucis numuru, bet, ja atbildat, viņš iesaistīs draudzīgā sarunā un vēlāk pāries uz investīciju krāpniecību (bieži kriptovalūtas) vai romantisko krāpšanu. Nekad neiesaistieties ar negaidītiem ziņojumiem no nezināmiem numuriem, pat ja tie šķiet draudzīgi.",
+    "cues": [
+      "izliekas par nepareizu numuru",
+      "pārāk familiārs",
+      "neskaidra atsauce"
+    ]
+  },
+  "scn_007": {
+    "senderName": "QuickBooks Payments",
+    "subject": "Rēķins no ABC Consulting Services",
+    "timestamp": "Vakar",
+    "body": "Jūs esat saņēmis rēķinu no ABC Consulting Services.\n\nRēķins #: 1847\nMaksājamā summa: 3 200,00 $\nTermiņš: 2024. gada 28. decembris\n\nSkatīt un apmaksāt šo rēķinu: https://app.qbo.intuit.com/invoice/v4/123456789\n\nŠo rēķinu nosūtīja ABC Consulting Services, izmantojot QuickBooks.\n\nJautājumi par šo rēķinu? Sazinieties ar ABC Consulting tieši.\n\nIntuit QuickBooks\nMenlo Park, CA",
+    "explanation": "Šķiet, ka tas ir likumīgs QuickBooks paziņojums par rēķinu. Tomēr rēķinu e‑pasti bieži tiek viltoti. Labākā prakse ir pārbaudīt: vai jums ir aktīvas attiecības ar ABC Consulting? Vai šis rēķins bija gaidīts? Ja neesat pārliecināts, piesakieties QuickBooks tieši (neizmantojot saiti e‑pastā) vai sazinieties ar maksājumu nodaļu, lai apstiprinātu.",
+    "cues": [],
+    "linkText": "Skatīt un apmaksāt šo rēķinu"
+  },
+  "scn_008": {
+    "senderName": "Microsoft atbalsts",
+    "timestamp": "Pirms 10 minūtēm",
+    "body": "[SARUNAS TRANSKRIPTS]\n\nZvanītājs: \"Labdien, te ir Maiks no Microsoft tehniskā atbalsta. Mēs esam konstatējuši kritiskus drošības draudus jūsu datorā, kam nepieciešama tūlītēja uzmanība. Mūsu drošības uzraudzības sistēma rāda, ka jūsu ierīce ir kompromitēta ar ļaunprogrammatūru.\"\n\n\"Man vajag, lai jūs tūlīt dodaties pie datora. Neuztraucieties, es jūs izvadīšu cauri risinājumam. Vispirms vienlaikus nospiediet Windows taustiņu un R...\"\n\n\"Tagad ierakstiet 'eventvwr' un pasakiet, kādas kļūdas redzat. Tie sarkanie brīdinājumi ir ļaunprogrammatūras infekcijas, par kurām jums stāstīju.\"\n\n\"Lai noņemtu šos draudus, man būs nepieciešams, lai jūs lejupielādētu mūsu atbalsta rīku no TeamViewer.com, lai es varētu attālināti piekļūt jūsu datoram un to iztīrīt.",
+    "explanation": "Šis ir tehniskā atbalsta krāpšanas zvans (vishing). Microsoft nekad nezvana negaidīti par datoru problēmām. “Kļūdas” Event Viewer ir parasti sistēmas žurnāli, nevis ļaunprogrammatūra. Mērķis ir iegūt attālinātu piekļuvi jūsu datoram, lai instalētu īstu ļaunprogrammatūru vai nozagtu informāciju. Nekavējoties nolieciet klausuli un ziņojiet par numuru.",
+    "cues": [
+      "negaidīts tehniskā atbalsta zvans",
+      "apgalvojumi par konstatētiem draudiem",
+      "lūgums pēc attālinātas piekļuves",
+      "steidzamība un bailes",
+      "Microsoft jums nezvana"
+    ]
+  },
+  "scn_009": {
+    "senderName": "Microsoft 365",
+    "subject": "Nepieciešama darbība: Neparasta pieteikšanās aktivitāte",
+    "timestamp": "Pirms 4 stundām",
+    "body": "Microsoft 365\n\nNeparasta pieteikšanās aktivitāte\n\nMēs pamanījām kaut ko neparastu nesenā pieteikšanās mēģinājumā jūsu Microsoft kontā.\n\nPieteikšanās dati:\nValsts/reģions: Krievija\nIP adrese: 185.159.82.xxx\nDatums: 2024. gada 15. decembris 3:47\nPlatforma: Windows\nPārlūkprogramma: Chrome\n\nJa tas bijāt jūs, varat ignorēt šo ziņojumu.\n\nJa tas nebijāt jūs, lūdzu, aizsargājiet savu kontu:\n\n[Aizsargāt manu kontu]\n\nPaldies,\nMicrosoft kontu komanda\n\nŠis ir automātisks ziņojums. Lūdzu, neatbildiet.",
+    "explanation": "Šis ir sofistikēts pikšķerēšanas e‑pasts. Lai gan tas izskatās profesionāli, sūtītāja domēns “microsoft365.net” NEpieder Microsoft (viņi izmanto “microsoft.com”). E‑pasts rada bailes par pieteikšanos no Krievijas, lai piespiestu jūs noklikšķināt. Ja uztraucaties par kontu, dodieties tieši uz account.microsoft.com — nekad neklikšķiniet uz e‑pastu saitēm.",
+    "cues": [
+      "aizdomīgs domēns microsoft365.net",
+      "apgalvojums par pieteikšanos no ārvalstīm",
+      "bailes par konta kompromitēšanu",
+      "poga konta aizsardzībai"
+    ],
+    "linkText": "Aizsargāt manu kontu"
+  },
+  "scn_010": {
+    "senderName": "HR labumu komanda",
+    "subject": "Atgādinājums par atvērto pieteikšanos — termiņš piektdien",
+    "timestamp": "Pirms 1 dienas",
+    "body": "Cienījamais komandas biedr,\n\nŠis ir draudzīgs atgādinājums, ka 2025. gada labumu atvērtā pieteikšanās beidzas šo piektdien, 20. decembrī, plkst. 23:59.\n\nJa vēl neesat izdarījis izvēli, lūdzu, ielogojieties labumu portālā, lai pārskatītu iespējas:\n- Veselības, zobārstniecības un redzes plāni\n- Dzīvības apdrošināšana\n- 401(k) iemaksu izmaiņas\n- FSA/HSA izvēles\n\nLai veiktu izmaiņas: ielogojieties Workday > Benefits > Open Enrollment\n\nJa jums ir jautājumi, lūdzu, sazinieties ar labumu komandu:\n- E‑pasts: benefits@yourcompany.com\n- Tālrunis: iekšējais 2847\n- Pieņemšanas laiks: P–Pk 9:00–17:00, A ēka, 204. kab.\n\nJa neveiksiet izmaiņas, jūsu pašreizējās izvēles tiks pārnestas (izņemot FSA, kur nepieciešama ikgadēja pārreģistrācija).\n\nAr cieņu,\nHR labumu komanda",
+    "explanation": "Šis ir likumīgs HR paziņojums par atvērto pieteikšanos. Sūtītāja e‑pasts atbilst uzņēmuma domēnam, tas pareizi atsaucas uz iekšējo sistēmu (Workday), nodrošina vairākus pārbaudāmus kontaktus (iekšējais numurs, fiziska biroja atrašanās vieta), un pieprasījums atbilst ikgadējiem HR procesiem. Droši varat atvērt Workday tieši.",
+    "cues": []
+  },
+  "scn_011": {
+    "senderName": "Robert Chen - CFO",
+    "subject": "Konfidenciāli — steidzami vajadzīgs pārskaitījums",
+    "timestamp": "Pirms 1 stundas",
+    "body": "Man vajag, lai jūs apstrādātu steidzamu bankas pārskaitījumu par iegādi, ko šodien noslēdzam. Tas ir ļoti konfidenciāli — neapspriediet ar citiem komandā.\n\nSumma: 47 500 $\nSaņēmējs: Atlas Consulting Group\nBanka: Chase Bank\nKonts: 829174650\nRouting: 021000021\n\nDarījums jānoslēdz līdz 16:00 pēc EST, citādi zaudēsim iespēju. Lūdzu, apstipriniet, kad nosūtīts.\n\nEsmu sapulcēs visu pēcpusdienu, tāpēc vislabāk ir e‑pasts.\n\nRobert Chen\nFinanšu direktors",
+    "explanation": "Šis ir Business Email Compromise (BEC) uzbrukums, mērķēts uz pārskaitījumu krāpšanu. Sarkanās pazīmes: atbildes adrese ir personīgs Outlook, nevis uzņēmuma e‑pasts. “Konfidenciāli” noformējums neļauj jums pārbaudīt ar citiem. CFO nepieejamība zvaniem ir aizdomīga. Vienmēr pārbaudiet lielus pārskaitījumus, zvanot uz vadītāja zināmo biroja numuru, nevis atbildot uz e‑pastu.",
+    "cues": [
+      "steidzams pārskaitījuma pieprasījums",
+      "spiediens uz konfidencialitāti",
+      "atbildes adrese neatbilst",
+      "nav pieejams zvaniem",
+      "iegādes iegansts"
+    ]
+  },
+  "scn_012": {
+    "senderName": "Autostāvvietas dienests",
+    "subject": "Nepieciešama atjaunota autostāvvietas reģistrācija",
+    "timestamp": "Pirms 2 dienām",
+    "body": "PILSĒTIŅAS STĀVVVIETAS PAZIŅOJUMS\n\nVisiem darbiniekiem līdz 2024. gada 31. decembrim jāpārreģistrē savi transportlīdzekļi, izmantojot mūsu jauno digitālo sistēmu.\n\nNoskenējiet zemāk redzamo QR kodu ar tālruni, lai pabeigtu reģistrāciju:\n\n[QR KODA ATTĒLS]\n\nReģistrācija aizņem tikai 2 minūtes un prasa:\n- Transportlīdzekļa informāciju\n- Numura zīmes numuru\n- Maksājuma metodi 2025. gada atļaujai\n\nJa nereģistrēsiet, sākot ar 2025. gada 1. janvāri var tikt piemērotas stāvvietas soda kvītis.\n\nCampus Parking Services",
+    "explanation": "Šī ir QR koda pikšķerēšana (quishing). QR kodi būtībā ir saites, kuras pirms skenēšanas nevar priekšskatīt. Sūtītāja domēns “campus-services.org” ir aizdomīgs — pārbaudiet savu īsto stāvvietas kontaktu. QR kods, visticamāk, ved uz viltus maksājumu lapu. Par stāvvietas reģistrāciju vienmēr dodieties tieši uz uzņēmuma zināmo stāvvietas portālu vai sazinieties ar saimniecības dienestu.",
+    "cues": [
+      "nepazīstams sūtītāja domēns",
+      "QR kods",
+      "spiediens uz termiņu",
+      "prasa maksājumu informāciju"
+    ]
+  },
+  "scn_013": {
+    "senderName": "Google Workspace",
+    "subject": "Nepieciešama darbība: Apstipriniet jaunu lietotnes integrāciju",
+    "timestamp": "Pirms 3 stundām",
+    "body": "Jūsu organizācija ir iespējojusi jaunu produktivitātes lietotni, kurai nepieciešams jūsu apstiprinājums.\n\nLietotne: DocuSign Integration Pro\nIzdevējs: Verified Business Partner\nPieprasītās atļaujas:\n- Lasīt un rakstīt e‑pastus\n- Piekļūt Google Drive failiem\n- Skatīt un pārvaldīt kalendāra notikumus\n\nŠī integrācija uzlabos jūsu darba plūsmu, savienojot DocuSign ar jūsu Google Workspace.\n\n[APSTIPRINĀT LIETOTNI]\n\nJa jūs neesat pieprasījis šo integrāciju, lūdzu, sazinieties ar IT administratoru.\n\nŠo paziņojumu nosūtīja Google Workspace.",
+    "explanation": "Šī ir OAuth piekrišanas pikšķerēšana. Uzbrucēji izveido ļaunprātīgas lietotnes, kas pieprasa piekļuvi e‑pastam un failiem. Sūtītāja domēns “google-workspace-apps.net” NAV Google. Likumīgi Google OAuth apstiprinājumi parādās tieši pārlūkā, nevis e‑pasta saitēs. Plašās atļaujas (e‑pasts, disks, kalendārs) dotu uzbrucējiem pilnu konta piekļuvi. Nekad neapstipriniet lietotnes caur e‑pasta saitēm.",
+    "cues": [
+      "OAuth piekrišanas pieprasījums",
+      "plašas atļaujas",
+      "viltots Google domēns",
+      "trešās puses sūtītājs"
+    ],
+    "linkText": "APSTIPRINĀT LIETOTNI"
+  },
+  "scn_014": {
+    "senderName": "Slack",
+    "subject": "Jūsu komandas administrators instalēja Zoom for Slack",
+    "timestamp": "Pirms 1 nedēļas",
+    "body": "Sveiki,\n\nJūsu darba telpas administrators ir instalējis Zoom lietotni jūsu Slack darba telpai.\n\nKo tas nozīmē jums:\n- Jūs varat sākt Zoom sapulces tieši no Slack kanāliem\n- Sapulču saites automātiski tiks kopīgotas sarunās\n- No jums nav nepieciešama papildu rīcība\n\nJa jums ir jautājumi par šo instalāciju, lūdzu, sazinieties ar savu darba telpas administratoru.\n\nSlack komanda",
+    "explanation": "Šis ir likumīgs paziņojums no Slack par administratora instalētu integrāciju. Sūtītāja domēns “slack.com” ir pareizs, no jums netiek prasīta rīcība, un jautājumi tiek novirzīti administratoram, nevis uz aizdomīgām saitēm. Tas ir tikai informatīvs paziņojums par darba telpas izmaiņām.",
+    "cues": []
+  },
+  "scn_015": {
+    "senderName": "LinkedIn",
+    "subject": "Sarah Mitchell vēlas pievienoties — 12 kopīgu kontaktu",
+    "timestamp": "Pirms 4 stundām",
+    "body": "Sveiki,\n\nSarah Mitchell, Horizon Partners biznesa attīstības viceprezidente, vēlas ar jums sazināties LinkedIn.\n\nSāras piezīme: \"Sveiki! Pamanīju, ka abi piedalījāmies Digital Transformation Summit pagājušajā mēnesī. Man ļoti patika paneļdiskusija par AI uzņēmumos — labprāt turpinātu sarunu!\"\n\n12 kopīgi kontakti, tostarp:\n- James Rodriguez (jūsu kolēģis)\n- Michelle Thompson\n- David Kim\n\n[Pieņemt uzaicinājumu]  [Skatīt profilu]\n\nJūs saņemat uzaicinājumus šajā e‑pasta adresē. Atteikties no šiem e‑pastiem.\n\nLinkedIn Corporation, 1000 W Maude Ave, Sunnyvale, CA 94085",
+    "explanation": "Šis ir ar AI ģenerēts mērķēts pikšķerēšanas uzbrukums, kas izmanto personisku kontekstu, lai šķistu īsts. Domēns “linkedin-mail.net” NAV LinkedIn (īstais domēns: linkedin.com). Uzbrucēji izmanto AI, lai izpētītu mērķus un izveidotu personalizētus ziņojumus, pieminot reālus pasākumus un kolēģus. Vienmēr rūpīgi pārbaudiet sūtītāja domēnu un piekļūstiet LinkedIn tieši caur linkedin.com, nevis e‑pasta saitēm.",
+    "cues": [
+      "viltots LinkedIn domēns",
+      "personalizēts konteksts",
+      "steidzamība caur sociālo pierādījumu",
+      "AI ģenerēta personīga piezīme"
+    ],
+    "linkText": "Pieņemt uzaicinājumu"
+  },
+  "scn_016": {
+    "senderName": "Adobe Document Cloud",
+    "subject": "Līguma grozījums — nepieciešams jūsu paraksts",
+    "timestamp": "Pirms 6 stundām",
+    "body": "Sveiki,\n\nDokumentam ir nepieciešams jūsu elektroniskais paraksts.\n\nDokuments: Q4 2024 Service Agreement Amendment\nNo: Patterson & Associates Legal\nLapas: 3\nDerīgs līdz: 2024. gada 18. decembrim\n\nŠis grozījums atjaunina atjaunošanas nosacījumus atbilstoši mūsu pagājušās ceturtdienas sarunai. Galvenās izmaiņas ietver jūsu pieprasītos pagarinātos maksājumu termiņus.\n\n[Izskatīt un parakstīt dokumentu]\n\nDokumenta ID: ASG-2024-8847291\nNosūtīts, izmantojot Adobe Sign — uzticamu e‑paraksta risinājumu\n\nŠis ziņojums jums nosūtīts, jo jūs esat norādīts kā parakstītājs.",
+    "explanation": "Šī ir sofistikēta AI ģenerēta pikšķerēšana, kas izliekas par Adobe Sign. Domēns “adobesign-documents.com” NAV Adobe (īstie domēni: adobe.com vai adobesign.com). Ziņojums atsaucas uz viltotu iepriekšēju sarunu, lai radītu uzticību. Patiesi Adobe Sign e‑pasti nāk no “@adobesign.com”, un dokumentus var pārbaudīt, tieši piesakoties Adobe kontā.",
+    "cues": [
+      "viltots Adobe domēns",
+      "spiediens uz termiņu",
+      "atsauce uz iepriekšēju sarunu",
+      "sofisticēts noformējums"
+    ],
+    "linkText": "Izskatīt un parakstīt dokumentu"
+  },
+  "scn_017": {
+    "senderName": "Nezināms zvanītājs",
+    "subject": "Balss pasts no bankas krāpšanas nodaļas",
+    "timestamp": "Pirms 25 minūtēm",
+    "body": "[BALSS PASTA TRANSKRIPTS]\n\n\"Sveiki, šeit Maikls no Chase Bank krāpšanas novēršanas komandas. Mēs esam konstatējuši neparastu aktivitāti jūsu biznesa kontā, kas beidzas ar 4872.\n\nBija trīs darījumi kopā par 12 847 $, kas mums nekavējoties jāapstiprina ar jums. Šie maksājumi šķiet no ārvalstu tirgotāja.\n\nLūdzu, atzvaniet mums uz 1-888-555-0142 nākamo 2 stundu laikā, lai nepieļautu konta iesaldēšanu. Sagatavojiet konta numuru un pēdējos 4 sociālās apdrošināšanas ciparus verifikācijai.\n\nTas ir steidzams drošības jautājums. Paldies.\"\n\n[BEIGAS]",
+    "explanation": "Šis balss pasts rāda AI ģenerētas balss pikšķerēšanas (vishing) pazīmes. Krāpnieki izmanto AI, lai klonētu balsis un izveidotu pārliecinošus bankas pārstāvju zvanus. Sarkanās pazīmes: tiek dots atzvanīšanas numurs (nevis numurs uz kartes), radīta steidzamība un pieprasīta sensitīva informācija. Nekad nezvaniet uz numuriem no balss pasta — izmantojiet numuru uz bankas kartes vai izraksta.",
+    "cues": [
+      "AI ģenerēta balss klonēšana",
+      "steidzamība",
+      "atzvanīt uz nezināmu numuru",
+      "pieprasa sensitīvu informāciju"
+    ]
+  },
+  "scn_018": {
+    "senderName": "Microsoft",
+    "subject": "Jauna pieteikšanās jūsu Microsoft kontā",
+    "timestamp": "Vakar",
+    "body": "Microsoft konts\nNeparasta pieteikšanās aktivitāte\n\nMēs pamanījām jaunu pieteikšanos jūsu Microsoft kontā.\n\nDetaļas:\nValsts/reģions: Amerikas Savienotās Valstis\nIP adrese: 192.168.1.xxx\nPlatforma: Windows 11\nPārlūkprogramma: Microsoft Edge\n\nJa tas bijāt jūs, varat ignorēt šo ziņojumu.\n\nJa tas nebijāt jūs, lūdzu, aizsargājiet savu kontu:\n1. Piesakieties savam Microsoft kontam vietnē account.microsoft.com\n2. Dodieties uz Security > Sign-in activity\n3. Pārskatiet un atsauciet jebkuras aizdomīgās sesijas\n\nJa nepieciešama palīdzība, apmeklējiet support.microsoft.com.\n\nMicrosoft kontu komanda",
+    "explanation": "Šis ir likumīgs Microsoft drošības paziņojums. Sūtītāja domēns “@microsoft.com” ir pareizs. E‑pasts sniedz informāciju, neprasot steidzamu rīcību, norāda iet tieši uz account.microsoft.com (nevis pa saiti), un nodrošina oficiālus atbalsta kanālus. Tas ir noderīgs drošības paziņojums, kuru pārskatīt, ja neatpazīstat pieteikšanos.",
+    "cues": [],
+    "linkText": "account.microsoft.com"
+  },
+  "scn_019": {
+    "senderName": "USPS",
+    "subject": "Paziņojums par sūtījuma piegādi",
+    "timestamp": "Pirms 1 stundas",
+    "body": "USPS: Jūsu sūtījumu nevar piegādāt nepilnīgas adreses informācijas dēļ.\n\nLai pārplānotu piegādi, noskenējiet QR kodu vai apmeklējiet: usps-redelivery.info/track\n\nJūsu izsekošanas numurs: 9400111899223847562\n\nAtbildiet STOP, lai atteiktos",
+    "explanation": "Šis ir SMS pikšķerēšanas (smishing) uzbrukums ar QR kodu. Domēns “usps-redelivery.info” NAV USPS (īstais domēns: usps.com). USPS nesūta QR kodus īsziņās atkārtotai piegādei. Izsekošanas numura formāts izskatās īsts, bet ir nejauši ģenerēts. Vienmēr izsekojiet sūtījumus tieši usps.com, izmantojot numurus no sākotnējā pasūtījuma apstiprinājuma.",
+    "cues": [
+      "viltots USPS domēns",
+      "QR kods īsziņā",
+      "iegansts par adreses problēmu",
+      "īsa URL"
+    ]
+  },
+  "scn_020": {
+    "senderName": "Microsoft",
+    "subject": "Drošības verifikācijas kods",
+    "timestamp": "Pirms 2 minūtēm",
+    "body": "Jūsu Microsoft verifikācijas kods ir: 847291\n\nJa jūs neesat pieprasījis šo kodu, kāds var mēģināt piekļūt jūsu kontam.\n\nAtbildiet HELP, lai saņemtu palīdzību, vai apmeklējiet microsoft-security-alert.com, lai aizsargātu savu kontu.\n\nŠis kods beidzas pēc 10 minūtēm.",
+    "explanation": "Šis ir MFA pārtveršanas uzbrukums. Kods var būt īsts (uzbrucējs to izraisīja), bet saite uz “microsoft-security-alert.com” ir ļaunprātīga. Patiesos Microsoft MFA kodos nekad nav saišu. Ja saņemat negaidītu MFA kodu, kāds TIEŠI TAGAD mēģina piekļūt jūsu kontam. Nekavējoties nomainiet paroli Microsoft oficiālajā vietnē un ieslēdziet papildu drošības pasākumus.",
+    "cues": [
+      "MFA pārtveršanas mēģinājums",
+      "viltots Microsoft domēns",
+      "reāllaika uzbrukuma indikators"
+    ],
+    "linkText": "microsoft-security-alert.com"
+  },
+  "scn_021": {
+    "senderName": "OpenSea",
+    "subject": "Jūs saņēmāt piedāvājumu par savu NFT kolekciju!",
+    "timestamp": "Pirms 30 minūtēm",
+    "body": "Lieliskas ziņas!\n\nPircējs ir izteicis piedāvājumu par jūsu NFT kolekciju.\n\nKolekcija: Bored Ape Yacht Club #8847\nPiedāvājums: 12,5 ETH (aptuveni 28 750 $)\nPircējs: CryptoWhale.eth (Verified Collector)\nDerīgs: 24 stundas\n\n[Pieņemt piedāvājumu]  [Pretpiedāvājums]\n\nŠis piedāvājums ir būtiski virs grīdas cenas. Rīkojieties ātri, lai nodrošinātu šo darījumu!\n\nPiesakieties ar savu maku, lai pārskatītu piedāvājuma detaļas.\n\nOpenSea — lielākais NFT tirgus",
+    "explanation": "Šis ir kriptovalūtu/NFT pikšķerēšanas uzbrukums. Domēns “opensea-nft.io” NAV OpenSea (īstais domēns: opensea.io). Noklikšķinot “Pieņemt piedāvājumu”, jūs nonākat viltotā maka savienojumā, kas nozog kriptovalūtu. Frāze “virs grīdas cenas” rada FOMO. Nekad nesavienojiet maku caur e‑pasta saitēm — vienmēr atveriet OpenSea tieši, ierakstot URL.",
+    "cues": [
+      "viltots OpenSea domēns",
+      "maka savienošanas pieprasījums",
+      "augstas vērtības vilinājums",
+      "steidzamība"
+    ],
+    "linkText": "Pieņemt piedāvājumu"
+  },
+  "scn_022": {
+    "senderName": "Nezināms",
+    "subject": "Ziņa uz nepareizu numuru",
+    "timestamp": "Pirms 2 stundām",
+    "body": "Sveika, Dženifer! Vai mēs joprojām rīt plkst. 15:00 tiekamies uz kafiju? Es atradu to kafejnīcu, ko tu minēji centrā.",
+    "explanation": "Šis ir “pig butchering” krāpšanas pirmais posms. Krāpnieki sūta īsziņas uz “nepareizu numuru”, lai sāktu sarunu. Ja atbildat, pat tikai lai labotu, viņi atvainosies un mēģinās sadraudzēties. Mērķis ir izveidot attiecības pirms investīciju krāpšanas. Labākā rīcība: neiesaistīties, vienkārši dzēst.",
+    "cues": [
+      "neprasīts ziņojums",
+      "nepareizs vārds",
+      "pig butchering sākuma kontakts"
+    ]
+  },
+  "scn_023": {
+    "senderName": "Nezināms",
+    "subject": "Turpinājums pēc nepareizā numura",
+    "timestamp": "Pirms 1 stundas",
+    "body": "Ak, piedod! Nepareizs numurs, haha. Bet tu izklausies draudzīgs! Es esmu Eimija no San Diego. Tā kā mēs jau rakstām, ar ko tu nodarbojies darbā? Es nodarbojos ar kripto tirdzniecību un šomēnes nopelnīju 15 tūkst. $!",
+    "explanation": "Klasiska eskalācija “pig butchering” krāpšanā. Pēc “nepareizā numura” āķa viņi pāriet uz iespaidīgu finanšu ieguvumu pieminēšanu, lai raisītu interesi. Tā ir sociālā inženierija — viņi jūs profilē investīciju krāpšanai. Minētie ārkārtējie ieguvumi ir ēsma. Ziņojiet un bloķējiet šo numuru.",
+    "cues": [
+      "neprasīts finanšu padoms",
+      "min kripto peļņu",
+      "veido uzticību",
+      "pārāk draudzīgs svešinieks"
+    ]
+  },
+  "scn_024": {
+    "senderName": "Amy",
+    "subject": "Investīciju iespēja",
+    "timestamp": "Pirms 30 minūtēm",
+    "body": "Es ceru, ka tev nav iebildumu, ka atkal rakstu! Es domāju par mūsu sarunu un gribēju padalīties ar kaut ko īpašu.\n\nMans onkulis Honkongā iemācīja man savu tirdzniecības sistēmu. Es 6 mēnešos esmu trīskāršojusi savus uzkrājumus! Nekad neesmu to dalījusi ar svešiniekiem, bet tu šķiet ļoti patiesa persona.\n\nVai tevi interesētu iemācīties? Es varu tevi vadīt. Sāc tikai ar 500 $ šajā platformā: crypto-elite-trading.com\n\nDod ziņu! -Amy",
+    "explanation": "Pēdējais “pig butchering” posms — investīciju piedāvājums. Sarkanās pazīmes: svešinieks piedāvā “slepenas” zināšanas, nereāli ienesīgumi (uzkrājumi trīskāršoti), nezināma platforma un emocionāla manipulācija (“tu šķiet ļoti patiesa”). Šī platforma nozags jūsu naudu. Šīs krāpšanas visā pasaulē izmaksājušas upuriem miljardus. Ziņojiet nekavējoties.",
+    "cues": [
+      "neprasīts investīciju padoms",
+      "garantēta peļņa",
+      "ārzemju saiknes stāsts",
+      "nezināma tirdzniecības platforma",
+      "spiediens ieguldīt"
+    ]
+  },
+  "scn_025": {
+    "senderName": "Mark Thompson (CEO)",
+    "subject": "Ātrs jautājums",
+    "timestamp": "Pirms 15 minūtēm",
+    "body": "Sveiki,\n\nVai jūs esat pie sava galda? Man jāuzdod jums jautājums, bet tūlīt ieeju valdes sēdē.\n\nMark\nNosūtīts no mana iPhone",
+    "explanation": "Šis ir BEC (Business Email Compromise) uzbrukuma sākums. Ziņojums apzināti ir neskaidrs, lai jūs atbildētu. Ievērojiet, ka reply‑to norāda uz Gmail kontu. Pirms atbildēšanas pārbaudiet pa zināmu kanālu, piemēram, piezvaniet CEO asistentam vai tieši uz biroja numuru.",
+    "cues": [
+      "vadības personības atdarināšana",
+      "atbildes adrese neatbilst",
+      "neskaidrs steidzams pieprasījums",
+      "viltots CEO e‑pasts"
+    ]
+  },
+  "scn_026": {
+    "senderName": "Mark Thompson (CEO)",
+    "subject": "Re: Ātrs jautājums",
+    "timestamp": "Pirms 10 minūtēm",
+    "body": "Lieliski, jūs esat tur.\n\nMan vajag, lai jūs nopērkat dāvanu kartes kā pateicības dāvanas mūsu galvenajiem klientiem. Paņemiet 5 Amazon kartes par 200 $ katru (kopā 1000 $).\n\nTas ir steidzami — man vajag kartes numurus nosūtīt īsziņā uz 555-0147 līdz 17:00. Es rīt kompensēšu no vadības budžeta.\n\nVai varat to izdarīt? Es uz jums paļaujos.\n\nMark",
+    "explanation": "Klasiska BEC dāvanu karšu krāpšana. Uzbrucējs nodibina kontaktu, pēc tam pieprasa neizsekojamas dāvanu kartes. Galvenās pazīmes: CEO tā neiegādājas dāvanu kartes, pieprasījums apiet parastos iepirkumu procesus, kartes numurus prasa nosūtīt uz personīgu tālruni, un “es uz tevi paļaujos” ir manipulācija. Ziņojiet nekavējoties.",
+    "cues": [
+      "dāvanu karšu pieprasījums",
+      "karteņu numuru sūtīšana īsziņā",
+      "laika spiediens",
+      "apiet parastos procesus",
+      "personīga kompensācijas solījums"
+    ]
+  },
+  "scn_027": {
+    "senderName": "Mark Thompson (CEO)",
+    "subject": "Re: Ātrs jautājums — STEIDZAMI",
+    "timestamp": "Pirms 5 minūtēm",
+    "body": "Priecājos, ka esat piesardzīgs, bet tas tiešām esmu es, un man tas jāizdara nekavējoties.\n\nPatiesībā aizmirstiet dāvanu kartes. Man vajag, lai jūs apstrādātu bankas pārskaitījumu — 47 500 $ iegādes pabeigšanai pirms tirgus slēgšanas.\n\nPārskaitīt uz:\nMeridian Consulting Group\nChase Bank\nRouting: 021000021\nAccount: 847291650\n\nNEapspriediet to ar nevienu — tas ir konfidenciāli līdz paziņošanai. Nosūtiet man apstiprinājumu, kad pabeigts.\n\nMark",
+    "explanation": "Eskalācija pēc pretestības. Uzbrucējs pārgāja no dāvanu kartēm uz pārskaitījumu krāpšanu — ienesīgāku mērķi. “Konfidenciāli” noformējums izolē jūs no pārbaudes. Steidzamība ap “tirgus slēgšanu” ir mākslīgs spiediens. Tas atbilst reālu uzbrukumu modelim, kas uzņēmumiem izmaksājis miljonus. Ziņojiet drošībai nekavējoties.",
+    "cues": [
+      "pastiprināta steidzamība",
+      "pārskaitījuma pieprasījums",
+      "konfidencialitātes prasība",
+      "spiediens pēc pretestības",
+      "jauni bankas rekvizīti"
+    ]
+  },
+  "scn_028": {
+    "senderName": "Microsoft drošības brīdinājums",
+    "subject": "Balss pasts: datora drošības brīdinājums",
+    "timestamp": "Pirms 5 minūtēm",
+    "body": "[AUTOMATIZĒTS BALSS ZIŅOJUMS]\n\nKRITISKS DROŠĪBAS BRĪDINĀJUMS. Šī ir Microsoft Windows. Jūsu dators ir kompromitēts. Ir konstatēti vīrusi, kas zog jūsu bankas informāciju un personīgos failus.\n\nNEIZSLĒDZIET DATORU. Tas var izraisīt pastāvīgu datu zudumu.\n\nNekavējoties zvaniet Microsoft atbalstam pa 1-888-555-0199, lai runātu ar sertificētu tehniķi. Ja nezvanīsiet 30 minūšu laikā, jūsu dators tiks neatgriezeniski atspējots.\n\nJūsu lietas numurs: MS-8847291\n\nTas ir steidzams drošības jautājums, kas prasa tūlītēju uzmanību.",
+    "explanation": "Šī ir tehniskā atbalsta krāpšana. Microsoft nekad nezvana lietotājiem par vīrusiem. Sarkanās pazīmes: automatizēts baiļu ziņojums, draudi par “pastāvīgu” kaitējumu, steidzams atzvanīšanas pieprasījums un viltots lietas numurs. Ja piezvanīsiet, krāpnieki mēģinās iegūt attālinātu piekļuvi un jūsu maksājumu informāciju. Ziņojiet un ignorējiet.",
+    "cues": [
+      "neprasīts drošības brīdinājums",
+      "Microsoft uzdošanās",
+      "viltots lietas numurs",
+      "draudi par datu zudumu",
+      "atzvanīšanas numurs"
+    ]
+  },
+  "scn_029": {
+    "senderName": "Microsoft atbalsts (James)",
+    "subject": "Tehniskā atbalsta sarunas transkripts",
+    "timestamp": "Tikko",
+    "body": "[SARUNAS TRANSKRIPTS]\n\n\"Paldies, ka zvanījāt Microsoft atbalstam, šeit Džeimss, lietas numurs MS-8847291. Redzu, ka jūsu dators ir atzīmēts ar kritisku drošības pārkāpumu.\n\nMan būs nepieciešams, lai jūs lejupielādētu mūsu attālinātā atbalsta rīku, lai es varētu novērtēt bojājumus. Dodieties uz anydesk-support.com un noklikšķiniet “Connect with Technician.”\n\nKamēr tas lejupielādējas, man jāapstiprina jūsu identitāte. Vai varat apstiprināt pilnu vārdu, dzimšanas datumu un sociālās apdrošināšanas numura pēdējos četrus ciparus?\n\nNeuztraucieties, tā ir standarta Microsoft verifikācijas procedūra. Es esmu šeit, lai palīdzētu aizsargāt jūsu datoru.",
+    "explanation": "Krāpšana turpinās ar attālinātu piekļuvi un identitātes zādzību. “AnyDesk” ir reāla programma, bet domēns ir viltots. Pēc savienojuma viņi var instalēt ļaunprogrammatūru, nozagt failus un iztukšot kontus. Microsoft nekad neprasa SSN un neizmanto trešo pušu vietnes atbalstam. Nekavējoties nolieciet klausuli un ziņojiet. Ja sniedzāt informāciju, nomainiet paroles un uzraugiet kontus.",
+    "cues": [
+      "attālinātas piekļuves pieprasījums",
+      "viltots atbalsta domēns",
+      "pieprasa personas informāciju",
+      "viltota verifikācijas procedūra"
+    ]
+  },
+  "scn_030": {
+    "senderName": "Sarah Martinez (VP Operations)",
+    "subject": "STEIDZAMI: Nepieciešams paraksts pirms valdes sēdes plkst. 14:00",
+    "timestamp": "Pirms 45 minūtēm",
+    "body": "Sveiki,\n\nZinu, ka tas ir pēdējā brīdī, bet man vajag jūsu apstiprinājuma parakstu Q4 budžeta pārplānošanai pirms valdes sēdes šodien plkst. 14:00.\n\nDokuments ir koplietojamajā Finanšu mapē: S:\\Finance\\2024\\Q4 Budget Reforecast Final.xlsx\n\nLūdzu, pārskatiet un parakstiet, izmantojot DocuSign (jums vajadzētu būt saņēmušam atsevišķu paziņojumu no mūsu oficiālā DocuSign konta).\n\nJa ir jautājumi, esmu pie galda — zvaniet man uz iekšējo 3847.\n\nPaldies par sapratni par steigu!\n\nSarah",
+    "explanation": "Šis ir likumīgs steidzams pieprasījums. Galvenie rādītāji: sūtītāja e‑pasts atbilst uzņēmuma domēnam ar pareizu reply‑to, atsaucas uz iekšējām sistēmām (S: disks, DocuSign), nodrošina pārbaudāmu kontaktu (iekšējais numurs), un steidzamība atbilst īstai biznesa vajadzībai (valdes sēde). Reāli termiņi pastāv — mērķis ir atšķirt likumīgu steidzamību no mākslīga spiediena.",
+    "cues": []
+  },
+  "scn_031": {
+    "senderName": "IT drošība",
+    "subject": "Nepieciešama darbība: Parole beigsies pēc 3 dienām",
+    "timestamp": "Šorīt",
+    "body": "Cienījamais darbiniek,\n\nJūsu tīkla parole beigsies pēc 3 dienām.\n\nLai nomainītu paroli:\n1. Uz datora nospiediet Ctrl+Alt+Delete\n2. Atlasiet “Mainīt paroli”\n3. Ievadiet pašreizējo paroli, tad jauno paroli divreiz\n\nParoles prasības:\n- Vismaz 12 rakstzīmes\n- Lielo un mazo burtu, ciparu un simbolu kombinācija\n- Nedrīkst atkārtoti izmantot pēdējās 10 paroles\n\nJa nepieciešama palīdzība, sazinieties ar IT palīdzības dienestu pa helpdesk@yourcompany.com vai iekš. 4357.\n\nNEATBILDIET uz šo e‑pastu ar paroli.\n\nIT drošības komanda",
+    "explanation": "Šis ir likumīgs IT paziņojums. Galvenās pazīmes: pareizs uzņēmuma domēns, norādīts mainīt paroli lokāli (Ctrl+Alt+Delete) nevis caur saiti, skaidri pasaka, ka nedrīkst dalīties ar paroli, un dod zināmus iekšējos kontaktus. Salīdziniet ar pikšķerēšanu, kas prasa klikšķināt saites vai ievadīt paroli tīmekļa lapā.",
+    "cues": []
+  },
+  "scn_032": {
+    "senderName": "Apex Software Solutions",
+    "subject": "Nokavēts rēķins — konts #AC-7841",
+    "timestamp": "Vakar",
+    "body": "Cienījamā maksājumu nodaļa,\n\nŠis ir draudzīgs atgādinājums, ka rēķins #INV-2024-1156 par 8 750,00 $ jau ir 15 dienas kavēts.\n\nRēķina detaļas:\n- Rēķins #: INV-2024-1156\n- Rēķina datums: 2024. gada 15. novembris\n- Termiņš: 2024. gada 30. novembris\n- Summa: 8 750,00 $\n- Pakalpojums: ikgadējās programmatūras licences atjaunošana\n\nLūdzu, veiciet maksājumu pēc iespējas ātrāk, lai izvairītos no pakalpojuma pārtraukuma 2024. gada 31. decembrī.\n\nMaksājumu var veikt:\n- ACH pārskaitījums (detaļas ir lietā)\n- Čeks, adresēts Apex Software Solutions\n- Kredītkarte mūsu drošajā portālā: https://pay.apexsoftware.com\n\nJa ir jautājumi, sazinieties ar mūsu AR komandu pa ar@apexsoftware.com vai (555) 847-2910.\n\nPaldies par sadarbību.\n\nJennifer Walsh\nDebitoru nodaļa\nApex Software Solutions",
+    "explanation": "Šis šķiet likumīgs kavēta rēķina paziņojums, bet ir jāveic pārbaude. Labākā prakse: pārbaudiet, vai Apex Software ir zināms piegādātājs, vai rēķina numurs atbilst jūsu ierakstiem, un vai maksājumu detaļas nav mainījušās. Pats pieprasījums nav aizdomīgs, taču piegādātāju rēķinus bieži viltot. Īss verifikācijas zvans pasargā no rēķinu krāpšanas.",
+    "cues": [],
+    "linkText": "mūsu drošais portāls"
+  },
+  "scn_033": {
+    "senderName": "Chase Bank",
+    "subject": "Krāpšanas brīdinājums",
+    "timestamp": "Pirms 10 minūtēm",
+    "body": "Chase Fraud: Vai jūs mēģinājāt veikt pirkumu par 847,00 $ AMAZON.COM 12/15? Atbildiet YES vai NO. Ja ne jūs, mēs bloķēsim jūsu karti. Var tikt piemērota ziņojumu/datu maksa.",
+    "explanation": "Šis ir likumīgs krāpšanas brīdinājuma formāts no Chase. Galvenās pazīmes: numurs atbilst Chase zināmajam krāpšanas dienestam, tiek lūgts vienkāršs YES/NO (bez saitēm vai personīgas informācijas), un norādīts konkrēts darījums. Tomēr vienmēr drošāk ir pārbaudīt: zvaniet uz numuru uz kartes aizmugures, nevis atbildiet uz īsziņu. Tas pasargā no sarežģītiem viltojumiem.",
+    "cues": []
+  },
+  "scn_034": {
+    "senderName": "Personāla nodaļa",
+    "subject": "SVARĪGI: Jauna izdevumu politika stājas spēkā nekavējoties",
+    "timestamp": "Pirms 2 stundām",
+    "body": "Visi darbinieki,\n\nAr tūlītēju spēku, lūdzu, ņemiet vērā šādas izmaiņas mūsu komandējumu un izdevumu politikā:\n\nGALVENĀS IZMAIŅAS:\n1. Visi ceļojumu rezervējumi jāveic mūsu jaunajā portālā: Concur (travel.yourcompany.com)\n2. Izdevumu pārskatiem virs 500 $ nepieciešams vadītāja un VP apstiprinājums\n3. Personīgās kredītkartes vairs netiek kompensētas par ceļojumiem\n\nKĀPĒC TAGAD:\nNesenā audita secinājumu dēļ mums šīs kontroles jāievieš nekavējoties, lai ievērotu SOX prasības.\n\nKO JUMS JĀDARA:\n- Pabeidziet Concur apmācību līdz piektdienai (saite Workday Learning)\n- Iesniedziet visus neiesniegtos izdevumu pārskatus pēc vecās politikas līdz 20. decembrim\n\nJautājumi? Rakstiet hr@yourcompany.com vai piedalieties piektdienas kopējā sapulcē plkst. 15:00.\n\nPaldies par sapratni.\n\nHR komanda",
+    "explanation": "Šis ir likumīgs politikas atjauninājums, neskatoties uz steidzamo toni. Galvenās pazīmes: pareizs uzņēmuma domēns, atsauces uz iekšējām sistēmām (Workday, zināms portāls), sniedz kontekstu (audita secinājumi), piedāvā vairākus verifikācijas kanālus (e‑pasts, kopējā sapulce), un nelūdz paroles vai maksājumus. Organizācijām mēdz būt likumīgas steidzamas politikas izmaiņas.",
+    "cues": [],
+    "linkText": "Concur"
+  },
+  "scn_035": {
+    "senderName": "Microsoft Outlook",
+    "subject": "Sapulces uzaicinājums: Q1 plānošanas apspriede",
+    "timestamp": "Pirms 3 stundām",
+    "body": "Jūs esat uzaicināts uz sapulci:\n\nQ1 plānošanas apspriede\n\nKad: Otrdiena, 2024. gada 17. decembris 14:00–15:00\nKur: Microsoft Teams sapulce\n\nOrganizators: Tom Richards (t.richards@clientcompany.com)\nDalībnieki: Jūs, Sarah Martinez, Finanšu komanda\n\nOrganizatora piezīme:\n\"Sveiki, komanda — kā runājām pagājušās nedēļas zvanā, saskaņosim Q1 prioritātes un budžeta sadalījumu. Pievienoju plānošanas sagataves projektu pārskatīšanai iepriekš.\"\n\n[Piekrist]  [Ar nosacījumu]  [Noraidīt]\n\nPievienoties Microsoft Teams sapulcei\nSapulces ID: 284 847 291#\nParole: Q1Plan",
+    "explanation": "Šis kalendāra uzaicinājums, visticamāk, ir likumīgs, taču ir vērts pārbaudīt, jo tas ir no ārēja kontakta. Pārbaudiet: vai jums ir attiecības ar ClientCompany? Vai tas atbilst pagājušās nedēļas sarunai? Ja neesat pārliecināts par ārējiem sapulču pieprasījumiem, apstipriniet ar iekšējo kolēģi (Sarah Martinez), ka šī sapulce bija gaidīta. Kalendāra ielūgumi var tikt izmantoti pikšķerēšanai.",
+    "cues": [],
+    "attachmentName": "Q1_Planning_Template.xlsx"
+  },
+  "scn_036": {
+    "senderName": "David Chen - ABC Supplies",
+    "subject": "Re: PO #4847 — rēķins un atjaunināta maksājumu informācija",
+    "timestamp": "Pirms 1 stundas",
+    "body": "Sveiki,\n\nPēc mūsu sarunas par PO #4847 esmu pievienojis rēķinu, kā prasīts.\n\nSVARĪGI: Lūdzu, ņemiet vērā, ka mūsu bankas informācija ir mainījusies. Mūsu veco banku (First National) iegādājās, tāpēc lūdzu, izmantojiet šīs jaunās detaļas turpmākajiem maksājumiem:\n\nJaunā banka: Horizon Trust\nKonts nosaukums: ABC Supplies LLC\nKonts: 847291650\nRouting: 021000089\n\nLūdzu, atjauniniet savus ierakstus un apstrādājiet šo rēķinu uz jauno kontu. Dodiet ziņu, ja ir jautājumi!\n\nPaldies,\nDavid Chen\nABC Supplies\n\n---\n2024. gada 10. decembrī David Chen rakstīja:\n> Prieks bija ar jums parunāt par Q4 pasūtījumu. Es nosūtīšu rēķinu\n> līdz nedēļas beigām. Paldies par turpmāko sadarbību!\n\n2024. gada 10. decembrī jūs rakstījāt:\n> Sveiki, David, vai varat nosūtīt rēķinu par PO #4847? Mēs apstrādājam\n> decembra maksājumus šonedēļ.",
+    "explanation": "Šis ir atbildes ķēdes pārtveršanas uzbrukums. E‑pasts izskatās kā turpinājums sarunai, bet rūpīgi paskatieties uz domēnu: “abc-suppIies.com” izmanto lielo I, nevis mazo l. Uzbrucēji seko piegādātāju attiecībām, pēc tam ievieto sevi ar viltotiem domēniem un bankas izmaiņām. VIENMĒR pārbaudiet bankas izmaiņas, zvanot piegādātājam uz zināmo numuru no jūsu ierakstiem, nekad no e‑pasta.",
+    "cues": [
+      "līdzīgs domēns",
+      "bankas informācijas maiņa",
+      "viltota atbildes ķēde",
+      "domēnā lietots lielais I maza l vietā"
+    ],
+    "attachmentName": "Invoice_PO4847.pdf"
+  },
+  "scn_037": {
+    "senderName": "DocuSign",
+    "subject": "Dokuments gatavs parakstam: NDA — konfidenciāla vienošanās",
+    "timestamp": "Pirms 2 stundām",
+    "body": "DocuSign\n\nSveiki,\n\nMarcus Chen ir nosūtījis jums dokumentu pārskatīšanai un parakstīšanai.\n\nDokuments: NDA - Confidential Agreement\nNosūtītājs: Marcus Chen (m.chen@horizonventures.com)\nDerīgs līdz: 2024. gada 20. decembrim\n\nŠis NDA ir nepieciešams pirms mūsu tikšanās nākamajā otrdienā, lai apspriestu iespējamo partnerību. Lūdzu, pārskatiet un parakstiet pēc iespējas ātrāk.\n\nPĀRSKATĪT DOKUMENTU\n\nŠo e‑pastu jums nosūtīja Marcus Chen, izmantojot DocuSign elektroniskās parakstīšanas pakalpojumu.\n\nJautājumi? Sazinieties ar sūtītāju tieši.\n\nDocuSign, Inc. | 221 Main Street, Suite 1550 | San Francisco, CA 94105",
+    "explanation": "Šis ir ļoti sofistikēts pikšķerēšanas e‑pasts ar perfektu gramatiku un noformējumu. Lai gan docusign.net ir likumīgs DocuSign domēns, sarkanās pazīmes ir konteksts: vai jūs pazīstat Marcus Chen? Vai gaidāt šo NDA? Vai jums ir ieplānota tikšanās? Uzbrucēji izmanto īstu DocuSign noformējumu, lai nozagtu akreditācijas datus. Ja neesat pārliecināts, pirms parakstīšanas sazinieties ar sūtītāju pa zināmu kanālu.",
+    "cues": [
+      "negaidīts dokuments",
+      "aizdomīgs sūtītāja domēns",
+      "nav iepriekšēja konteksta"
+    ],
+    "linkText": "PĀRSKATĪT DOKUMENTU"
+  },
+  "scn_038": {
+    "senderName": "IT pakalpojumu dienests",
+    "subject": "Plānots: daudzfaktoru autentifikācijas (MFA) uzlabojums",
+    "timestamp": "Šorīt",
+    "body": "IT pakalpojumu paziņojums\n\nCienījamais kolēģi,\n\nMūsu pastāvīgo drošības uzlabojumu ietvaros jūsu daudzfaktoru autentifikācijas (MFA) reģistrācijai nepieciešams atjauninājums.\n\nKas notiek:\nMēs pārejam uz Microsoft Authenticator, lai uzlabotu drošību. Jūsu pašreizējā MFA metode tiks izslēgta 2024. gada 31. decembrī.\n\nNepieciešama darbība:\nLūdzu, pabeidziet MFA migrāciju, apmeklējot mūsu drošo portālu. Process aizņem aptuveni 5 minūtes.\n\nPabeigt MFA migrāciju\n\nLaika grafiks:\n- Tagad – 20. decembris: pabeidziet migrāciju (ieteicams)\n- 21.–30. decembris: migrācija obligāta\n- 31. decembris: vecā MFA atslēgta\n\nJa rodas problēmas, sazinieties ar IT pakalpojumu dienestu pa helpdesk@yourcompany.com vai zvaniet uz iekš. 4357.\n\nPaldies par sadarbību.\n\nIT drošības komanda\nJūsu uzņēmums",
+    "explanation": "Šī ir sofistikēta MFA pikšķerēšana. Sūtītāja domēns “yourcompany-it.net” NAV jūsu uzņēmuma domēns. Uzbrucēji zina, ka MFA migrācijas notiek, tāpēc izveido viltotas. Sarkanās pazīmes: ārējs domēns, saite uz migrācijas pabeigšanu (īstais IT izmantotu iekšējās sistēmas), un steidzamība. Likumīgas MFA izmaiņas nāk no jūsu īstā IT domēna un norāda uz iekšējiem portāliem, kurus jau izmantojat.",
+    "cues": [
+      "līdzīgs domēns",
+      "MFA pikšķerēšana",
+      "mākslīgs termiņš"
+    ],
+    "linkText": "Pabeigt MFA migrāciju"
+  },
+  "scn_039": {
+    "senderName": "Concur Travel",
+    "subject": "Lidojuma apstiprinājums: Ņujorka–Sanfrancisko — 18. dec.",
+    "timestamp": "Pirms 4 stundām",
+    "body": "Concur Travel\n\nJūsu ceļojums ir rezervēts.\n\nCeļotājs: Jennifer Walsh\nApstiprinājums: ABCD12\n\nIZLIDOŠANA\n2024. gada 18. decembris\nUnited Airlines UA 847\nIzlido: JFK 8:00\nIelido: SFO 11:30 (vietējais)\n\nATGRIEŠANĀS LIDOJUMS\n2024. gada 20. decembris\nUnited Airlines UA 1156\nIzlido: SFO 18:00\nIelido: JFK 2:30 +1 (vietējais)\n\nKopējās izmaksas: 847,00 $\n\nSkatīt vai mainīt rezervāciju\n\nNepieciešamas izmaiņas? Ielogojieties Concur Travel, lai atjauninātu maršrutu.\n\nConcur Travel Services\nSAP Concur",
+    "explanation": "Šis ir ar ceļojumiem saistīts pikšķerēšanas uzbrukums. Domēns “concur-solutions.com” NAV SAP Concur (īstais domēns: concur.com). Pat ja jūs ceļojat, uzbrucēji sūta viltotas rezervācijas, cerot, ka klikšķināsiet “skatīt”. Pārbaudiet: vai rezervējāt šo braucienu? Vai vārds ir pareizs? Vienmēr piekļūstiet Concur caur uzņēmuma zināmo ceļojumu portālu vai grāmatzīmi, nevis e‑pasta saitēm.",
+    "cues": [
+      "viltots Concur domēns",
+      "negaidīta rezervācija",
+      "akreditācijas datu izkrāpšana"
+    ],
+    "linkText": "Skatīt vai mainīt rezervāciju"
+  },
+  "scn_040": {
+    "senderName": "IT atbalsts — Michael",
+    "subject": "Steidzami: jūsu kontam nepieciešama verifikācija",
+    "timestamp": "Pirms 15 minūtēm",
+    "body": "Sveiki,\n\nEs esmu no IT atbalsta komandas un esam konstatējuši neparastus pieteikšanās mēģinājumus jūsu kontā no nepazīstamas vietas.\n\nLai jūsu konts būtu drošs, man vajag, lai jūs nekavējoties noklikšķinātu uz šīs saites un pārbaudītu savus akreditācijas datus:\n\nhttps://teams-microsoft-verify.com/auth/login\n\nJa neapstiprināsiet nākamo 30 minūšu laikā, jūsu konts drošības nolūkos tiks īslaicīgi bloķēts.\n\nLūdzu, dodiet ziņu, kad būsiet pabeidzis verifikāciju!\n\nPaldies,\nMichael\nIT atbalsts",
+    "explanation": "Šis ir Teams pikšķerēšanas uzbrukums. Sarkanās pazīmes: sūtītāja e‑pasts ir no ārēja domēna “external-ithelp.com”, nevis jūsu uzņēmuma. Patiesais IT atbalsts nesazinātos Teams ar ārējiem akreditācijas datiem. Saite “teams-microsoft-verify.com” NAV Microsoft. Nekad neklikšķiniet uz verifikācijas saitēm tērzēšanā — dodieties tieši uz uzņēmuma IT portālu.",
+    "cues": [
+      "ārējs sūtītājs",
+      "steidzamība",
+      "aizdomīgs saites domēns",
+      "draudi bloķēt kontu",
+      "neprasīts pieprasījums"
+    ],
+    "linkText": "Verifikācijas saite"
+  },
+  "scn_041": {
+    "senderName": "Sarah Chen",
+    "subject": "Q4 projekta atjauninājums",
+    "timestamp": "Pirms 1 stundas",
+    "body": "Sveiki, komanda,\n\nGribēju ātri paziņot par Q4 projekta grafiku.\n\nMēs esam uz pareizā ceļa, lai sasniegtu 20. decembra termiņu. Esmu atjauninājusi koplietotos dokumentus ar jaunākajiem atskaites punktiem.\n\nDažas lietas, ko paturēt prātā:\n- Dizaina pārskats paredzēts ceturtdien plkst. 14:00\n- Izstrādes iesaldēšana sākas 15. decembrī\n- Lūdzu, atjauniniet savu statusu projekta izsekošanas rīkā līdz darba dienas beigām piektdien\n\nDodiet ziņu, ja ir kādi šķēršļi!\n\nSarah",
+    "explanation": "Šis ir likumīgs iekšējs Teams ziņojums. Sūtītājs ir no jūsu uzņēmuma domēna (@yourcompany.com), saturs ir ikdienišķa projekta komunikācija bez neparastiem pieprasījumiem, bez klikšķināmām saitēm un ar atsaucēm uz iekšējiem procesiem. Tā ir normāla darba komunikācija.",
+    "cues": []
+  },
+  "scn_042": {
+    "senderName": "HR-Payroll-Bot",
+    "subject": "Nepieciešams gada prēmijas apstiprinājums",
+    "timestamp": "Pirms 30 minūtēm",
+    "body": "Apsveicam!\n\nJūs esat izvēlēts gada prēmijai 2 500 $ apmērā. \n\nLai saņemtu prēmiju nākamajā algu ciklā, jums 48 stundu laikā jāapstiprina savi tiešā depozīta dati.\n\nNoklikšķiniet šeit, lai apstiprinātu bankas rekvizītus:\nhttps://hr-portal-bonuses.com/verify-deposit\n\nŠis ir automatizēts ziņojums no HR Payroll Integration.\n\nPersonāla nodaļa",
+    "explanation": "Šis ir Slack pikšķerēšanas uzbrukums, izmantojot viltotu prēmiju vilinājumu. Sarkanās pazīmes: sūtītājs ir no ārēja domēna “slack-hr-integrations.io”, nevis jūsu uzņēmuma. Patiesais HR nekad nelūgtu “apstiprināt bankas datus” caur Slack botu ar ārēju saiti. Paziņojumi par prēmijām nāk caur oficiālajiem HR kanāliem un algu sistēmām, kuras jau izmantojat.",
+    "cues": [
+      "finanšu vilinājums",
+      "spiediens uz termiņu",
+      "ārēja saite",
+      "lūgums pēc bankas rekvizītiem",
+      "automatizēta bota iegansts"
+    ],
+    "linkText": "Apstiprināt bankas rekvizītus"
+  },
+  "scn_043": {
+    "senderName": "Standup Bot",
+    "subject": "Ikdienas standup atgādinājums",
+    "timestamp": "8:00",
+    "body": "Labrīt!\n\nIr pienācis laiks ikdienas standup atjauninājumam. Lūdzu, dalieties:\n\n1. Ko paveicāt vakar?\n2. Pie kā strādājat šodien?\n3. Vai ir kādi šķēršļi?\n\nIevietojiet atjauninājumu #dev-standups\n\nJauku dienu!",
+    "explanation": "Šis ir likumīgs Slack bota atgādinājums. Sūtītājs ir no jūsu uzņēmuma Slack darbvietas (@yourcompany.slack.com), tas ir rutīnas atgādinājums bez saitēm vai neparastiem pieprasījumiem, un atsaucas uz ierastu darba plūsmas procesu. Tā ir standarta automatizēta komunikācija.",
+    "cues": []
+  },
+  "scn_044": {
+    "senderName": "David Thompson (Finanšu nodaļa)",
+    "subject": "Koplietots dokuments: Q4 budžeta pārskats",
+    "timestamp": "Pirms 2 stundām",
+    "body": "Sveiki,\n\nEs esmu kopīgojis ar jums Q4 budžeta pārskata dokumentu. Lūdzu, pārskatiet pirms rītdienas sapulces.\n\nDokuments: Q4_Budget_Review_Final.xlsx\n\nNoklikšķiniet šeit, lai atvērtu SharePoint:\nhttps://yourcompany-sharepoint.com/docs/budget-review\n\nDodiet ziņu, ja ir jautājumi par skaitļiem.\n\nAr cieņu,\nDavid Thompson\nFinanšu nodaļa",
+    "explanation": "Šis ir sofistikēts Teams pikšķerēšanas uzbrukums, izmantojot līdzīgu domēnu. Sūtītājs izskatās iekšējs, bet “yourcompany-finance.com” NAV “yourcompany.com” — uzbrucēji pievieno vārdus domēniem, lai maldinātu. SharePoint saite “yourcompany-sharepoint.com” arī ir viltota (īstais SharePoint ir sharepoint.com vai jūsu tenants). Vienmēr pārbaudiet pilno sūtītāja domēnu un iezīmējiet saites pirms klikšķināšanas.",
+    "cues": [
+      "līdzīgs domēns",
+      "viltots iekšējs vārds",
+      "ārēja SharePoint saite",
+      "mākslīga steidzamība"
+    ],
+    "linkText": "Atvērt SharePoint"
+  },
+  "scn_045": {
+    "senderName": "Alex from Vendor Solutions",
+    "subject": "Atgādinājums par mūsu zvanu",
+    "timestamp": "Vakar",
+    "body": "Sveiki,\n\nSekoju līdzi mūsu pagājušās nedēļas zvanam par programmatūras atjaunošanu.\n\nZinu, ka termiņš ir piektdienā, tāpēc vēlējos pārliecināties, ka esam ceļā, lai PO tiktu apstrādāts.\n\nVai varat apstiprināt, vai jūsu iepirkumu komanda ir apstiprinājusi atjaunošanu? Priecāšos ātri sazvanīties, ja tas palīdzētu virzīt procesu.\n\nPaldies,\nAlex\nVendor Solutions\nKlientu vadītājs",
+    "explanation": "Šis šķiet likumīgs piegādātāja atgādinājums, bet tajā ir elementi, kas var raisīt bažas (ārējs sūtītājs, termiņa spiediens, iepirkumu pieminēšana). Pareizā rīcība ir pārbaudīt — pārskatiet kalendāru par minēto zvanu vai sazinieties ar iepirkumu komandu, lai apstiprinātu, ka tā ir aktīva piegādātāja attiecība. Ne katrs ārējs kontakts ir ļaunprātīgs, bet pārbaude ir prātīga.",
+    "cues": [
+      "ārējs sūtītājs",
+      "termiņa pieminēšana",
+      "iepirkumu pieprasījums"
+    ]
+  },
+  "scn_046": {
+    "senderName": "Jennifer Walsh",
+    "subject": "Jāpārplāno mūsu 1:1",
+    "timestamp": "Pirms 3 stundām",
+    "body": "Sveiki,\n\nKaut kas gadījās, un man jāpārplāno mūsu 1:1, kas bija ieplānots ceturtdien plkst. 15:00.\n\nVai piektdienas rīts jums derētu? Es esmu brīva starp 9–11.\n\nDodiet ziņu, kas der vislabāk!\n\nJen",
+    "explanation": "Šis ir likumīgs Teams ziņojums no kolēģa. Sūtītājs ir no jūsu uzņēmuma domēna (@yourcompany.com), pieprasījums ir rutīnas (sapulces pārplānošana), un nav saišu vai neparastu pieprasījumu. Tā ir normāla darba komunikācija.",
+    "cues": []
+  },
+  "scn_047": {
+    "senderName": "Slack Security",
+    "subject": "Konstatēta neparasta pieteikšanās aktivitāte",
+    "timestamp": "Pirms 5 minūtēm",
+    "body": "DROŠĪBAS BRĪDINĀJUMS\n\nMēs konstatējām pieteikšanos jūsu Slack kontā no neatpazītas ierīces:\n\nAtrašanās vieta: Maskava, Krievija\nIerīce: Windows PC\nLaiks: 2:47 (jūsu laiks)\n\nJa tas nebijāt jūs, jūsu konts var būt kompromitēts.\n\nNekavējoties aizsargājiet savu kontu:\nhttps://slack-security-center.net/secure-account\n\nJa tas bijāt jūs, varat ignorēt šo ziņojumu.\n\nSlack drošības komanda",
+    "explanation": "Šis ir uz bailēm balstīts pikšķerēšanas uzbrukums ar viltotu drošības brīdinājumu. Sarkanās pazīmes: sūtītāja domēns “slack-workspace-security.net” NAV Slack (īstais Slack ir slack.com). Atrašanās vieta “Maskava, Krievija” ir domāta, lai jūs nobiedētu un liktu klikšķināt. Patiesie Slack drošības brīdinājumi nāk no slack.com un ved uz jūsu īstajiem Slack iestatījumiem, nevis ārējām vietnēm.",
+    "cues": [
+      "uz bailēm balstīta steidzamība",
+      "viltots drošības brīdinājums",
+      "aizdomīgs domēns",
+      "ārējs sūtītājs",
+      "bailes no ārvalstu atrašanās vietas"
+    ],
+    "linkText": "Aizsargāt kontu"
+  },
+  "scn_048": {
+    "senderName": "IT nodaļa",
+    "subject": "Paroles derīguma atgādinājums — 7 dienas",
+    "timestamp": "9:00",
+    "body": "Sveiki,\n\nJūsu tīkla parole beigsies pēc 7 dienām — 23. decembrī.\n\nLai nomainītu paroli:\n1. Uz darba stacijas nospiediet Ctrl+Alt+Delete\n2. Atlasiet “Mainīt paroli”\n3. Sekojiet norādēm\n\nJa nepieciešama palīdzība, sazinieties ar IT palīdzības dienestu pa iekš. 4357 vai apmeklējiet IT portālu: https://it.yourcompany.com\n\nPaldies,\nIT nodaļa",
+    "explanation": "Šis ir likumīgs IT paziņojums. Sūtītājs ir no jūsu uzņēmuma domēna (@yourcompany.com), sniedz drošas instrukcijas (Ctrl+Alt+Delete metode neietver saišu klikšķināšanu) un norāda likumīgu kontaktinformāciju (iekšējais numurs, oficiāls portāls). Patiesas IT komunikācijas bieži atgādina par paroļu politikām.",
+    "cues": []
+  },
+  "scn_049": {
+    "senderName": "Robert Chen",
+    "subject": "Ceturkšņa pārskats — lūdzu apstipriniet pieejamību",
+    "timestamp": "Vakar",
+    "body": "Sveiki,\n\nVēlos ieplānot jūsu ceturkšņa izvērtējumu nākamajai nedēļai. Lūdzu, paziņojiet, kurš no šiem laikiem jums der:\n\n- Otrdiena 14:00\n- Trešdiena 10:00\n- Ceturtdiena 15:00\n\nMēs tiksimies manā kabinetā (A ēka, 302. kab.). Lūdzu, paņemiet līdzi projekta atjauninājumus un jebkādus tematus, ko vēlētos apspriest.\n\nPaldies,\nRobert",
+    "explanation": "Šis ir ikdienišķs darba e‑pasts no vadītāja. Sūtītājs ir no jūsu uzņēmuma domēna, pieprasījums ir normāls (pārskata sapulces plānošana), nav saišu vai neparastu pieprasījumu. Tā ir standarta darba komunikācija.",
+    "cues": []
+  },
+  "scn_050": {
+    "senderName": "Jūsu uzņēmums",
+    "timestamp": "Tikko",
+    "body": "Jūsu verifikācijas kods ir 847291. Šis kods beidzas pēc 10 minūtēm. Ja jūs neesat pieprasījis šo kodu, lūdzu, sazinieties ar IT drošību.",
+    "explanation": "Šis ir likumīgs divu faktoru autentifikācijas kods. Galvenās pazīmes: tas ir atbilde uz darbību, ko JŪS iniciējāt (pieteikšanās), nāk no īsā koda numura, kas raksturīgs automatizētām sistēmām, nelūdz klikšķināt saites un iekļauj brīdinājumu, ja tas ir negaidīts. Izmantojiet šo kodu tikai tad, ja tikko mēģinājāt pieteikties.",
+    "cues": []
+  },
+  "scn_051": {
+    "senderName": "Finanšu nodaļa",
+    "subject": "Atgādinājums: Q4 izdevumu pārskati jāiesniedz līdz piektdienai",
+    "timestamp": "Pirms 2 dienām",
+    "body": "Cienījamā komanda,\n\nAtgādinām, ka visi Q4 izdevumu pārskati jāiesniedz līdz šai piektdienai, 20. decembrim.\n\nLūdzu, iesniedziet pārskatus caur standarta Concur portālu concur.yourcompany.com (pieejams no mūsu intraneta).\n\nNepieciešamā dokumentācija:\n- Detalizēti čeki par visiem izdevumiem virs 25 $\n- Vadītāja apstiprinājums par jebkuru atsevišķu izdevumu virs 500 $\n- Aizpildīts izdevumu kategoriju kodējums\n\nJautājumi? Sazinieties ar finanšu komandu pa finance@yourcompany.com vai iekš. 2200.\n\nPaldies,\nFinanšu nodaļa",
+    "explanation": "Šis ir likumīgs finanšu nodaļas paziņojums. Sūtītājs izmanto uzņēmuma domēnu, atsaucas uz iekšējām sistēmām (Concur portāls intranetā), ietver parastus biznesa termiņus un nodrošina likumīgus kontaktus. Ievērojiet, ka iekšējā portāla URL izmanto uzņēmuma domēnu.",
+    "cues": []
+  },
+  "scn_052": {
+    "senderName": "IT palīdzības dienests",
+    "subject": "Atzvanīšana par jūsu pieteikumu #45892",
+    "timestamp": "Pirms 2 stundām",
+    "body": "IT palīdzības dienests zvana par jūsu atbalsta pieteikumu #45892 par printera problēmu.\n\n\"Sveiki, te ir Markus no IT palīdzības dienesta, atzvanu par printeri 3. stāvā. Redzu, ka šorīt iesniedzāt pieteikumu par papīra iestrēgumiem.\n\nEsmu pārbaudījis apkopes grafiku, un mūsu tehniķis var ierasties rīt no 10:00 līdz 11:00. Vai kāds varēs viņu aizvest pie printera?\n\nJa nepieciešams pārcelt, vienkārši atjauniniet pieteikumu vai zvaniet mums atpakaļ uz iekš. 4357. Paldies!",
+    "explanation": "Šis ir likumīgs IT atbalsta atzvans. Galvenās pazīmes: atsauce uz konkrētu pieteikuma numuru, ko JŪS izveidojāt, atbilst iesniegtajai problēmai, sniedz grafiku, nevis prasa akreditācijas datus vai attālinātu piekļuvi, un piedāvā saziņu pa parastajiem kanāliem. Tā ir standarta IT atbalsta darba plūsma.",
+    "cues": []
+  },
+  "scn_053": {
+    "senderName": "Amanda Liu",
+    "subject": "Piedāvājuma melnraksts pārskatīšanai",
+    "timestamp": "Pirms 1 stundas",
+    "body": "Sveiki!\n\nEs pabeidzu pirmo klienta piedāvājuma melnrakstu, par kuru runājām vakardienas sapulcē. Vai vari to apskatīt, kad būs laiks?\n\nEsmu to saglabājusi mūsu koplietojamajā komandas mapē: Teams > Mārketinga komanda > Klientu piedāvājumi > Acme Corp melnraksts v1\n\nDod ziņu, ja ir jautājumi vai ieteikumi. Ceru pabeigt līdz ceturtdienai.\n\nPaldies!\nAmanda",
+    "explanation": "Šis ir likumīgs iekšējs Teams ziņojums. Sūtītājs ir no jūsu uzņēmuma domēna, atsaucas uz sapulci, kuru apmeklējāt, norāda uz esošu koplietotu mapi, nevis ārēju saiti, un izsaka normālu darba pieprasījumu. Tā ir standarta komandas sadarbība.",
+    "cues": []
+  },
+  "scn_054": {
+    "senderName": "Sprint Bot",
+    "subject": "Sprinta plānošana rīt",
+    "timestamp": "Vakar",
+    "body": "Atgādinājums: Sprinta 24 plānošana ir rīt plkst. 10:00 konferenču telpā B.\n\nLūdzu, sagatavojiet:\n- Jūsu pabeigtos uzdevumus no Sprinta 23\n- Jebkādus šķēršļus vai atkarības nākamajam darbam\n- Pieejamo kapacitāti nākamajām 2 nedēļām\n\nTiekamies!",
+    "explanation": "Šis ir likumīgs Slack bota atgādinājums no jūsu uzņēmuma darbvietas. Sūtītājs ir no jūsu Slack (@yourcompany.slack.com), tas ir rutīnas sapulces atgādinājums bez saitēm vai neparastiem pieprasījumiem un atsaucas uz ierasto darba plūsmu. Tā ir standarta automatizēta komunikācija.",
+    "cues": []
+  },
+  "scn_055": {
+    "senderName": "TechConf 2025",
+    "subject": "Reģistrācija apstiprināta — TechConf 2025",
+    "timestamp": "Pirms 3 dienām",
+    "body": "Paldies par reģistrēšanos TechConf 2025!\n\nReģistrācijas detaļas:\nVārds: [Jūsu vārds]\nReģistrācijas veids: Pilna konferences caurlaide\nDatumi: 2025. gada 15.–17. marts\nVieta: Sanfrancisko konferenču centrs\n\nJūsu apstiprinājuma numurs ir: TC2025-78432\n\nKas tālāk:\n- Jūs saņemsiet informāciju par viesnīcas rezervāciju atsevišķā e‑pastā\n- Konferences grafiks būs pieejams mūsu lietotnē, sākot no 1. februāra\n- Badge saņemšana sākas 14. martā plkst. 16:00\n\nJautājumi? Atbildiet uz šo e‑pastu vai apmeklējiet techconf2025.com/help\n\nAr nepacietību gaidām tikšanos!\nTechConf komanda",
+    "explanation": "Šis ir likumīgs konferences reģistrācijas apstiprinājums. Galvenās pazīmes: jūs (vai jūsu uzņēmums) inicējāt reģistrāciju, detaļas atbilst tam, ko pieteicāt, un ziņojums ir informatīvs bez papildu akreditācijas vai maksājumu pieprasījumiem. Vienmēr pārbaudiet, vai tiešām reģistrējāties šim pasākumam.",
+    "cues": []
+  },
+  "scn_056": {
+    "senderName": "Payroll nodaļa",
+    "subject": "Tiešā depozīta apstiprinājums — algu periods 12/1–12/15",
+    "timestamp": "Šodien",
+    "body": "Jūsu tiešais depozīts ir apstrādāts.\n\nAlgu periods: 2024. gada 1.–15. decembris\nMaksājuma datums: 2024. gada 20. decembris\nNeto summa: 2 847,63 $\n\nJūsu līdzekļi tiks ieskaitīti bankas kontā, kas beidzas ar ****4521.\n\nLai skatītu pilnu algas izrakstu, piesakieties darbinieku portālā hr.yourcompany.com\n\nJa ir jautājumi par algu, sazinieties ar Payroll pa payroll@yourcompany.com vai iekš. 2100.\n\nPaldies,\nPayroll nodaļa",
+    "explanation": "Šis ir likumīgs algu paziņojums. Sūtītājs izmanto uzņēmuma domēnu, atsaucas uz jūsu bankas kontu (tikai pēdējie 4 cipari), atbilst jūsu ierastajam algu grafikam un norāda uz iekšējo HR portālu. Likumīga payroll nekad nelūdz “apstiprināt” bankas datus caur e‑pastu saitēm.",
+    "cues": []
+  },
+  "scn_057": {
+    "senderName": "UPS",
+    "timestamp": "8:30",
+    "body": "UPS: Jūsu sūtījums šodien tiks piegādāts. Izsekošana: 1Z999AA10123456784. Izsekojiet ups.com vai atbildiet STOP, lai pārtrauktu īsziņas.",
+    "explanation": "Šis ir likumīgs UPS piegādes paziņojums. Galvenās pazīmes: jūs gaidāt sūtījumu, izsekošanas numura formāts ir pareizs (1Z un 16 rakstzīmes ir standarts UPS), tas norāda uz oficiālo ups.com domēnu (nevis saiti) un ietver atteikšanās iespēju. Lai pārbaudītu, dodieties tieši uz ups.com un ievadiet izsekošanas numuru manuāli.",
+    "cues": []
+  },
+  "scn_058": {
+    "senderName": "Mike Torres - Acme Supplies",
+    "subject": "RE: RE: Q4 Supply Order #7823 - Updated Payment Details",
+    "timestamp": "Pirms 3 stundām",
+    "body": "Sveiki,\n\nSekoju līdzi mūsu iepriekšējai sarunai par Q4 pasūtījumu.\n\nMēs nesen esam mainījuši banku un mums jāatjaunina maksājumu informācija. Lūdzu, izmantojiet šādas detaļas šim rēķinam un visiem turpmākajiem maksājumiem:\n\nBanka: First National Bank\nKonts nosaukums: Acme Supplies LLC\nRouting: 021000089\nKonts: 4829571036\n\nPievienotais rēķins atspoguļo mūsu jaunās maksājumu detaļas. Lūdzu, apstrādājiet maksājumu līdz 20. decembrim, lai izvairītos no kavējumiem janvāra piegādē.\n\nPaldies par turpmāko sadarbību!\n\nMike Torres\nDebitoru nodaļa\nAcme Supplies\n\n-------- Sākotnējais ziņojums --------\nNo: purchasing@yourcompany.com\nKam: mike.torres@acme-supplies.com\nTemats: Q4 Supply Order #7823\n\nSveiki, Mike, apstiprinām Q4 pasūtījuma saņemšanu...",
+    "explanation": "Šis ir atbildes ķēdes pārtveršanas uzbrukums. Kritiskās pazīmes: sūtītāja domēns ir “acme-supplies.net”, bet sākotnējā saruna bija ar “acme-supplies.com” — uzbrucēji reģistrē līdzīgus domēnus. Reply‑To norāda uz pavisam citu domēnu. Bankas konta maiņas pieprasījumi e‑pastu ķēdēs ir klasisks BEC modelis. VIENMĒR pārbaudiet bankas izmaiņas, zvanot piegādātājam, izmantojot numuru no jūsu ierakstiem, nevis no e‑pasta.",
+    "cues": [
+      "atbildes adrese neatbilst",
+      "bankas konta maiņas pieprasījums",
+      "līdzīgs domēns",
+      "steidzamība",
+      "spiediens uz termiņu"
+    ]
+  },
+  "scn_059": {
+    "senderName": "Juridiskā komanda - Wilson & Associates",
+    "subject": "RE: Līguma pārskatīšana — nepieciešams galīgais paraksts",
+    "timestamp": "Vakar",
+    "body": "Labdien,\n\nKā runājām pagājušās nedēļas zvanā, esam pabeiguši līguma grozījumus, ko pieprasījāt.\n\nLūdzu, pārskatiet pievienoto galīgo versiju un parakstiet, izmantojot mūsu drošo dokumentu portālu:\nhttps://wilson-legal-portal.com/sign/contract-8829\n\nŠīs drošības saites derīgums beidzas pēc 48 stundām. Mums nepieciešams jūsu paraksts pirms 22. decembra valdes sēdes.\n\nDodiet ziņu, ja ir jautājumi.\n\nAr cieņu,\nPatricia Williams\nVecākā partnere\nWilson & Associates\n\n-------- Sākotnējais ziņojums --------\nNo: legal@yourcompany.com\nKam: pwilliams@wilsonlaw.com\nTemats: Līguma pārskatīšana\n\nPatricia, sekojot mūsu sarunai par partnerības līgumu...",
+    "explanation": "Šis ir sofistikēts atbildes ķēdes pārtveršanas uzbrukums. Sākotnējā saruna bija ar “wilsonlaw.com”, bet šis e‑pasts nāk no “wilson-associates.co” — pilnīgi cita domēna. Saite ved uz “wilson-legal-portal.com”, kas nav saistīts ar reālo juridisko firmu. Uzbrucēji ievietoja sevi notiekošā sarunā. Vienmēr pārbaudiet, zvanot zināmiem kontaktiem, pirms parakstāt dokumentus vai klikšķināt saites pavedienos, kas prasa darbību.",
+    "cues": [
+      "atbildes adrese neatbilst",
+      "līdzīgs domēns",
+      "ārēja portāla saite",
+      "spiediens uz termiņu",
+      "viltota sarunas ķēde"
+    ],
+    "linkText": "Drošais dokumentu portāls"
+  },
+  "scn_060": {
+    "senderName": "Norēķini - TechServe Solutions",
+    "subject": "RE: RE: RE: Ikmēneša pakalpojumu rēķins — 2024. gada decembris",
+    "timestamp": "Pirms 1 dienas",
+    "body": "Sveika, komanda,\n\nPievienots mūsu decembra rēķins par IT atbalsta pakalpojumiem, kā jau apspriests.\n\nSVARĪGI: Esam pārgājuši uz jaunu maksājumu portālu ātrākai apstrādei. Lūdzu, izmantojiet šo saiti, lai apmaksātu:\nhttps://techserve-pay.com/invoice/dec-2024-yourcompany\n\nMūsu vecais portāls tiek pakāpeniski slēgts, tāpēc, lūdzu, atjauniniet savas grāmatzīmes.\n\nRēķina summa: 4 750,00 $\nTermiņš: 2024. gada 27. decembris\n\nDodiet ziņu, ja nepieciešams vēl kaut kas!\n\nTechServe Solutions norēķini\n\n-------- Sākotnējais ziņojums --------\nNo: accounts@yourcompany.com  \nKam: billing@techserve.com\nTemats: RE: Ikmēneša pakalpojumu rēķins\n\nPaldies par novembra rēķinu, maksājums ir apstrādāts...",
+    "explanation": "Šis ir atbildes ķēdes pārtveršanas uzbrukums, kas mērķēts uz maksājumu procesu. Sarkanās pazīmes: sākotnējā saruna bija ar “techserve.com”, bet šis e‑pasts nāk no “techserve-solutions.net”. Reply‑To ir vēl cita domēna. Apgalvojumi par “jauniem maksājumu portāliem” ir klasiska rēķinu krāpšanas taktika. Pirms apmaksāt rēķinu ar mainītām maksājuma metodēm, zvaniet piegādātājam, izmantojot kontaktus no līguma vai verificēta avota.",
+    "cues": [
+      "atbildes adrese neatbilst",
+      "līdzīgs domēns",
+      "jauns maksājumu portāls",
+      "steidzamība",
+      "viltota sarunas ķēde"
+    ],
+    "linkText": "Jauns maksājumu portāls"
+  },
+  "scn_061": {
+    "senderName": "Microsoft SharePoint",
+    "subject": "Dokuments kopīgots ar jums: Q4 Financial Report.xlsx",
+    "timestamp": "Pirms 2 stundām",
+    "body": "Ar jums ir kopīgots dokuments.\n\nDokuments: Q4 Financial Report.xlsx\nKopīgoja: CFO Office\nSkatīt: SecureDoc Viewer\n\nLai piekļūtu dokumentam, noklikšķiniet zemāk:\nhttps://login.microsoftonline.com/oauth2/authorize?client_id=8f7a3b2c...&scope=Files.ReadWrite.All+Mail.Read+offline_access\n\nPiezīme: iespējams, jums būs jāpiešķir lietotnei SecureDoc Viewer atļauja piekļūt jūsu failiem.\n\nMicrosoft SharePoint",
+    "explanation": "Šī ir OAuth piekrišanas pikšķerēšana. Lai gan pieteikšanās lapa ir īsta Microsoft, jums tiek lūgts piešķirt trešās puses lietotnei (“SecureDoc Viewer”) bīstamas atļaujas: Files.ReadWrite.All (lasīt/rediģēt visus failus), Mail.Read (lasīt visu e‑pastu) un offline_access (pastāvīga piekļuve). Likumīga dokumentu koplietošana neprasa instalēt lietotnes. Nekad nepiešķiriet plašas atļaujas nepazīstamām lietotnēm. Ziņojiet un pieprasiet dokumentu caur oficiāliem kanāliem.",
+    "cues": [
+      "pārmērīgu atļauju pieprasījums",
+      "trešās puses lietotnes piekrišana",
+      "neskaidrs lietotnes nosaukums",
+      "plašas piekļuves apjoms"
+    ],
+    "linkText": "Skatīt dokumentu"
+  },
+  "scn_062": {
+    "senderName": "Google Workspace",
+    "subject": "Jauns kalendāra integrācijas pieprasījums: MeetingSync Pro",
+    "timestamp": "Pirms 30 minūtēm",
+    "body": "Jauna lietotne pieprasa piekļuvi jūsu Google Workspace kontam.\n\nLietotne: MeetingSync Pro\nPieprasītājs: IT nodaļa\nMērķis: sinhronizēt visus kalendāra notikumus starp platformām\n\nPieprasītās atļaujas:\n- Lasīt, rakstīt un dzēst visus kalendāra notikumus\n- Piekļūt kontaktpersonām\n- Sūtīt e‑pastus jūsu vārdā\n\nNoklikšķiniet šeit, lai pārskatītu un apstiprinātu:\nhttps://accounts.google.com/o/oauth2/auth?client_id=meetingsync-pro&scope=calendar+contacts+gmail.send\n\nJa jūs to neesat pieprasījis, varat ignorēt šo e‑pastu.\n\nGoogle Workspace Security",
+    "explanation": "Šī ir OAuth piekrišanas pikšķerēšana, izmantojot viltotu IT pieprasījumu. Kritiskās pazīmes: lietotne pieprasa atļauju sūtīt e‑pastus jūsu vārdā un dzēst kalendāra notikumus — tās ir bīstamas atļaujas, kas reti nepieciešamas likumīgām lietotnēm. “Pieprasīja IT nodaļa” ir sociālā inženierija. Patiesais IT paziņo par jauniem rīkiem caur oficiāliem kanāliem, nevis individuāliem e‑pastiem. Nekad neapstipriniet lietotnes, kas var sūtīt e‑pastus jūsu vārdā vai dzēst datus.",
+    "cues": [
+      "pārmērīgu atļauju pieprasījums",
+      "e‑pastu sūtīšana jūsu vārdā",
+      "dzēšanas piekļuve",
+      "neprasīts lietotnes pieprasījums"
+    ],
+    "linkText": "Pārskatīt un apstiprināt"
+  },
+  "scn_063": {
+    "senderName": "Microsoft atbalsts",
+    "subject": "Ienākošs zvans: Microsoft tehniskais atbalsts",
+    "timestamp": "Pirms 10 minūtēm",
+    "body": "Zvanītājs apgalvoja, ka ir no Microsoft tehniskā atbalsta.\n\n\"Labdien, te ir Džons no Microsoft tehniskā atbalsta. Mēs esam konstatējuši, ka jūsu dators sūta kļūdu ziņojumus uz mūsu serveriem un var būt inficēts ar vīrusu.\n\nEs varu palīdzēt to izlabot tūlīt, bet man vajag, lai jūs dotos pie datora. Vai varat to izdarīt?\n\nVispirms vienlaikus nospiediet Windows taustiņu un R. Tagad ierakstiet 'eventvwr' un nospiediet Enter. Vai redzat kļūdu sarakstu? Tie sarkanie un dzeltenie brīdinājumi ir tas, ko mēs konstatējam.\n\nLai noņemtu vīrusu, man vajag, lai jūs atvērtu vietni un lejupielādētu mūsu drošības rīku. Dodieties uz remote-fix-support.com un noklikšķiniet uz lejupielādes pogas. Tas ļaus mums savienoties ar jūsu datoru un novērst draudus.\n\nNeuztraucieties, šis ir bezmaksas pakalpojums no Microsoft visiem Windows lietotājiem.",
+    "explanation": "Šī ir klasiska tehniskā atbalsta krāpšana. Microsoft NEKAD nezvana negaidīti par datoru problēmām. Event Viewer vienmēr rāda kļūdas/brīdinājumus — tas ir normāli, nevis vīrusa pierādījums. Viņi vēlas, lai jūs instalētu attālinātas piekļuves programmatūru, kas dod viņiem kontroli pār datoru. Nekad nedodiet attālinātu piekļuvi negaidītiem zvanītājiem. Nolieciet klausuli un ziņojiet.",
+    "cues": [
+      "neprasīts zvans",
+      "attālinātas piekļuves pieprasījums",
+      "viltots Microsoft",
+      "Event Viewer triks",
+      "baiļu taktika"
+    ]
+  },
+  "scn_064": {
+    "senderName": "Windows Defender Security",
+    "subject": "KRITISKI: Jūsu PC ir inficēts — nepieciešama tūlītēja rīcība",
+    "timestamp": "Tikko",
+    "body": "WINDOWS DEFENDER DROŠĪBAS BRĪDINĀJUMS\n\nJūsu dators ir inficēts ar 47 vīrusiem!\n\nKonstatētie draudi:\n- Trojan.GenericKD.46845231\n- Spyware.PasswordStealer.A\n- Ransomware.WannaCry.variant\n\nJŪSU FAILI IR APDRAUDĒTI AR ŠIFRĒŠANU\n\nLai novērstu datu zudumu, nekavējoties zvaniet Microsoft sertificētiem tehniķiem:\n\nBEZMAKSAS: 1-888-555-0199\n\nNEIZSLĒDZIET datoru\nNEAIZVERIET šo logu\nNEIGNORĒJIET šo brīdinājumu\n\nAtsauces kods: MS-ERROR-0x80070422\n\nŠis ir automatizēts drošības brīdinājums no Windows Defender.",
+    "explanation": "Šī ir tehniskā atbalsta krāpšana ar viltotu drošības brīdinājumu. Windows Defender nesūta šādus e‑pastus un neietver tālruņa numurus, uz kuriem zvanīt. “Konstatētie draudi” ir izdomāti nosaukumi, lai skanētu biedējoši. Zvanot uz numuru, jūs sasniedzat krāpniekus, kuri mēģinās pārdot viltus pakalpojumus vai iegūt attālinātu piekļuvi. Reāli antivīrusa brīdinājumi parādās Windows pašā, nevis e‑pastā. Dzēsiet nekavējoties.",
+    "cues": [
+      "viltots drošības brīdinājums",
+      "spiediens zvanīt tūlīt",
+      "viltots tālruņa numurs",
+      "tehniski skanošas kļūdas",
+      "baiļu taktika"
+    ]
+  },
+  "scn_065": {
+    "senderName": "IT Security Department",
+    "subject": "Ienākošs zvans: IT drošība — steidzami",
+    "timestamp": "Tikko",
+    "body": "Zvanītājs apgalvoja, ka ir no uzņēmuma IT drošības.\n\n\"Sveiki, te ir Kevins no IT drošības. Mēs esam konstatējuši neparastu pieteikšanās aktivitāti jūsu kontā no IP adreses Ķīnā. \n\nJūsu aizsardzībai mums nekavējoties jāapstiprina jūsu identitāte un jāatiestata jūsu akreditācijas dati. Tas ir steidzami — ja 15 minūšu laikā mēs nenodrošināsim jūsu kontu, mums tas būs pilnībā jādeaktivizē.\n\nMan būs nepieciešams, lai jūs apstiprinātu savu pašreizējo paroli, lai es pārliecinātos, ka tiešām esat jūs, un tad mēs kopā iestatīsim jaunu. Kāda ir jūsu pašreizējā parole?\n\nArī — vai pēdējās minūtēs esat saņēmis daudzfaktoru autentifikācijas kodus? Ja saņemat tādu, kamēr esam pa telefonu, lūdzu, nolasiet to man, lai varu pārbaudīt, ka atiestatīšana darbojas pareizi.",
+    "explanation": "Šis ir sofistikēts vishing uzbrukums, kas izliekas par IT. KRITISKI: patiesais IT NEKAD neprasīs jūsu paroli vai MFA kodus — tās ir atslēgas uz kontu. Stāsts par “Ķīnas IP” ir domāts, lai jūs nobiedētu un rīkotos bez domāšanas. Ja IT jāatiestata parole, viņiem ir aizmugures rīki. Nekavējoties nolieciet klausuli un ziņojiet savam īstajam IT drošības dienestam, izmantojot zināmu kontaktu.",
+    "cues": [
+      "paroles pieprasījums",
+      "MFA koda pieprasījums",
+      "steidzamība",
+      "bailes no ārvalstu atrašanās vietas",
+      "laika spiediens"
+    ]
+  },
+  "scn_066": {
+    "senderName": "Nezināms",
+    "timestamp": "Vakar 18:32",
+    "body": "Hei! Te ir Sāra no pagājušās nedēļas konferences. Gribēju vēlreiz pajautāt par mūsu sarunu par investīciju iespējām. Vai joprojām interesē?",
+    "explanation": "Šis ir “nepareizā numura” krāpšanas (arī “pig butchering”) sākums. Sūtītājs izliekas, ka ir nepareizs numurs, bet piemin kaut ko vilinošu (investīciju iespējas). Mērķis ir sākt sarunu. Drošākā rīcība — vispār neiesaistīties, dzēst vai ignorēt. Atbildot, pat lai pateiktu “nepareizs numurs”, jūs apstiprināt, ka numurs ir aktīvs, un aicināt turpmāku kontaktu.",
+    "cues": [
+      "neprasīts kontakts",
+      "apgalvo iepriekšējas attiecības",
+      "investīciju pieminēšana"
+    ]
+  },
+  "scn_067": {
+    "senderName": "Nezināms",
+    "timestamp": "Vakar 18:45",
+    "body": "Ak, man tik ļoti žēl! Nepareizs numurs! Bet, ja jau sarakstāmies — ceru, ka tev ir lieliska diena! Es patiesībā esmu finanšu konsultante un palīdzu cilvēkiem ar kriptovalūtu ieguldījumiem. Smieklīgi, kā dzīve reizēm sakrīt, vai ne?",
+    "explanation": "Šis ir krāpšanas 2. posms. Pēc tam, kad jūs atbildējāt, viņi “atvainojas” par nepareizo numuru, bet uzreiz pāriet uz savu patieso mērķi: ieinteresēt jūs kriptovalūtās. Frāze “smieklīgi, kā dzīve reizēm sakrīt” ir paredzēta, lai saruna šķistu kā liktenīga. Turpiniet neiesaistīties — dzēsiet un bloķējiet.",
+    "cues": [
+      "neprasīts kontakts",
+      "pāriet uz pārdošanas piedāvājumu",
+      "kriptovalūtu pieminēšana",
+      "mākslīga sakritība"
+    ]
+  },
+  "scn_068": {
+    "senderName": "Nezināms",
+    "timestamp": "Šodien 10:15",
+    "body": "Pilnībā saprotu piesardzību — tas patiesībā ir gudri! Bet es esmu palīdzējusi klientiem nopelnīt 30–40% mēnesī, izmantojot īpašu tirdzniecības platformu. To vada mans onkulis, un tas ir bijis apbrīnojami. Es varētu parādīt savu kontu, ja vēlies — bez spiediena! Ar ko tu nodarbojies darbā?",
+    "explanation": "Tagad krāpšana ir pilnā gaitā. Sarkanās pazīmes visur: 30–40% mēneša peļņa ir neiespējama likumīgā ieguldīšanā, “onkulīša platforma” ir krāpšana, un viņi uzdod personiskus jautājumus, lai izveidotu jūsu profilu. Tas ir klasisks “pig butchering” modelis, kur krāpnieki veido attiecības pirms naudas izkrāpšanas. Ziņojiet un bloķējiet.",
+    "cues": [
+      "nereāla peļņa",
+      "personiski jautājumi",
+      "neformāla investīciju platforma",
+      "sociālā inženierija"
+    ]
+  },
+  "scn_069": {
+    "senderName": "Nezināms",
+    "timestamp": "Šodien 14:30",
+    "body": "Oho, tu strādā tehnoloģijās?! Tas ir perfekti — tu noteikti sapratīsi, kā šī platforma darbojas! \n\nKlausies, man tu ļoti patīc un es gribu tev palīdzēt. Minimālais starts ir tikai 500 $, bet mans onkulis teica, ka var atteikties no tā, jo tagad mēs esam draugi.\n\nTe ir saite, lai izveidotu kontu: crypto-invest-portal.com/signup\n\nTu vari sākt ar tikai 200 $ kā testu. Es apsolu, ka redzēsi peļņu 24 stundu laikā! \n\nKāda maksājuma metode tev vislabāk der — Zelle, Venmo vai kripto?",
+    "explanation": "Šis ir pats pieprasījums — mērķis jau no sākuma. Katrs elements ir sarkanais karogs: garantēta 24 stundu peļņa, īpašs piedāvājums, jo jūs esat “draugi”, lūgums maksāt ar neizsekojamām metodēm (Zelle, Venmo, kripto) un norāde uz krāpniecisku platformu. Tā ir investīciju krāpšana. Ziņojiet nekavējoties, bloķējiet numuru un nesūtiet naudu. Ja jau esat nosūtījis naudu, nekavējoties sazinieties ar banku.",
+    "cues": [
+      "maksājuma pieprasījums",
+      "garantēta peļņa",
+      "viltota steidzamība",
+      "nezināma platforma",
+      "īpašs piedāvājums"
+    ],
+    "linkText": "Investīciju portāls"
+  }
+}

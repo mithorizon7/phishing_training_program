@@ -29,6 +29,9 @@ import ICU from 'i18next-icu';
 import en from '../locales/en.json';
 import lv from '../locales/lv.json';
 import ru from '../locales/ru.json';
+import enScenarios from '../locales/en-scenarios.json';
+import lvScenarios from '../locales/lv-scenarios.json';
+import ruScenarios from '../locales/ru-scenarios.json';
 
 export const SUPPORTED_LANGUAGES = [
   { code: 'en', name: 'English', nativeName: 'English' },
@@ -44,9 +47,9 @@ i18n
   .use(initReactI18next)
   .init({
     resources: {
-      en: { translation: en },
-      lv: { translation: lv },
-      ru: { translation: ru },
+      en: { translation: { ...en, scenarios: enScenarios } },
+      lv: { translation: { ...lv, scenarios: lvScenarios } },
+      ru: { translation: { ...ru, scenarios: ruScenarios } },
     },
     fallbackLng: {
       default: ['lv', 'en'],

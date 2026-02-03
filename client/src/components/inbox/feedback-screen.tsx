@@ -14,6 +14,7 @@ import {
   HelpCircle
 } from "lucide-react";
 import type { Scenario, ActionType, OutcomeType } from "@shared/schema";
+import { useTranslation } from "react-i18next";
 
 interface FeedbackScreenProps {
   scenario: Scenario;
@@ -23,12 +24,12 @@ interface FeedbackScreenProps {
   onContinue: () => void;
 }
 
-function getOutcomeConfig(outcome: OutcomeType) {
+function getOutcomeConfig(outcome: OutcomeType, t: (key: string) => string) {
   switch (outcome) {
     case "safe":
       return {
         icon: CheckCircle,
-        label: "Safe Decision",
+        label: t("training.outcomes.safe"),
         bgClass: "bg-chart-2/10",
         textClass: "text-chart-2",
         borderClass: "border-chart-2/30",
@@ -36,7 +37,7 @@ function getOutcomeConfig(outcome: OutcomeType) {
     case "compromised":
       return {
         icon: XCircle,
-        label: "Compromised",
+        label: t("training.outcomes.compromised"),
         bgClass: "bg-destructive/10",
         textClass: "text-destructive",
         borderClass: "border-destructive/30",
@@ -44,7 +45,7 @@ function getOutcomeConfig(outcome: OutcomeType) {
     case "delayed_work":
       return {
         icon: Clock,
-        label: "Work Delayed",
+        label: t("training.outcomes.delayedWork"),
         bgClass: "bg-chart-4/10",
         textClass: "text-chart-4",
         borderClass: "border-chart-4/30",
@@ -52,7 +53,7 @@ function getOutcomeConfig(outcome: OutcomeType) {
     case "false_alarm":
       return {
         icon: AlertTriangle,
-        label: "False Alarm",
+        label: t("training.outcomes.falseAlarm"),
         bgClass: "bg-chart-4/10",
         textClass: "text-chart-4",
         borderClass: "border-chart-4/30",
@@ -60,16 +61,16 @@ function getOutcomeConfig(outcome: OutcomeType) {
   }
 }
 
-function getActionLabel(action: ActionType): string {
+function getActionLabel(action: ActionType, t: (key: string) => string): string {
   switch (action) {
-    case "report": return "Reported";
-    case "delete": return "Deleted";
-    case "verify": return "Verified";
-    case "proceed": return "Proceeded";
+    case "report": return t("training.actionsPast.reported");
+    case "delete": return t("training.actionsPast.deleted");
+    case "verify": return t("training.actionsPast.verified");
+    case "proceed": return t("training.actionsPast.proceeded");
   }
 }
 
-function highlightCues(text: string, cues: string[]): React.ReactNode {
+function highlightCues(text: string, cues: string[], t: (key: string, options?: Record<string, unknown>) => string): React.ReactNode {
   if (!cues.length) return text;
   
   let result = text;
@@ -94,7 +95,7 @@ function highlightCues(text: string, cues: string[]): React.ReactNode {
         <mark 
           key={i} 
           className="bg-chart-4/30 text-foreground px-1 rounded"
-          title={`Suspicious cue: ${highlighted[cueIndex] || cues[cueIndex]}`}
+          title={t("training.feedbackPanel.cueTooltip", { cue: highlighted[cueIndex] || cues[cueIndex] })}
         >
           {highlighted[cueIndex] || cues[cueIndex]}
         </mark>
@@ -111,10 +112,11 @@ export function FeedbackScreen({
   pointsEarned,
   onContinue,
 }: FeedbackScreenProps) {
+  const { t } = useTranslation();
   const [selectedCue, setSelectedCue] = useState<string | null>(null);
   const [hasAnswered, setHasAnswered] = useState(false);
   
-  const outcomeConfig = getOutcomeConfig(outcome);
+  const outcomeConfig = getOutcomeConfig(outcome, t);
   const Icon = outcomeConfig.icon;
 
   const handleCueSelect = (cue: string) => {
@@ -139,14 +141,16 @@ export function FeedbackScreen({
                   {outcomeConfig.label}
                 </h2>
                 <p className="text-sm text-muted-foreground">
-                  You chose to {getActionLabel(userAction).toLowerCase()} this message
+                  {t("training.feedbackPanel.decisionSummary", {
+                    action: getActionLabel(userAction, t)
+                  })}
                 </p>
               </div>
               <div className="ml-auto text-right">
                 <div className={`text-2xl font-bold ${pointsEarned >= 0 ? 'text-chart-2' : 'text-destructive'}`}>
                   {pointsEarned >= 0 ? '+' : ''}{pointsEarned}
                 </div>
-                <p className="text-xs text-muted-foreground">points</p>
+                <p className="text-xs text-muted-foreground">{t("training.feedbackPanel.pointsLabel")}</p>
               </div>
             </div>
           </div>
@@ -155,7 +159,7 @@ export function FeedbackScreen({
             <div>
               <h3 className="font-semibold mb-3 flex items-center gap-2">
                 <Target className="w-4 h-4" />
-                The Message (with highlighted cues)
+                {t("training.feedbackPanel.messageWithCues")}
               </h3>
               <Card>
                 <CardHeader className="pb-2">
@@ -173,7 +177,7 @@ export function FeedbackScreen({
                 </CardHeader>
                 <CardContent className="pt-2">
                   <p className="text-sm whitespace-pre-wrap leading-relaxed">
-                    {highlightCues(scenario.body, scenario.cues)}
+                    {highlightCues(scenario.body, scenario.cues, t)}
                   </p>
                 </CardContent>
               </Card>
@@ -182,7 +186,7 @@ export function FeedbackScreen({
             <div>
               <h3 className="font-semibold mb-3 flex items-center gap-2">
                 <Lightbulb className="w-4 h-4 text-chart-4" />
-                Why This Matters
+                {t("training.feedbackPanel.whyThisMatters")}
               </h3>
               <div className="p-4 rounded-lg bg-muted/50 border">
                 <p className="text-sm leading-relaxed" data-testid="text-explanation">
@@ -195,10 +199,10 @@ export function FeedbackScreen({
               <div className="p-4 rounded-lg border border-primary/30 bg-primary/5">
                 <h3 className="font-semibold mb-3 flex items-center gap-2">
                   <HelpCircle className="w-4 h-4 text-primary" />
-                  Quick Check: Which clue would you look for first next time?
+                  {t("training.feedbackPanel.quickCheck.title")}
                 </h3>
                 <p className="text-sm text-muted-foreground mb-4">
-                  Select the most important indicator you would check first when reviewing a similar message.
+                  {t("training.feedbackPanel.quickCheck.subtitle")}
                 </p>
                 <div className="flex flex-wrap gap-2 mb-4">
                   {scenario.cues.map((cue, index) => (
@@ -219,7 +223,7 @@ export function FeedbackScreen({
                   className="w-full"
                   data-testid="button-confirm-cue"
                 >
-                  Confirm Selection
+                  {t("training.feedbackPanel.quickCheck.confirm")}
                 </Button>
               </div>
             )}
@@ -229,10 +233,9 @@ export function FeedbackScreen({
                 <div className="flex items-start gap-3">
                   <CheckCircle className="w-5 h-5 text-chart-2 mt-0.5 flex-shrink-0" />
                   <div>
-                    <p className="font-medium text-chart-2 mb-1">Great choice!</p>
+                    <p className="font-medium text-chart-2 mb-1">{t("training.feedbackPanel.quickCheck.successTitle")}</p>
                     <p className="text-sm text-muted-foreground">
-                      Looking for "<span className="font-medium">{selectedCue}</span>" is a smart first step. 
-                      Building this habit will help you quickly identify suspicious messages in the future.
+                      {t("training.feedbackPanel.quickCheck.successBody", { cue: selectedCue })}
                     </p>
                   </div>
                 </div>
@@ -242,7 +245,7 @@ export function FeedbackScreen({
             {(hasAnswered || scenario.cues.length === 0) && (
               <>
                 <div>
-                  <h3 className="font-semibold mb-3">Cues to Remember</h3>
+                  <h3 className="font-semibold mb-3">{t("training.feedbackPanel.cuesToRemember")}</h3>
                   <div className="flex flex-wrap gap-2">
                     {scenario.cues.map((cue, index) => (
                       <Badge key={index} variant="outline" className="text-xs">
@@ -250,7 +253,7 @@ export function FeedbackScreen({
                       </Badge>
                     ))}
                     {scenario.cues.length === 0 && (
-                      <p className="text-sm text-muted-foreground">This was a legitimate message with no suspicious cues.</p>
+                      <p className="text-sm text-muted-foreground">{t("training.feedbackPanel.cuesNone")}</p>
                     )}
                   </div>
                 </div>
@@ -259,16 +262,16 @@ export function FeedbackScreen({
 
                 <div className="flex items-center justify-between gap-4">
                   <div>
-                    <p className="text-sm text-muted-foreground mb-1">Correct action was:</p>
+                    <p className="text-sm text-muted-foreground mb-1">{t("training.feedbackPanel.correctAction")}</p>
                     <Badge 
                       variant={userAction === scenario.correctAction ? "default" : "secondary"}
                       className="font-medium"
                     >
-                      {getActionLabel(scenario.correctAction as ActionType)}
+                      {t(`training.actions.${scenario.correctAction}`)}
                     </Badge>
                   </div>
                   <Button onClick={onContinue} data-testid="button-continue">
-                    Continue
+                    {t("common.continue")}
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
                 </div>
