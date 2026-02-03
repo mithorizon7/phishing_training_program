@@ -95,6 +95,7 @@ export const userProgress = pgTable("user_progress", {
   longestStreak: integer("longest_streak").notNull().default(0),
   totalScore: integer("total_score").notNull().default(0),
   missedCues: jsonb("missed_cues").$type<Record<string, number>>().default({}),
+  badgeCounts: jsonb("badge_counts").$type<Record<string, number>>().default({}),
   earnedBadges: text("earned_badges").array().default([]),
   lastPlayedAt: timestamp("last_played_at"),
 });

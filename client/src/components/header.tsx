@@ -171,10 +171,10 @@ export function Header({ user, verificationsRemaining, inShift, isGuestMode: pro
                     Sign in to save progress
                   </a>
                 </DropdownMenuItem>
-                <DropdownMenuItem 
+                  <DropdownMenuItem 
                   onClick={async () => {
                     try {
-                      await fetch('/api/guest/session', { method: 'DELETE' });
+                      await fetch('/api/guest/session', { method: 'DELETE', credentials: 'include' });
                     } catch (e) {
                       // Continue even if request fails
                     }

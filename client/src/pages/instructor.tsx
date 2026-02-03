@@ -1068,15 +1068,6 @@ export default function InstructorDashboard() {
     enabled: user?.role === "instructor",
   });
 
-  const promoteMutation = useMutation({
-    mutationFn: async () => {
-      return apiRequest("POST", "/api/user/promote-instructor");
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/user/me"] });
-    },
-  });
-
   if (userLoading) {
     return (
       <div className="p-6 space-y-6">
@@ -1104,9 +1095,6 @@ export default function InstructorDashboard() {
             <Button variant="outline" onClick={() => setLocation("/")}>
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Home
-            </Button>
-            <Button onClick={() => promoteMutation.mutate()} disabled={promoteMutation.isPending}>
-              {promoteMutation.isPending ? "Promoting..." : "Become Instructor (Demo)"}
             </Button>
           </div>
         </div>

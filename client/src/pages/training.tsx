@@ -21,6 +21,7 @@ import type { Scenario, Shift, ActionType, OutcomeType, Decision } from "@shared
 
 interface ShiftWithScenarios extends Shift {
   scenarios: Scenario[];
+  completedScenarioIds?: string[];
 }
 
 export default function Training() {
@@ -32,8 +33,9 @@ export default function Training() {
   const searchString = useSearch();
   const { toast } = useToast();
   
-  const isGuestShift = searchString.includes('guest=true') || isGuestMode;
-  const isActive = isAuthenticated || isGuestMode;
+  const effectiveGuestMode = isGuestMode && !isAuthenticated;
+  const isGuestShift = effectiveGuestMode || (!isAuthenticated && searchString.includes('guest=true'));
+  const isActive = isAuthenticated || effectiveGuestMode;
   const apiPrefix = isGuestShift ? "/api/guest" : "/api";
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -46,6 +48,7 @@ export default function Training() {
     pointsEarned: number;
   } | null>(null);
   const [showComplete, setShowComplete] = useState(false);
+  const [hasCompletedShift, setHasCompletedShift] = useState(false);
   const [lensChecks, setLensChecks] = useState<Set<string>>(new Set());
 
   useEffect(() => {
@@ -75,7 +78,7 @@ export default function Training() {
       navigate(`/training/${data.id}${isGuestShift ? "?guest=true" : ""}`);
     },
     onError: (error) => {
-      if (isUnauthorizedError(error as Error) && !isGuestMode) {
+      if (isUnauthorizedError(error as Error) && !effectiveGuestMode) {
         toast({
           title: "Unauthorized",
           description: "Logging in again...",
@@ -89,6 +92,26 @@ export default function Training() {
       toast({
         title: "Error",
         description: "Failed to create a new shift.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const completeShiftMutation = useMutation({
+    mutationFn: async () => {
+      if (!shift) throw new Error("No shift selected");
+      const response = await apiRequest("POST", `${apiPrefix}/shifts/${shift.id}/complete`);
+      return response.json();
+    },
+    onSuccess: () => {
+      setHasCompletedShift(true);
+      refetchShift();
+      queryClient.invalidateQueries({ queryKey: [isGuestShift ? "/api/guest/progress" : "/api/progress"] });
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to complete shift.",
         variant: "destructive",
       });
     },
@@ -109,7 +132,7 @@ export default function Training() {
     onSuccess: (data: { decision: Decision; outcome: OutcomeType; pointsEarned: number; shift: Shift }) => {
       const scenario = shift?.scenarios[currentIndex];
       if (scenario) {
-        setCompletedIds(prev => [...prev, scenario.id]);
+        setCompletedIds(prev => prev.includes(scenario.id) ? prev : [...prev, scenario.id]);
         setLastDecision({
           scenario,
           action: data.decision.action as ActionType,
@@ -122,7 +145,7 @@ export default function Training() {
       setPendingAction(null);
     },
     onError: (error) => {
-      if (isUnauthorizedError(error as Error) && !isGuestMode) {
+      if (isUnauthorizedError(error as Error) && !effectiveGuestMode) {
         toast({
           title: "Unauthorized",
           description: "Logging in again...",
@@ -199,6 +222,12 @@ export default function Training() {
     setLensChecks(new Set());
   }, [currentIndex]);
 
+  useEffect(() => {
+    if (shift?.completedScenarioIds) {
+      setCompletedIds(shift.completedScenarioIds);
+    }
+  }, [shift?.completedScenarioIds]);
+
   const handlePlayAgain = () => {
     setShowComplete(false);
     setCompletedIds([]);
@@ -206,7 +235,30 @@ export default function Training() {
     createShiftMutation.mutate();
   };
 
-  if (authLoading && !isGuestMode) {
+  useEffect(() => {
+    setHasCompletedShift(false);
+  }, [shiftId]);
+
+  useEffect(() => {
+    if (shift?.completedAt) {
+      setHasCompletedShift(true);
+      setShowComplete(true);
+    }
+  }, [shift?.completedAt]);
+
+  useEffect(() => {
+    if (
+      showComplete &&
+      shift &&
+      !hasCompletedShift &&
+      !completeShiftMutation.isPending &&
+      !completeShiftMutation.isError
+    ) {
+      completeShiftMutation.mutate();
+    }
+  }, [showComplete, shift, hasCompletedShift, completeShiftMutation]);
+
+  if (authLoading && !effectiveGuestMode) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <Skeleton className="h-12 w-12 rounded-full" />
@@ -217,7 +269,7 @@ export default function Training() {
   if (!shiftId) {
     return (
       <div className="min-h-screen bg-background">
-        <Header user={user} isGuestMode={isGuestMode} />
+        <Header user={user} isGuestMode={effectiveGuestMode} />
         <main className="max-w-2xl mx-auto p-6 py-12">
           <Card className="p-8 text-center">
             <h2 className="text-2xl font-bold mb-4">{t('training.readyToTrain.title')}</h2>
@@ -251,7 +303,7 @@ export default function Training() {
         user={user} 
         inShift={true}
         verificationsRemaining={verificationsRemaining}
-        isGuestMode={isGuestMode}
+        isGuestMode={effectiveGuestMode}
       />
       
       <main className="flex-1 p-4 overflow-hidden">

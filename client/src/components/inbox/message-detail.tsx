@@ -93,6 +93,11 @@ export function MessageDetail({
 }: MessageDetailProps) {
   const [showRealSender, setShowRealSender] = useState(false);
   const [showLinkTarget, setShowLinkTarget] = useState(false);
+
+  useEffect(() => {
+    setShowRealSender(false);
+    setShowLinkTarget(false);
+  }, [scenario?.id]);
   
   const lensProgress = (lensChecks.size / LENS_CHECKS.length) * 100;
   const lensComplete = lensChecks.size >= 3;
@@ -112,6 +117,8 @@ export function MessageDetail({
       </Card>
     );
   }
+
+  const senderIdentifierLabel = scenario.senderEmail?.includes("@") ? "Email Address" : "Sender ID";
 
   const Icon = getChannelIcon(scenario.channel as MessageChannel);
 
@@ -180,7 +187,7 @@ export function MessageDetail({
         </CardHeader>
         <CardContent className="pt-0">
           <Accordion type="multiple" className="w-full">
-            {scenario.senderEmail && (
+            {(scenario.senderEmail || scenario.senderPhone) && (
               <AccordionItem value="sender">
                 <AccordionTrigger className="text-sm py-3">
                   <div className="flex items-center gap-2">
@@ -194,31 +201,41 @@ export function MessageDetail({
                       <span className="text-muted-foreground">Display Name:</span>
                       <span className="font-medium">{scenario.senderName}</span>
                     </div>
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="text-muted-foreground">Email Address:</span>
-                      <div className="flex items-center gap-2">
-                        {showRealSender ? (
-                          <code className="text-xs bg-muted px-2 py-1 rounded font-mono">
-                            {scenario.senderEmail}
-                          </code>
-                        ) : (
-                          <span className="text-muted-foreground italic">Hidden</span>
-                        )}
-                        <Button 
-                          variant="ghost" 
-                          size="icon"
-                          className="h-7 w-7"
-                          onClick={() => setShowRealSender(!showRealSender)}
-                          data-testid="button-reveal-sender"
-                        >
+                    {scenario.senderEmail && (
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="text-muted-foreground">{senderIdentifierLabel}:</span>
+                        <div className="flex items-center gap-2">
                           {showRealSender ? (
-                            <EyeOff className="w-3.5 h-3.5" />
+                            <code className="text-xs bg-muted px-2 py-1 rounded font-mono">
+                              {scenario.senderEmail}
+                            </code>
                           ) : (
-                            <Eye className="w-3.5 h-3.5" />
+                            <span className="text-muted-foreground italic">Hidden</span>
                           )}
-                        </Button>
+                          <Button 
+                            variant="ghost" 
+                            size="icon"
+                            className="h-7 w-7"
+                            onClick={() => setShowRealSender(!showRealSender)}
+                            data-testid="button-reveal-sender"
+                          >
+                            {showRealSender ? (
+                              <EyeOff className="w-3.5 h-3.5" />
+                            ) : (
+                              <Eye className="w-3.5 h-3.5" />
+                            )}
+                          </Button>
+                        </div>
                       </div>
-                    </div>
+                    )}
+                    {scenario.senderPhone && (
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="text-muted-foreground">Phone Number:</span>
+                        <code className="text-xs bg-muted px-2 py-1 rounded font-mono">
+                          {scenario.senderPhone}
+                        </code>
+                      </div>
+                    )}
                     {scenario.replyTo && scenario.replyTo !== scenario.senderEmail && (
                       <div className="flex items-center justify-between gap-2">
                         <span className="text-muted-foreground">Reply-To:</span>

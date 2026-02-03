@@ -61,6 +61,7 @@ export interface IStorage {
 
   // Decisions
   getDecisionsByShiftId(shiftId: string): Promise<Decision[]>;
+  getDecisionByShiftAndScenario(shiftId: string, scenarioId: string): Promise<Decision | undefined>;
   createDecision(decision: InsertDecisionNative): Promise<Decision>;
   getAllDecisions(): Promise<Decision[]>;
 
@@ -247,6 +248,13 @@ export class DatabaseStorage implements IStorage {
   // Decisions
   async getDecisionsByShiftId(shiftId: string): Promise<Decision[]> {
     return db.select().from(decisions).where(eq(decisions.shiftId, shiftId));
+  }
+
+  async getDecisionByShiftAndScenario(shiftId: string, scenarioId: string): Promise<Decision | undefined> {
+    const [decision] = await db.select()
+      .from(decisions)
+      .where(and(eq(decisions.shiftId, shiftId), eq(decisions.scenarioId, scenarioId)));
+    return decision;
   }
 
   async createDecision(decision: InsertDecisionNative): Promise<Decision> {

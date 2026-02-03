@@ -283,6 +283,17 @@ export function Dashboard({ progress, isLoading, onStartShift, isGuestMode }: Da
     ? Object.entries(progress.missedCues as Record<string, number>).sort((a, b) => b[1] - a[1]).slice(0, 5)
     : [];
 
+  const badgeCounts = (progress?.badgeCounts as Record<string, number> | undefined) || {};
+  const streakProgress = Math.max(progress?.longestStreak || 0, progress?.currentStreak || 0);
+  const badgeProgressMap: Record<string, number | undefined> = {
+    domain_detective: badgeCounts.domain_detective || 0,
+    verification_pro: badgeCounts.verification_pro || 0,
+    bec_blocker: badgeCounts.bec_blocker || 0,
+    urgency_immune: badgeCounts.urgency_immune || 0,
+    streak_master: streakProgress,
+    perfect_shift: progress?.earnedBadges?.includes("perfect_shift") ? 1 : 0,
+  };
+
   if (isLoading) {
     return <DashboardSkeleton />;
   }
@@ -465,7 +476,7 @@ export function Dashboard({ progress, isLoading, onStartShift, isGuestMode }: Da
                   key={badgeId}
                   badgeId={badgeId}
                   earned={progress?.earnedBadges?.includes(badgeId) || false}
-                  progress={0}
+                  progress={badgeProgressMap[badgeId]}
                 />
               ))}
             </div>

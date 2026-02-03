@@ -16,11 +16,12 @@ export default function Home() {
   const [, navigate] = useLocation();
   const { toast } = useToast();
 
-  const isActive = isAuthenticated || isGuestMode;
-  const apiPrefix = isGuestMode ? "/api/guest" : "/api";
+  const effectiveGuestMode = isGuestMode && !isAuthenticated;
+  const isActive = isAuthenticated || effectiveGuestMode;
+  const apiPrefix = effectiveGuestMode ? "/api/guest" : "/api";
 
   const { data: progress, isLoading: progressLoading } = useQuery<UserProgress | null>({
-    queryKey: [isGuestMode ? "/api/guest/progress" : "/api/progress"],
+    queryKey: [effectiveGuestMode ? "/api/guest/progress" : "/api/progress"],
     enabled: isActive,
   });
 
@@ -31,7 +32,7 @@ export default function Home() {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: [`${apiPrefix}/shifts`] });
-      navigate(`/training/${data.id}${isGuestMode ? "?guest=true" : ""}`);
+      navigate(`/training/${data.id}${effectiveGuestMode ? "?guest=true" : ""}`);
     },
     onError: (error) => {
       toast({
@@ -46,7 +47,7 @@ export default function Home() {
     startShiftMutation.mutate();
   };
 
-  if (authLoading && !isGuestMode) {
+  if (authLoading && !effectiveGuestMode) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="space-y-4 text-center">
@@ -63,13 +64,13 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header user={user} isGuestMode={isGuestMode} />
+      <Header user={user} isGuestMode={effectiveGuestMode} />
       <main>
         <Dashboard 
           progress={progress || null} 
           isLoading={progressLoading}
           onStartShift={handleStartShift}
-          isGuestMode={isGuestMode}
+          isGuestMode={effectiveGuestMode}
         />
       </main>
     </div>

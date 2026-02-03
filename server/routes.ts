@@ -77,6 +77,7 @@ function getGuestSession(req: Request): { id: string; progress: UserProgress; sh
         longestStreak: 0,
         totalScore: 0,
         missedCues: {},
+        badgeCounts: {},
         earnedBadges: [],
         lastPlayedAt: null,
       } as UserProgress,
@@ -134,51 +135,77 @@ const submitDecisionSchema = z.object({
   confidence: z.number().int().min(0).max(100),
 });
 
+type BadgeCounts = Partial<Record<BadgeId, number>>;
+
+function hasDomainCue(cues: string[] = []): boolean {
+  return cues.some(cue => cue.toLowerCase().includes("domain"));
+}
+
+function hasUrgencyCue(cues: string[] = []): boolean {
+  return cues.some(cue => /urgenc|urgent|deadline/.test(cue.toLowerCase()));
+}
+
+function updateBadgeCounts(
+  previous: BadgeCounts | undefined,
+  scenario: Scenario | null,
+  action: ActionType,
+  usedVerification: boolean
+): BadgeCounts {
+  const next: BadgeCounts = { ...(previous || {}) };
+  if (!scenario) return next;
+
+  const isMalicious = scenario.legitimacy === "malicious";
+  const handledSafely = isMalicious && action !== "proceed";
+
+  if (handledSafely && hasDomainCue(scenario.cues)) {
+    next.domain_detective = (next.domain_detective || 0) + 1;
+  }
+
+  if (usedVerification && isMalicious) {
+    next.verification_pro = (next.verification_pro || 0) + 1;
+  }
+
+  if (handledSafely && scenario.attackFamily === "bec") {
+    next.bec_blocker = (next.bec_blocker || 0) + 1;
+  }
+
+  if (handledSafely && hasUrgencyCue(scenario.cues)) {
+    next.urgency_immune = (next.urgency_immune || 0) + 1;
+  }
+
+  return next;
+}
+
 // Badge awarding logic
 function checkAndAwardBadges(
-  progress: UserProgress,
-  scenario: Scenario | null,
-  isCorrect: boolean,
-  usedVerification: boolean
+  earnedBadges: BadgeId[],
+  badgeCounts: BadgeCounts,
+  currentStreak: number
 ): BadgeId[] {
-  const earnedBadges = [...(progress.earnedBadges || [])] as BadgeId[];
   const newBadges: BadgeId[] = [];
 
-  // Domain Detective - check if scenario has domain mismatch cue
-  if (scenario && isCorrect && scenario.cues.some(c => c.toLowerCase().includes("domain"))) {
-    const domainDetects = progress.correctDecisions + 1;
-    if (domainDetects >= BADGES.domain_detective.requirement && !earnedBadges.includes("domain_detective")) {
-      newBadges.push("domain_detective");
-    }
+  if ((badgeCounts.domain_detective || 0) >= BADGES.domain_detective.requirement &&
+      !earnedBadges.includes("domain_detective")) {
+    newBadges.push("domain_detective");
   }
 
-  // Verification Pro - used verification correctly on malicious content
-  if (usedVerification && scenario?.legitimacy === "malicious") {
-    const verifyCount = (progress.totalDecisions || 0);
-    if (verifyCount >= BADGES.verification_pro.requirement && !earnedBadges.includes("verification_pro")) {
-      newBadges.push("verification_pro");
-    }
+  if ((badgeCounts.verification_pro || 0) >= BADGES.verification_pro.requirement &&
+      !earnedBadges.includes("verification_pro")) {
+    newBadges.push("verification_pro");
   }
 
-  // BEC Blocker - blocked BEC attempts
-  if (isCorrect && scenario?.attackFamily === "bec") {
-    const becBlocks = progress.correctDecisions + 1;
-    if (becBlocks >= BADGES.bec_blocker.requirement && !earnedBadges.includes("bec_blocker")) {
-      newBadges.push("bec_blocker");
-    }
+  if ((badgeCounts.bec_blocker || 0) >= BADGES.bec_blocker.requirement &&
+      !earnedBadges.includes("bec_blocker")) {
+    newBadges.push("bec_blocker");
   }
 
-  // Urgency Immune - resisted urgency attacks
-  if (isCorrect && scenario?.cues.some(c => c.toLowerCase().includes("urgency"))) {
-    const urgencyResists = progress.correctDecisions + 1;
-    if (urgencyResists >= BADGES.urgency_immune.requirement && !earnedBadges.includes("urgency_immune")) {
-      newBadges.push("urgency_immune");
-    }
+  if ((badgeCounts.urgency_immune || 0) >= BADGES.urgency_immune.requirement &&
+      !earnedBadges.includes("urgency_immune")) {
+    newBadges.push("urgency_immune");
   }
 
-  // Streak Master - 20 decision streak
-  const currentStreak = progress.currentStreak + (isCorrect ? 1 : 0);
-  if (currentStreak >= BADGES.streak_master.requirement && !earnedBadges.includes("streak_master")) {
+  if (currentStreak >= BADGES.streak_master.requirement &&
+      !earnedBadges.includes("streak_master")) {
     newBadges.push("streak_master");
   }
 
@@ -316,6 +343,7 @@ export async function registerRoutes(
         id: shiftId,
         userId: session.id,
         scenarioIds,
+        completedScenarioIds: [] as string[],
         verificationBudget: 3,
         verificationsUsed: 0,
         score: 0,
@@ -353,7 +381,11 @@ export async function registerRoutes(
         .map((sid: string) => scenarios.find(s => s.id === sid))
         .filter(Boolean);
       
-      res.json({ ...shift, scenarios: orderedScenarios });
+      const completedScenarioIds = Array.isArray(shift.completedScenarioIds)
+        ? shift.completedScenarioIds
+        : [];
+
+      res.json({ ...shift, scenarios: orderedScenarios, completedScenarioIds });
     } catch (error) {
       console.error("Error fetching guest shift:", error);
       res.status(500).json({ message: "Failed to fetch shift" });
@@ -387,6 +419,23 @@ export async function registerRoutes(
       if (!scenario) {
         return res.status(404).json({ message: "Scenario not found" });
       }
+
+      if (!shift.scenarioIds.includes(scenarioId)) {
+        return res.status(400).json({ message: "Scenario not part of this shift" });
+      }
+
+      const existingDecision = await storage.getDecisionByShiftAndScenario(shiftId, scenarioId);
+      if (existingDecision) {
+        return res.status(409).json({ message: "Decision already submitted" });
+      }
+
+      if (!shift.scenarioIds.includes(scenarioId)) {
+        return res.status(400).json({ message: "Scenario not part of this shift" });
+      }
+
+      if (shift.completedScenarioIds?.includes(scenarioId)) {
+        return res.status(409).json({ message: "Decision already submitted" });
+      }
       
       const usedVerification = action === "verify";
       if (usedVerification && shift.verificationsUsed >= shift.verificationBudget) {
@@ -407,6 +456,12 @@ export async function registerRoutes(
         usedVerification,
         createdAt: new Date(),
       };
+
+      if (Array.isArray(shift.completedScenarioIds)) {
+        shift.completedScenarioIds.push(scenarioId);
+      } else {
+        shift.completedScenarioIds = [scenarioId];
+      }
       
       const isCorrect = action === scenario.correctAction;
       const isFalsePositive = outcome === "false_alarm";
@@ -438,8 +493,19 @@ export async function registerRoutes(
           missedCues[cue] = (missedCues[cue] || 0) + 1;
         }
       }
-      
-      const newBadges = checkAndAwardBadges(progress, scenario, isCorrect, usedVerification);
+
+      const badgeCounts = updateBadgeCounts(
+        progress.badgeCounts as BadgeCounts | undefined,
+        scenario,
+        action,
+        usedVerification
+      );
+
+      const newBadges = checkAndAwardBadges(
+        [...(progress.earnedBadges || [])] as BadgeId[],
+        badgeCounts,
+        currentStreak
+      );
       const allBadges = [...(progress.earnedBadges || []), ...newBadges];
       
       session.progress = {
@@ -460,7 +526,9 @@ export async function registerRoutes(
         longestStreak,
         totalScore: (progress.totalScore || 0) + points,
         missedCues,
+        badgeCounts,
         earnedBadges: allBadges,
+        lastPlayedAt: new Date(),
       };
       
       // Check for chain follow-up
@@ -492,6 +560,52 @@ export async function registerRoutes(
     } catch (error) {
       console.error("Error submitting guest decision:", error);
       res.status(500).json({ message: "Failed to submit decision" });
+    }
+  });
+
+  // Complete a guest shift
+  app.post("/api/guest/shifts/:shiftId/complete", async (req: any, res) => {
+    try {
+      const session = getGuestSession(req);
+      setGuestCookie(res, session.id);
+
+      const { shiftId } = req.params;
+      const shift = session.shifts.get(shiftId);
+      if (!shift) {
+        return res.status(404).json({ message: "Shift not found" });
+      }
+
+      if (!shift.completedAt) {
+        shift.completedAt = new Date();
+
+        const progress = session.progress;
+        const earnedBadges = [...(progress.earnedBadges || [])] as BadgeId[];
+        const newBadges: BadgeId[] = [];
+
+        const isPerfect = shift.correctDecisions === shift.scenarioIds.length &&
+                         shift.compromised === 0 &&
+                         shift.falsePositives === 0;
+
+        if (isPerfect && !earnedBadges.includes("perfect_shift")) {
+          newBadges.push("perfect_shift");
+        }
+
+        const allBadges = [...earnedBadges, ...newBadges];
+
+        session.progress = {
+          ...progress,
+          totalShifts: (progress.totalShifts || 0) + 1,
+          earnedBadges: allBadges,
+          lastPlayedAt: new Date(),
+        };
+
+        return res.json({ shift, newBadges });
+      }
+
+      res.json({ shift, newBadges: [] });
+    } catch (error) {
+      console.error("Error completing guest shift:", error);
+      res.status(500).json({ message: "Failed to complete shift" });
     }
   });
 
@@ -537,6 +651,7 @@ export async function registerRoutes(
           longestStreak: 0,
           totalScore: 0,
           missedCues: {},
+          badgeCounts: {},
           earnedBadges: [],
         });
       }
@@ -606,7 +721,10 @@ export async function registerRoutes(
         .map(id => scenarios.find(s => s.id === id))
         .filter(Boolean);
       
-      res.json({ ...shift, scenarios: orderedScenarios });
+      const decisions = await storage.getDecisionsByShiftId(id);
+      const completedScenarioIds = Array.from(new Set(decisions.map(d => d.scenarioId)));
+      
+      res.json({ ...shift, scenarios: orderedScenarios, completedScenarioIds });
     } catch (error) {
       console.error("Error fetching shift:", error);
       res.status(500).json({ message: "Failed to fetch shift" });
@@ -700,33 +818,17 @@ export async function registerRoutes(
           missedCues[cue] = (missedCues[cue] || 0) + 1;
         }
       }
-      
-      // Check for new badges
-      const defaultProgress: UserProgress = {
-        id: '',
-        userId,
-        totalShifts: 0,
-        totalDecisions: 0,
-        correctDecisions: 0,
-        falsePositives: 0,
-        compromised: 0,
-        totalReports: 0,
-        correctReports: 0,
-        totalMaliciousSeen: 0,
-        correctMaliciousHandling: 0,
-        totalLegitimateSeen: 0,
-        correctLegitimateHandling: 0,
-        unsafeActions: 0,
-        highConfidenceWrong: 0,
-        currentStreak: 0,
-        longestStreak: 0,
-        totalScore: 0,
-        missedCues: {},
-        earnedBadges: [],
-        lastPlayedAt: null,
-      };
-      const newBadges = checkAndAwardBadges(progress || defaultProgress, scenario, isCorrect, usedVerification);
-      const allBadges = [...(progress?.earnedBadges || []), ...newBadges];
+
+      const badgeCounts = updateBadgeCounts(
+        progress?.badgeCounts as BadgeCounts | undefined,
+        scenario,
+        action,
+        usedVerification
+      );
+
+      const earnedBadges = [...(progress?.earnedBadges || [])] as BadgeId[];
+      const newBadges = checkAndAwardBadges(earnedBadges, badgeCounts, currentStreak);
+      const allBadges = [...earnedBadges, ...newBadges];
       
       await storage.upsertProgress(userId, {
         totalDecisions: (progress?.totalDecisions || 0) + 1,
@@ -745,6 +847,7 @@ export async function registerRoutes(
         longestStreak,
         totalScore: (progress?.totalScore || 0) + points,
         missedCues,
+        badgeCounts,
         earnedBadges: allBadges,
       });
       
@@ -821,6 +924,17 @@ export async function registerRoutes(
       res.status(500).json({ message: "Authorization error" });
     }
   };
+
+  // Instructor: List scenarios (for assignment builder)
+  app.get("/api/scenarios", isAuthenticated, isInstructor, async (_req: any, res) => {
+    try {
+      const allScenarios = await storage.getScenarios();
+      res.json(allScenarios);
+    } catch (error) {
+      console.error("Error fetching scenarios:", error);
+      res.status(500).json({ message: "Failed to fetch scenarios" });
+    }
+  });
 
   // Instructor: Get cohort analytics
   app.get("/api/instructor/analytics", isAuthenticated, isInstructor, async (req: any, res) => {
@@ -1044,6 +1158,10 @@ export async function registerRoutes(
       const shift = await storage.getShiftById(shiftId);
       if (!shift || shift.userId !== userId) {
         return res.status(404).json({ message: "Shift not found" });
+      }
+
+      if (shift.completedAt) {
+        return res.json({ shift, newBadges: [] });
       }
       
       const updatedShift = await storage.updateShift(shiftId, {
