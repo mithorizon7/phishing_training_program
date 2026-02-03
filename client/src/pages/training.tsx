@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useAuth } from "@/hooks/use-auth";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { queryClient, apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-import { useLocation, useParams, useSearch } from "wouter";
-import { isUnauthorizedError } from "@/lib/auth-utils";
+import { useLocation, useParams } from "wouter";
 import { Header } from "@/components/header";
 import { MessageList } from "@/components/inbox/message-list";
 import { MessageDetail } from "@/components/inbox/message-detail";
@@ -16,7 +14,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { PlayCircle } from "lucide-react";
-import { useGuestMode } from "@/hooks/use-guest-mode";
 import type { Scenario, Shift, ActionType, OutcomeType, Decision } from "@shared/schema";
 
 interface ShiftWithScenarios extends Shift {
@@ -27,16 +24,9 @@ interface ShiftWithScenarios extends Shift {
 export default function Training() {
   const { t } = useTranslation();
   const { id: shiftId } = useParams<{ id: string }>();
-  const { user, isLoading: authLoading, isAuthenticated } = useAuth();
-  const { isGuestMode } = useGuestMode();
   const [, navigate] = useLocation();
-  const searchString = useSearch();
   const { toast } = useToast();
-  
-  const effectiveGuestMode = isGuestMode && !isAuthenticated;
-  const isGuestShift = effectiveGuestMode || (!isAuthenticated && searchString.includes('guest=true'));
-  const isActive = isAuthenticated || effectiveGuestMode;
-  const apiPrefix = isGuestShift ? "/api/guest" : "/api";
+  const apiPrefix = "/api/guest";
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [completedIds, setCompletedIds] = useState<string[]>([]);
@@ -51,22 +41,9 @@ export default function Training() {
   const [hasCompletedShift, setHasCompletedShift] = useState(false);
   const [lensChecks, setLensChecks] = useState<Set<string>>(new Set());
 
-  useEffect(() => {
-    if (!authLoading && !isActive) {
-      toast({
-        title: "Unauthorized",
-        description: "Please sign in or try as guest.",
-        variant: "destructive",
-      });
-      setTimeout(() => {
-        navigate("/");
-      }, 500);
-    }
-  }, [authLoading, isActive, toast, navigate]);
-
   const { data: shift, isLoading: shiftLoading, refetch: refetchShift } = useQuery<ShiftWithScenarios>({
-    queryKey: [isGuestShift ? "/api/guest/shifts" : "/api/shifts", shiftId],
-    enabled: isActive && !!shiftId,
+    queryKey: ["/api/guest/shifts", shiftId],
+    enabled: !!shiftId,
   });
 
   const createShiftMutation = useMutation({
@@ -75,23 +52,12 @@ export default function Training() {
       return response.json();
     },
     onSuccess: (data) => {
-      navigate(`/training/${data.id}${isGuestShift ? "?guest=true" : ""}`);
+      navigate(`/training/${data.id}`);
     },
     onError: (error) => {
-      if (isUnauthorizedError(error as Error) && !effectiveGuestMode) {
-        toast({
-          title: "Unauthorized",
-          description: "Logging in again...",
-          variant: "destructive",
-        });
-        setTimeout(() => {
-          window.location.href = "/api/login";
-        }, 500);
-        return;
-      }
       toast({
-        title: "Error",
-        description: "Failed to create a new shift.",
+        title: t("common.error"),
+        description: t("errors.shiftFailed"),
         variant: "destructive",
       });
     },
@@ -106,12 +72,12 @@ export default function Training() {
     onSuccess: () => {
       setHasCompletedShift(true);
       refetchShift();
-      queryClient.invalidateQueries({ queryKey: [isGuestShift ? "/api/guest/progress" : "/api/progress"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/guest/progress"] });
     },
     onError: () => {
       toast({
-        title: "Error",
-        description: "Failed to complete shift.",
+        title: t("common.error"),
+        description: t("errors.completeShiftFailed"),
         variant: "destructive",
       });
     },
@@ -141,24 +107,13 @@ export default function Training() {
         });
       }
       refetchShift();
-      queryClient.invalidateQueries({ queryKey: [isGuestShift ? "/api/guest/progress" : "/api/progress"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/guest/progress"] });
       setPendingAction(null);
     },
     onError: (error) => {
-      if (isUnauthorizedError(error as Error) && !effectiveGuestMode) {
-        toast({
-          title: "Unauthorized",
-          description: "Logging in again...",
-          variant: "destructive",
-        });
-        setTimeout(() => {
-          window.location.href = "/api/login";
-        }, 500);
-        return;
-      }
       toast({
-        title: "Error",
-        description: "Failed to submit decision.",
+        title: t("common.error"),
+        description: t("errors.submitDecisionFailed"),
         variant: "destructive",
       });
       setPendingAction(null);
@@ -203,7 +158,7 @@ export default function Training() {
   };
 
   const handleGoHome = () => {
-    navigate("/");
+    navigate("/dashboard");
   };
 
   const handleLensCheck = (checkId: string, checked: boolean) => {
@@ -258,18 +213,10 @@ export default function Training() {
     }
   }, [showComplete, shift, hasCompletedShift, completeShiftMutation]);
 
-  if (authLoading && !effectiveGuestMode) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <Skeleton className="h-12 w-12 rounded-full" />
-      </div>
-    );
-  }
-
   if (!shiftId) {
     return (
       <div className="min-h-screen bg-background">
-        <Header user={user} isGuestMode={effectiveGuestMode} />
+        <Header />
         <main className="max-w-2xl mx-auto p-6 py-12">
           <Card className="p-8 text-center">
             <h2 className="text-2xl font-bold mb-4">{t('training.readyToTrain.title')}</h2>
@@ -300,10 +247,8 @@ export default function Training() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Header 
-        user={user} 
         inShift={true}
         verificationsRemaining={verificationsRemaining}
-        isGuestMode={effectiveGuestMode}
       />
       
       <main className="flex-1 p-4 overflow-hidden">

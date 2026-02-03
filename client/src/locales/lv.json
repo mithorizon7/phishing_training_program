@@ -20,68 +20,67 @@
     "tagline": "Pikšķerēšanas apmācību platforma"
   },
   "landing": {
+    "badge": "Pikšķerēšanas apmācību programma",
     "hero": {
-      "badge": "Pikšķerēšanas apmācību platforma",
-      "title": "Apmāciet savu komandu atpazīt reālus draudus",
-      "subtitle": "Interaktīvas simulācijas, kas māca jūsu komandai identificēt pikšķerēšanu, BEC krāpšanu un sociālās inženierijas uzbrukumus. Veidojiet lēmumu pieņemšanas prasmes, kas aizsargā jūsu organizāciju.",
-      "getStarted": "Sākt bez maksas",
-      "signIn": "Ielogoties"
+      "title": "Trenē reālas pikšķerēšanas lēmumu situācijas dažu minūšu laikā",
+      "subtitle": "Izpildi reālistiskus e‑pasta, SMS un zvanu scenārijus. Izvēlies drošāko nākamo soli, saproti kāpēc, un veido drošus ieradumus.",
+      "primaryCta": "Sākt apmācību maiņu",
+      "secondaryCta": "Atvērt paneli",
+      "tertiaryCta": "Atgūšanās treniņš",
+      "note": "Konts nav nepieciešams. Progress tiek saglabāts šajā ierīcē."
     },
-    "whyTrainingFails": {
-      "title": "Kāpēc tradicionālā apmācība neizdodas",
-      "subtitle": "Lielākā daļa pikšķerēšanas apmācību māca atpazīt \"nekvalitatīvus viltotus e-pastus\". Īsti uzbrucēji uzvar, izmantojot steidzamas darba plūsmas — bieži bez aizdomīgām saitēm.",
-      "decisionBased": {
-        "title": "Uz lēmumiem balstīta mācīšanās",
-        "description": "Apmāciet pareizo uzvedību: \"Kāda ir drošākā nākamā darbība?\" — ne tikai \"vai šī ir pikšķerēšana?\""
+    "highlights": {
+      "feedback": "Tūlītēja atgriezeniskā saite par katru lēmumu",
+      "decisions": "Fokuss uz drošāko nākamo soli, nevis uz sīkumiem",
+      "confidence": "Pārliecības novērtējums, lai kalibrētu spriedumu"
+    },
+    "snapshot": {
+      "title": "Kā izskatās viena maiņa",
+      "shift": "8–12 scenāriji no e‑pasta, SMS un zvanu transkriptiem",
+      "actions": "Izvēlies: Ziņot, Dzēst, Pārbaudīt vai Turpināt",
+      "insights": "Mācību skaidrojumi par reāliem uzbrukumu modeļiem",
+      "callout": "Īsa, mērķēta prakse aizņemtām komandām."
+    },
+    "flow": {
+      "title": "Kā darbojas apmācība",
+      "subtitle": "Katra maiņa ir īsa, praktiska un balstīta uz reāliem uzbrukumiem.",
+      "step1": {
+        "title": "Pārskati ziņojumu",
+        "description": "Pievērs uzmanību sūtītājam, pieprasījumam un kontekstam."
       },
-      "realistic": {
-        "title": "Reālistiski scenāriji",
-        "description": "E-pasta, SMS un zvanu simulācijas, kas aptver BEC, pretekstu veidošanu, viltošanu un mūsdienu uzbrukumu modeļus."
+      "step2": {
+        "title": "Izvēlies drošāko nākamo soli",
+        "description": "Izlem: ziņot, pārbaudīt vai turpināt."
       },
-      "adaptive": {
-        "title": "Adaptīva grūtības pakāpe",
-        "description": "NIST pikšķerēšanas skalas metodoloģija nodrošina, ka apmācāmie veido prasmes pakāpeniski, nevis tiek pārslogoti."
+      "step3": {
+        "title": "Iemācies būtisko pazīmi",
+        "description": "Tūlītēja atgriezeniskā saite paskaidro riska signālus."
       }
     },
-    "channels": {
-      "title": "Daudzkanālu apmācība",
-      "subtitle": "Reāli draudi nāk pa vairākiem kanāliem. Apmācieties visos.",
+    "focus": {
+      "title": "Trenējam kanālus, kas patiešām svarīgi",
       "email": {
-        "title": "E-pasts",
-        "description": "Klasiska pikšķerēšana, akreditācijas datu zādzība, ļaunprātīgi pielikumi un BEC uzbrukumi"
+        "title": "E‑pasts",
+        "description": "BEC, paroļu zādzība, viltoti pieprasījumi"
       },
       "sms": {
-        "title": "SMS",
-        "description": "Smišinga uzbrukumi, nepareiza numura krāpšana un steidzami darbību pieprasījumi"
+        "title": "SMS + čats",
+        "description": "Smishing, kļūdaini numuri, steidzamības slazdi"
       },
       "calls": {
-        "title": "Zvani",
-        "description": "Višinga stenogrammas, tehniskā atbalsta krāpšana un uzdošanās mēģinājumi"
-      }
-    },
-    "behaviors": {
-      "title": "Galvenās apmācību uzvedības",
-      "subtitle": "Trīs prasmes, kas patiešām novērš drošības pārkāpumus",
-      "pauseInspect": {
-        "title": "Apstāties + pārbaudīt",
-        "description": "Pārtrauciet \"21 sekundes līdz klikšķim\" ieradumu. Lietotāji noklikšķina uz pikšķerēšanas saitēm sekundēs — pauzes refleksa apmācība ir kritiska."
+        "title": "Zvani un balss pasts",
+        "description": "Vishing skripti un sociālā inženierija"
       },
-      "classify": {
-        "title": "Klasificēt pieprasījumu",
-        "description": "Koncentrējieties uz to, kas tiek prasīts: nauda, akreditācijas dati, piekļuve, atļaujas vai lejupielādes. Pieprasījuma veids nosaka risku."
-      },
-      "verify": {
-        "title": "Pārbaudīt caur zināmu kanālu",
-        "description": "Neatbildiet uz aizdomīgiem e-pastiem, jautājot \"vai tas ir īsts?\" Izmantojiet pārbaudītu saziņas metodi, pēc tam ziņojiet."
+      "oauth": {
+        "title": "OAuth un lietotņu piekrišana",
+        "description": "Viltotas autorizācijas un piekrišanas pikšķerēšana"
       }
     },
     "cta": {
-      "title": "Gatavi apmācīties gudrāk?",
-      "subtitle": "Sāciet veidot reālas drošības apziņas prasmes jau šodien. Kredītkarte nav nepieciešama.",
-      "button": "Sākt apmācību tagad"
-    },
-    "footer": {
-      "tagline": "Apmācām reālu drošības apziņu, nevis trivia."
+      "title": "Gatavs īsai maiņai?",
+      "subtitle": "Sāc sesiju vai izpildi incidenta atgūšanās treniņu.",
+      "start": "Sākt apmācību",
+      "recover": "Atgūšanās treniņš"
     }
   },
   "header": {

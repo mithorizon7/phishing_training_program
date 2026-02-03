@@ -20,68 +20,67 @@
     "tagline": "Phishing Training Platform"
   },
   "landing": {
+    "badge": "Phishing training program",
     "hero": {
-      "badge": "Phishing Training Platform",
-      "title": "Train Your Team to Spot Real Threats",
-      "subtitle": "Interactive simulations that teach your team to identify phishing, BEC scams, and social engineering attacks. Build the decision-making skills that protect your organization.",
-      "getStarted": "Get Started Free",
-      "signIn": "Sign In"
+      "title": "Practice real-world phishing decisions in minutes",
+      "subtitle": "Work through realistic inbox, SMS, and call scenarios. Choose the safest action, see why it matters, and build durable habits.",
+      "primaryCta": "Start a Training Shift",
+      "secondaryCta": "Open Dashboard",
+      "tertiaryCta": "Recovery Drill",
+      "note": "No account required. Progress is saved on this device."
     },
-    "whyTrainingFails": {
-      "title": "Why Traditional Training Fails",
-      "subtitle": "Most phishing training teaches you to spot \"sloppy fake emails.\" Real attackers win by exploiting urgent workflows — often without any suspicious links.",
-      "decisionBased": {
-        "title": "Decision-Based Learning",
-        "description": "Train the right behavior: \"What is the safest next action?\" — not just \"is this phishing?\""
+    "highlights": {
+      "feedback": "Instant feedback on every decision",
+      "decisions": "Focus on the safest next action, not trivia",
+      "confidence": "Confidence check to calibrate judgment"
+    },
+    "snapshot": {
+      "title": "What a shift looks like",
+      "shift": "8–12 scenarios drawn from email, SMS, and call transcripts",
+      "actions": "Decide: Report, Delete, Verify, or Proceed",
+      "insights": "Get coaching tied to real attack patterns",
+      "callout": "Short, focused practice designed for busy teams."
+    },
+    "flow": {
+      "title": "How the training works",
+      "subtitle": "Each shift is quick, practical, and grounded in real attack behavior.",
+      "step1": {
+        "title": "Review the message",
+        "description": "Scan the sender, request, and context."
       },
-      "realistic": {
-        "title": "Realistic Scenarios",
-        "description": "Email, SMS, and call simulations covering BEC, pretexting, spoofing, and modern attack patterns."
+      "step2": {
+        "title": "Choose the safest next action",
+        "description": "Decide whether to report, verify, or proceed."
       },
-      "adaptive": {
-        "title": "Adaptive Difficulty",
-        "description": "NIST Phish Scale methodology ensures learners build skills progressively, not get overwhelmed."
+      "step3": {
+        "title": "Learn the cue that mattered",
+        "description": "Immediate feedback explains the risk signals."
       }
     },
-    "channels": {
-      "title": "Multi-Channel Training",
-      "subtitle": "Real threats arrive via multiple channels. Train across all of them.",
+    "focus": {
+      "title": "We train across the channels that matter",
       "email": {
-        "title": "Email",
-        "description": "Classic phishing, credential theft, malicious attachments, and BEC attacks"
+        "title": "Email phishing",
+        "description": "BEC, credential theft, spoofed requests"
       },
       "sms": {
-        "title": "SMS",
-        "description": "Smishing attacks, wrong-number scams, and urgent action requests"
+        "title": "SMS + chat",
+        "description": "Smishing, wrong-number scams, urgency traps"
       },
       "calls": {
-        "title": "Calls",
-        "description": "Vishing transcripts, tech support scams, and impersonation attempts"
-      }
-    },
-    "behaviors": {
-      "title": "Key Training Behaviors",
-      "subtitle": "Three skills that actually prevent breaches",
-      "pauseInspect": {
-        "title": "Pause + Inspect",
-        "description": "Break the \"21 seconds to click\" habit. Users click phishing links in seconds — training the pause reflex is critical."
+        "title": "Phone & voicemail",
+        "description": "Vishing scripts and social engineering"
       },
-      "classify": {
-        "title": "Classify the Request",
-        "description": "Focus on what's being asked: money, credentials, access, permissions, or downloads. The request type determines the risk."
-      },
-      "verify": {
-        "title": "Verify via Known Channel",
-        "description": "Don't reply to suspicious emails asking \"is this real?\" Use a verified contact method, then report."
+      "oauth": {
+        "title": "OAuth & app consent",
+        "description": "Fake authorizations and consent phishing"
       }
     },
     "cta": {
-      "title": "Ready to Train Smarter?",
-      "subtitle": "Start building real security awareness skills today. No credit card required.",
-      "button": "Start Training Now"
-    },
-    "footer": {
-      "tagline": "Training real security awareness, not trivia."
+      "title": "Ready for a quick shift?",
+      "subtitle": "Start a session or run an incident response drill.",
+      "start": "Start Training",
+      "recover": "Run Recovery Drill"
     }
   },
   "header": {
@@ -104,7 +103,7 @@
       "stopped": "Stopped {correct, number} of {total, number} threats"
     },
     "operationsScore": {
-      "title": "Operations Score", 
+      "title": "Operations Score",
       "description": "Measures your ability to keep legitimate work flowing",
       "processed": "Processed {correct, number} of {total, number} legitimate correctly"
     },
@@ -192,7 +191,7 @@
     },
     "actions": {
       "report": "Report",
-      "delete": "Delete", 
+      "delete": "Delete",
       "verify": "Verify",
       "proceed": "Proceed",
       "reportDescription": "Flag as suspicious and escalate to security team",
@@ -276,7 +275,7 @@
   },
   "channels": {
     "email": "Email",
-    "sms": "SMS", 
+    "sms": "SMS",
     "call": "Call",
     "teams": "Teams",
     "slack": "Slack"

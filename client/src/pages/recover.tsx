@@ -153,7 +153,7 @@ export default function RecoverDrill() {
             <h1 className="text-2xl font-bold" data-testid="text-recover-title">Report and Recover</h1>
             <p className="text-muted-foreground">Learn what to do when something goes wrong</p>
           </div>
-          <Link href="/">
+          <Link href="/dashboard">
             <Button variant="outline" data-testid="link-back-dashboard">
               Back to Dashboard
             </Button>
@@ -307,7 +307,7 @@ export default function RecoverDrill() {
                 <RotateCcw className="w-4 h-4 mr-2" />
                 Try Another Scenario
               </Button>
-              <Link href="/" className="flex-1">
+              <Link href="/training" className="flex-1">
                 <Button className="w-full" data-testid="button-back-training">
                   Back to Training
                 </Button>

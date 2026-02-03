@@ -19,9 +19,7 @@ Preferred communication style: Simple, everyday language.
 - **Styling**: Tailwind CSS with shadcn/ui component library
 - **Build Tool**: Vite with custom plugins for Replit integration
 - **Design System**: Material Design influences with professional productivity tool aesthetics (Inter font family)
-- **Logo Assets**: Two variants in `client/src/assets/images/`:
-  - `logo.png` (small) - Used in navigation headers
-  - `logo-full.png` (full) - Used in landing page hero section
+- **Logo Assets**: `logo.png` (used in navigation headers)
 
 ### Backend Architecture
 - **Runtime**: Node.js with Express
@@ -71,7 +69,6 @@ Preferred communication style: Simple, everyday language.
 - Allows users to try the full training experience without authentication
 - Guest sessions stored in server memory (not database) with 24-hour TTL
 - Cookie-based session identification (`guestId` cookie, HttpOnly for security)
-- Frontend state managed via Zustand store with localStorage persistence
 - Session limits: Max 10,000 concurrent guest sessions with LRU eviction
 - Guest API endpoints mirror authenticated endpoints with `/api/guest` prefix:
   - `GET /api/guest/progress` - Get guest progress
