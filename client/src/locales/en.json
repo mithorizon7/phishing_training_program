@@ -30,7 +30,7 @@
       "title": "Practice real-world phishing decisions in minutes",
       "subtitle": "Work through realistic inbox, SMS, and call scenarios. Choose the safest action, see why it matters, and build durable habits.",
       "primaryCta": "Start a Training Shift",
-      "secondaryCta": "Open Dashboard",
+      "secondaryCta": "Open Training Overview",
       "tertiaryCta": "Recovery Drill",
       "note": "No account required. Progress is saved on this device."
     },
@@ -89,7 +89,7 @@
     }
   },
   "header": {
-    "dashboard": "Dashboard",
+    "dashboard": "Training Overview",
     "training": "Training",
     "recover": "Incident Response",
     "signOut": "Sign Out",
@@ -99,8 +99,8 @@
     "changeLanguage": "Change language"
   },
   "dashboard": {
-    "title": "Dashboard",
-    "subtitle": "Track your progress and start training",
+    "title": "Training Overview",
+    "subtitle": "Review your training progress and next steps",
     "startShift": "Start New Shift",
     "sessionOnly": {
       "title": "Session-Only Training",

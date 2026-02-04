@@ -30,7 +30,7 @@
       "title": "Trenē reālas pikšķerēšanas lēmumu situācijas dažu minūšu laikā",
       "subtitle": "Izpildi reālistiskus e‑pasta, SMS un zvanu scenārijus. Izvēlies drošāko nākamo soli, saproti kāpēc, un veido drošus ieradumus.",
       "primaryCta": "Sākt apmācību maiņu",
-      "secondaryCta": "Atvērt paneli",
+      "secondaryCta": "Atvērt apmācību pārskatu",
       "tertiaryCta": "Atgūšanās treniņš",
       "note": "Konts nav nepieciešams. Progress tiek saglabāts šajā ierīcē."
     },
@@ -89,7 +89,7 @@
     }
   },
   "header": {
-    "dashboard": "Panelis",
+    "dashboard": "Apmācību pārskats",
     "training": "Apmācība",
     "recover": "Incidentu reaģēšana",
     "signOut": "Izrakstīties",
@@ -99,8 +99,8 @@
     "changeLanguage": "Mainīt valodu"
   },
   "dashboard": {
-    "title": "Panelis",
-    "subtitle": "Sekojiet savam progresam un sāciet apmācību",
+    "title": "Apmācību pārskats",
+    "subtitle": "Pārskatiet apmācību progresu un nākamos soļus",
     "startShift": "Sākt jaunu maiņu",
     "sessionOnly": {
       "title": "Apmācība vienā sesijā",

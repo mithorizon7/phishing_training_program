@@ -293,11 +293,11 @@ export function Dashboard({
   // Operations Score: How well you avoid blocking legitimate work (weighted: discrimination matters)
   const securityScore = progress && progress.totalMaliciousSeen > 0
     ? Math.round((progress.correctMaliciousHandling / progress.totalMaliciousSeen) * 100)
-    : 100; // Perfect if no threats seen yet
+    : 0;
   
   const operationsScore = progress && progress.totalLegitimateSeen > 0
     ? Math.round((progress.correctLegitimateHandling / progress.totalLegitimateSeen) * 100)
-    : 100; // Perfect if no legitimate seen yet
+    : 0;
 
   const missedCuesEntries = progress?.missedCues 
     ? Object.entries(progress.missedCues as Record<string, number>).sort((a, b) => b[1] - a[1]).slice(0, 5)
