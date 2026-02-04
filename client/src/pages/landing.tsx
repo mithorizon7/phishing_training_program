@@ -90,7 +90,7 @@ export default function Landing() {
                 <img
                   src={logoImage}
                   alt={t("landing.alt.logo")}
-                  className="relative w-8 h-8 object-contain"
+                  className="relative w-12 h-12 object-contain"
                   data-testid="img-logo-landing"
                 />
               </div>
