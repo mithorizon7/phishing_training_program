@@ -128,9 +128,9 @@ export function FeedbackScreen({
   };
 
   return (
-    <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 overflow-auto">
+    <div className="fixed inset-0 bg-background/70 backdrop-blur-md z-50 overflow-auto">
       <div className="min-h-full flex items-center justify-center p-4 py-8">
-        <Card className="w-full max-w-2xl">
+        <Card className="w-full max-w-2xl overflow-hidden glass-panel-strong">
           <div className={`p-4 ${outcomeConfig.bgClass} border-b ${outcomeConfig.borderClass}`}>
             <div className="flex items-center gap-3">
               <div className={`w-12 h-12 rounded-full ${outcomeConfig.bgClass} flex items-center justify-center`}>
@@ -155,18 +155,18 @@ export function FeedbackScreen({
             </div>
           </div>
 
-          <CardContent className="py-6 space-y-6">
+          <CardContent className="py-8 space-y-6">
             <div>
               <h3 className="font-semibold mb-3 flex items-center gap-2">
                 <Target className="w-4 h-4" />
                 {t("training.feedbackPanel.messageWithCues")}
               </h3>
-              <Card>
+              <Card className="border border-black/5 dark:border-white/10 bg-background/60">
                 <CardHeader className="pb-2">
                   <div className="flex items-center gap-2">
                     <span className="font-medium">{scenario.senderName}</span>
                     {scenario.senderEmail && (
-                      <code className="text-xs bg-muted px-2 py-0.5 rounded">
+                      <code className="text-xs bg-background/60 border border-black/5 dark:border-white/10 px-2 py-0.5 rounded">
                         {scenario.senderEmail}
                       </code>
                     )}
@@ -188,7 +188,7 @@ export function FeedbackScreen({
                 <Lightbulb className="w-4 h-4 text-chart-4" />
                 {t("training.feedbackPanel.whyThisMatters")}
               </h3>
-              <div className="p-4 rounded-lg bg-muted/50 border">
+              <div className="p-4 rounded-2xl border border-black/5 dark:border-white/10 bg-background/60">
                 <p className="text-sm leading-relaxed" data-testid="text-explanation">
                   {scenario.explanation}
                 </p>
@@ -196,7 +196,7 @@ export function FeedbackScreen({
             </div>
 
             {scenario.cues.length > 0 && !hasAnswered && (
-              <div className="p-4 rounded-lg border border-primary/30 bg-primary/5">
+              <div className="p-4 rounded-2xl border border-primary/30 bg-primary/5">
                 <h3 className="font-semibold mb-3 flex items-center gap-2">
                   <HelpCircle className="w-4 h-4 text-primary" />
                   {t("training.feedbackPanel.quickCheck.title")}
@@ -229,7 +229,7 @@ export function FeedbackScreen({
             )}
 
             {hasAnswered && (
-              <div className="p-4 rounded-lg border border-chart-2/30 bg-chart-2/5">
+              <div className="p-4 rounded-2xl border border-chart-2/30 bg-chart-2/5">
                 <div className="flex items-start gap-3">
                   <CheckCircle className="w-5 h-5 text-chart-2 mt-0.5 flex-shrink-0" />
                   <div>

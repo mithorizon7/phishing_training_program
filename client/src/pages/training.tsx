@@ -201,10 +201,10 @@ export default function Training() {
 
   if (!activeShift && !shiftLoading) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-background app-shell">
         <Header />
         <main className="max-w-2xl mx-auto p-6 py-12">
-          <Card className="p-8 text-center">
+          <Card className="p-10 text-center glass-panel">
             <h2 className="text-2xl font-bold mb-4">{t('training.readyToTrain.title')}</h2>
             <p className="text-muted-foreground mb-6">
               {t('training.readyToTrain.description')}
@@ -231,18 +231,18 @@ export default function Training() {
     : 0;
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col app-shell">
       <Header 
         inShift={true}
         verificationsRemaining={verificationsRemaining}
       />
       
-      <main className="flex-1 p-4 overflow-hidden">
+      <main className="flex-1 px-6 pb-8 pt-6 overflow-hidden">
         <div className="max-w-7xl mx-auto h-full">
           {shiftLoading ? (
-            <div className="grid lg:grid-cols-5 gap-4 h-full">
+            <div className="grid lg:grid-cols-5 gap-6 h-full">
               <div className="lg:col-span-2">
-                <Card className="h-full p-4">
+                <Card className="h-full p-4 border border-black/5 dark:border-white/10 bg-card/60">
                   <Skeleton className="h-10 w-full mb-4" />
                   <div className="space-y-4">
                     {[1, 2, 3].map(i => (
@@ -258,13 +258,13 @@ export default function Training() {
                 </Card>
               </div>
               <div className="lg:col-span-3 space-y-4">
-                <Card className="h-96 p-4">
+                <Card className="h-96 p-4 border border-black/5 dark:border-white/10 bg-card/60">
                   <Skeleton className="h-full w-full" />
                 </Card>
               </div>
             </div>
           ) : (
-            <div className="grid lg:grid-cols-5 gap-4 h-[calc(100vh-8rem)]">
+            <div className="grid lg:grid-cols-5 gap-6 h-[calc(100vh-8rem)]">
               <div className="lg:col-span-2 overflow-hidden">
                 <MessageList
                   scenarios={scenarios}

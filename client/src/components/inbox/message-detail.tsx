@@ -106,7 +106,7 @@ export function MessageDetail({
 
   if (!scenario) {
     return (
-      <Card className="flex flex-col h-full">
+      <Card className="flex flex-col h-full border border-black/5 dark:border-white/10 bg-card/60">
         <div className="flex-1 flex items-center justify-center text-center p-8">
           <div>
             <Mail className="w-16 h-16 text-muted-foreground/30 mx-auto mb-4" />
@@ -128,10 +128,10 @@ export function MessageDetail({
 
   return (
     <div className="flex flex-col gap-4 pb-2">
-      <Card className="flex flex-col min-h-0">
+      <Card className="flex flex-col min-h-0 border border-black/5 dark:border-white/10 bg-card/70 overflow-hidden">
         <CardHeader className="flex-shrink-0 pb-4">
           <div className="flex items-start gap-4">
-            <div className={`w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 ${
+            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 ${
               scenario.channel === 'email' ? 'bg-primary/10 text-primary' :
               scenario.channel === 'sms' ? 'bg-chart-2/10 text-chart-2' :
               scenario.channel === 'call' ? 'bg-chart-3/10 text-chart-3' :
@@ -143,7 +143,7 @@ export function MessageDetail({
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-1 flex-wrap">
-                <Badge variant="outline" className="text-xs">
+                <Badge variant="outline" className="text-[0.65rem]">
                   {getChannelLabel(scenario.channel as MessageChannel, t)}
                 </Badge>
                 <span className="text-xs text-muted-foreground">{scenario.timestamp}</span>
@@ -171,7 +171,7 @@ export function MessageDetail({
           </div>
           
               {scenario.hasAttachment && scenario.attachmentName && (
-            <div className="mt-6 p-4 rounded-lg bg-muted/50 flex items-center gap-3">
+            <div className="mt-6 p-4 rounded-2xl border border-black/5 dark:border-white/10 bg-background/60 flex items-center gap-3">
               <Paperclip className="w-5 h-5 text-muted-foreground" />
               <div className="flex-1">
                 <p className="text-sm font-medium">{scenario.attachmentName}</p>
@@ -182,7 +182,7 @@ export function MessageDetail({
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="border border-black/5 dark:border-white/10 bg-card/60">
         <CardHeader className="pb-2">
           <h3 className="font-semibold text-sm flex items-center gap-2">
             <Eye className="w-4 h-4" />
@@ -210,7 +210,7 @@ export function MessageDetail({
                         <span className="text-muted-foreground">{senderIdentifierLabel}:</span>
                         <div className="flex items-center gap-2">
                           {showRealSender ? (
-                            <code className="text-xs bg-muted px-2 py-1 rounded font-mono">
+                            <code className="text-xs bg-background/60 border border-black/5 dark:border-white/10 px-2 py-1 rounded font-mono">
                               {scenario.senderEmail}
                             </code>
                           ) : (
@@ -235,7 +235,7 @@ export function MessageDetail({
                     {scenario.senderPhone && (
                       <div className="flex items-center justify-between gap-2">
                         <span className="text-muted-foreground">{t("training.message.phoneNumber")}:</span>
-                        <code className="text-xs bg-muted px-2 py-1 rounded font-mono">
+                        <code className="text-xs bg-background/60 border border-black/5 dark:border-white/10 px-2 py-1 rounded font-mono">
                           {scenario.senderPhone}
                         </code>
                       </div>
@@ -273,7 +273,7 @@ export function MessageDetail({
                       <span className="text-muted-foreground">{t("training.message.actualUrl")}:</span>
                       <div className="flex items-center gap-2">
                         {showLinkTarget ? (
-                          <code className="text-xs bg-muted px-2 py-1 rounded font-mono max-w-[200px] truncate">
+                          <code className="text-xs bg-background/60 border border-black/5 dark:border-white/10 px-2 py-1 rounded font-mono max-w-[200px] truncate">
                             {scenario.linkUrl}
                           </code>
                         ) : (
@@ -326,7 +326,7 @@ export function MessageDetail({
       </Card>
 
       {onLensCheck && (
-        <Card className={`flex-shrink-0 transition-colors ${lensComplete ? 'border-chart-2/50' : 'border-amber-500/50'}`}>
+        <Card className={`flex-shrink-0 transition-colors bg-card/60 ${lensComplete ? 'border-chart-2/50' : 'border-amber-500/50'}`}>
           <CardHeader className="pb-2">
             <div className="flex items-center justify-between gap-2">
               <h3 className="font-semibold text-sm flex items-center gap-2">
@@ -350,8 +350,8 @@ export function MessageDetail({
                 return (
                   <div 
                     key={check.id}
-                    className={`flex items-start gap-2 p-2 rounded-md cursor-pointer transition-colors ${
-                      isChecked ? 'bg-chart-2/10' : 'hover-elevate'
+                    className={`flex items-start gap-2 p-3 rounded-xl border border-black/5 dark:border-white/10 cursor-pointer transition-all ${
+                      isChecked ? 'bg-chart-2/10 border-chart-2/40' : 'bg-background/60 hover:bg-background/80'
                     }`}
                     onClick={() => onLensCheck(check.id, !isChecked)}
                     data-testid={`lens-check-${check.id}`}
@@ -375,7 +375,7 @@ export function MessageDetail({
         </Card>
       )}
 
-      <Card className="flex-shrink-0">
+      <Card className="flex-shrink-0 border border-black/5 dark:border-white/10 bg-card/60">
         <CardContent className="py-4">
           <div className="flex items-center justify-between gap-2 mb-4">
             <p className="text-sm text-muted-foreground">{t("training.actions.prompt")}</p>

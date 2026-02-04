@@ -55,19 +55,20 @@ function StatCard({
   testId?: string;
 }) {
   return (
-    <Card>
+    <Card className="relative overflow-hidden border border-black/5 dark:border-white/10 bg-card/60">
+      <div className="absolute right-0 top-0 h-20 w-20 bg-gradient-to-br from-white/10 to-transparent" />
       <CardHeader className="flex flex-row items-center justify-between gap-4 pb-2">
-        <CardTitle className="text-sm font-medium text-muted-foreground">{title}</CardTitle>
-        <div className={`w-8 h-8 rounded-md ${color} flex items-center justify-center`}>
+        <CardTitle className="text-[0.7rem] uppercase tracking-[0.3em] text-muted-foreground">{title}</CardTitle>
+        <div className={`w-9 h-9 rounded-xl ${color} flex items-center justify-center shadow-sm`}>
           <Icon className="w-4 h-4 text-white" />
         </div>
       </CardHeader>
       <CardContent>
-        <div className="text-2xl font-bold" data-testid={`text-stat-${testId ?? title.toLowerCase().replace(/\s/g, '-')}`}>
+        <div className="text-3xl font-semibold" data-testid={`text-stat-${testId ?? title.toLowerCase().replace(/\s/g, '-')}`}>
           {value}
         </div>
         {subtitle && (
-          <p className="text-xs text-muted-foreground mt-1">{subtitle}</p>
+          <p className="text-xs text-muted-foreground mt-2">{subtitle}</p>
         )}
       </CardContent>
     </Card>
@@ -123,7 +124,7 @@ function RiskMeter({ progress }: { progress: UserProgress | null }) {
     : [];
 
   return (
-    <Card className={`border-2 ${colors.border}`}>
+    <Card className={`relative overflow-hidden border-2 ${colors.border} bg-card/70`}>
       <CardHeader className="pb-2">
         <CardTitle className="flex items-center gap-2">
           <Gauge className="w-5 h-5" />
@@ -188,7 +189,7 @@ function RiskMeter({ progress }: { progress: UserProgress | null }) {
             <p className="text-xs font-medium mb-2">{t("dashboard.riskMeter.topVulnerabilities")}</p>
             <div className="grid grid-cols-2 gap-2">
               {topVulnerabilities.map(([cue, count]) => (
-                <div key={cue} className="flex items-center justify-between gap-2 text-xs p-2 rounded bg-muted/50">
+                <div key={cue} className="flex items-center justify-between gap-2 text-xs px-3 py-2 rounded-lg border border-black/5 dark:border-white/10 bg-background/60">
                   <span className="truncate flex-1 min-w-0">{t(cue)}</span>
                   <Badge variant="secondary" className="flex-shrink-0">{count}</Badge>
                 </div>
@@ -226,7 +227,7 @@ function BadgeCard({
 
   return (
     <div 
-      className={`p-4 rounded-lg border ${earned ? 'bg-card' : 'bg-muted/30'} flex flex-col gap-3`}
+      className={`p-4 rounded-2xl border border-black/5 dark:border-white/10 ${earned ? 'bg-card/70' : 'bg-background/60'} flex flex-col gap-3 transition hover:-translate-y-0.5`}
       data-testid={`card-badge-${badgeId}`}
     >
       <div className="flex items-center gap-3">
@@ -340,8 +341,8 @@ export function Dashboard({
   }
 
   return (
-    <div className="max-w-6xl mx-auto p-6 space-y-8">
-      <Card className="border-sky-500/40 bg-sky-500/5">
+    <div className="max-w-7xl mx-auto p-6 space-y-10">
+      <Card className="border border-sky-500/40 bg-sky-500/10">
         <CardContent className="py-4">
           <div className="flex items-center gap-3">
             <AlertTriangle className="w-5 h-5 text-sky-600 dark:text-sky-400 flex-shrink-0" />
@@ -355,7 +356,7 @@ export function Dashboard({
 
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold" data-testid="text-dashboard-title">{t("dashboard.title")}</h1>
+          <h1 className="text-3xl font-semibold" data-testid="text-dashboard-title">{t("dashboard.title")}</h1>
           <p className="text-muted-foreground">{t("dashboard.subtitle")}</p>
         </div>
         <Button size="lg" onClick={onStartShift} data-testid="button-start-shift">
@@ -364,7 +365,7 @@ export function Dashboard({
         </Button>
       </div>
 
-      <Card>
+      <Card className="border border-black/5 dark:border-white/10 bg-card/60">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <FileText className="w-5 h-5" />
@@ -395,7 +396,7 @@ export function Dashboard({
                   : t("dashboard.trainingTracks.action.start");
 
                 return (
-                  <div key={assignment.id} className="flex flex-wrap items-center justify-between gap-3 p-3 rounded-lg border bg-muted/20">
+                  <div key={assignment.id} className="flex flex-wrap items-center justify-between gap-3 p-4 rounded-2xl border border-black/5 dark:border-white/10 bg-background/60">
                     <div className="min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
                         <span className="font-medium">{getAssignmentTitle(assignment)}</span>
@@ -436,7 +437,7 @@ export function Dashboard({
 
       {/* Dual Score Display - Security vs Operations Balance */}
       <div className="grid sm:grid-cols-2 gap-6">
-        <Card className="border-2 border-chart-2/30">
+        <Card className="border-2 border-chart-2/30 bg-card/60">
           <CardContent className="pt-6">
             <div className="flex items-center gap-4">
               <div className="w-16 h-16 rounded-full bg-chart-2/20 flex items-center justify-center">
@@ -462,7 +463,7 @@ export function Dashboard({
           </CardContent>
         </Card>
 
-        <Card className="border-2 border-chart-3/30">
+        <Card className="border-2 border-chart-3/30 bg-card/60">
           <CardContent className="pt-6">
             <div className="flex items-center gap-4">
               <div className="w-16 h-16 rounded-full bg-chart-3/20 flex items-center justify-center">
@@ -533,7 +534,7 @@ export function Dashboard({
         />
       </div>
 
-      <Card>
+      <Card className="border border-black/5 dark:border-white/10 bg-card/60">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Zap className="w-5 h-5" />
@@ -545,7 +546,7 @@ export function Dashboard({
         </CardHeader>
         <CardContent>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="p-4 rounded-lg bg-muted/30">
+            <div className="p-4 rounded-2xl border border-black/5 dark:border-white/10 bg-background/60">
               <div className="flex items-center gap-2 mb-2">
                 <Target className="w-4 h-4 text-muted-foreground" />
                 <span className="text-sm text-muted-foreground">{t("dashboard.metrics.overallAccuracy")}</span>
@@ -555,7 +556,7 @@ export function Dashboard({
                 {t("dashboard.metrics.correctDecisions", { count: progress?.correctDecisions || 0 })}
               </p>
             </div>
-            <div className="p-4 rounded-lg bg-muted/30">
+            <div className="p-4 rounded-2xl border border-black/5 dark:border-white/10 bg-background/60">
               <div className="flex items-center gap-2 mb-2">
                 <Shield className="w-4 h-4 text-muted-foreground" />
                 <span className="text-sm text-muted-foreground">{t("dashboard.metrics.unsafeActions")}</span>
@@ -563,7 +564,7 @@ export function Dashboard({
               <div className="text-2xl font-bold" data-testid="text-unsafe-actions">{progress?.unsafeActions || 0}</div>
               <p className="text-xs text-muted-foreground">{t("dashboard.metrics.threatsAllowed")}</p>
             </div>
-            <div className="p-4 rounded-lg bg-muted/30">
+            <div className="p-4 rounded-2xl border border-black/5 dark:border-white/10 bg-background/60">
               <div className="flex items-center gap-2 mb-2">
                 <AlertTriangle className="w-4 h-4 text-muted-foreground" />
                 <span className="text-sm text-muted-foreground">{t("dashboard.metrics.compromised")}</span>
@@ -571,7 +572,7 @@ export function Dashboard({
               <div className="text-2xl font-bold" data-testid="text-compromised">{progress?.compromised || 0}</div>
               <p className="text-xs text-muted-foreground">{t("dashboard.metrics.securityBreaches")}</p>
             </div>
-            <div className="p-4 rounded-lg bg-muted/30">
+            <div className="p-4 rounded-2xl border border-black/5 dark:border-white/10 bg-background/60">
               <div className="flex items-center gap-2 mb-2">
                 <CheckCircle className="w-4 h-4 text-muted-foreground" />
                 <span className="text-sm text-muted-foreground">{t("dashboard.metrics.highConfidenceErrors")}</span>
@@ -584,7 +585,7 @@ export function Dashboard({
       </Card>
 
       <div className="grid lg:grid-cols-3 gap-6">
-        <Card className="lg:col-span-2">
+        <Card className="lg:col-span-2 border border-black/5 dark:border-white/10 bg-card/60">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Star className="w-5 h-5" />
@@ -608,7 +609,7 @@ export function Dashboard({
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border border-black/5 dark:border-white/10 bg-card/60">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <TrendingUp className="w-5 h-5" />
@@ -643,21 +644,21 @@ export function Dashboard({
       <RiskMeter progress={progress} />
 
       <div className="grid sm:grid-cols-2 gap-6">
-        <Card>
+        <Card className="border border-black/5 dark:border-white/10 bg-card/60">
           <CardHeader>
             <CardTitle>{t("dashboard.trainingSummary.title")}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-3 gap-4">
-              <div className="text-center p-3 rounded-lg bg-muted/30">
+              <div className="text-center p-3 rounded-2xl border border-black/5 dark:border-white/10 bg-background/60">
                 <div className="text-2xl font-bold text-primary">{progress?.totalShifts || 0}</div>
                 <p className="text-xs text-muted-foreground mt-1">{t("dashboard.trainingSummary.shifts")}</p>
               </div>
-              <div className="text-center p-3 rounded-lg bg-muted/30">
+              <div className="text-center p-3 rounded-2xl border border-black/5 dark:border-white/10 bg-background/60">
                 <div className="text-2xl font-bold text-chart-2">{progress?.totalDecisions || 0}</div>
                 <p className="text-xs text-muted-foreground mt-1">{t("dashboard.trainingSummary.messages")}</p>
               </div>
-              <div className="text-center p-3 rounded-lg bg-muted/30">
+              <div className="text-center p-3 rounded-2xl border border-black/5 dark:border-white/10 bg-background/60">
                 <div className="text-2xl font-bold text-chart-3">{progress?.totalScore || 0}</div>
                 <p className="text-xs text-muted-foreground mt-1">{t("dashboard.trainingSummary.points")}</p>
               </div>
@@ -665,7 +666,7 @@ export function Dashboard({
           </CardContent>
         </Card>
 
-        <Card className="border-2 border-destructive/20">
+        <Card className="border-2 border-destructive/20 bg-card/60">
           <CardHeader className="pb-2">
             <CardTitle className="flex items-center gap-2">
               <LifeBuoy className="w-5 h-5 text-destructive" />
@@ -694,7 +695,7 @@ export function Dashboard({
 
 function DashboardSkeleton() {
   return (
-    <div className="max-w-6xl mx-auto p-6 space-y-8">
+    <div className="max-w-7xl mx-auto p-6 space-y-8">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <Skeleton className="h-8 w-40 mb-2" />

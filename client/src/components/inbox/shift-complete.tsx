@@ -30,9 +30,9 @@ export function ShiftComplete({ shift, onGoHome, onPlayAgain }: ShiftCompletePro
   const isPerfect = shift.correctDecisions === totalMessages && shift.compromised === 0;
 
   return (
-    <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 overflow-auto">
+    <div className="fixed inset-0 bg-background/70 backdrop-blur-md z-50 overflow-auto">
       <div className="min-h-full flex items-center justify-center p-4 py-8">
-        <Card className="w-full max-w-lg">
+        <Card className="w-full max-w-lg overflow-hidden glass-panel-strong">
           <CardHeader className="text-center pb-2">
             <div className={`w-20 h-20 rounded-full mx-auto mb-4 flex items-center justify-center ${
               isPerfect ? 'bg-chart-2/20' : accuracy >= 70 ? 'bg-primary/20' : 'bg-chart-4/20'
@@ -64,7 +64,7 @@ export function ShiftComplete({ shift, onGoHome, onPlayAgain }: ShiftCompletePro
             </div>
 
             <div className="grid grid-cols-2 gap-4">
-              <div className="p-4 rounded-lg bg-muted/50 text-center">
+              <div className="p-4 rounded-2xl border border-black/5 dark:border-white/10 bg-background/60 text-center">
                 <div className="flex items-center justify-center gap-2 mb-2">
                   <Target className="w-5 h-5 text-chart-2" />
                   <span className="text-2xl font-bold text-chart-2">
@@ -74,7 +74,7 @@ export function ShiftComplete({ shift, onGoHome, onPlayAgain }: ShiftCompletePro
                 <p className="text-xs text-muted-foreground">{t("training.shiftComplete.correctDecisions")}</p>
               </div>
               
-              <div className="p-4 rounded-lg bg-muted/50 text-center">
+              <div className="p-4 rounded-2xl border border-black/5 dark:border-white/10 bg-background/60 text-center">
                 <div className="flex items-center justify-center gap-2 mb-2">
                   <AlertTriangle className="w-5 h-5 text-chart-4" />
                   <span className="text-2xl font-bold text-chart-4">
@@ -84,7 +84,7 @@ export function ShiftComplete({ shift, onGoHome, onPlayAgain }: ShiftCompletePro
                 <p className="text-xs text-muted-foreground">{t("training.shiftComplete.falsePositives")}</p>
               </div>
               
-              <div className="p-4 rounded-lg bg-muted/50 text-center">
+              <div className="p-4 rounded-2xl border border-black/5 dark:border-white/10 bg-background/60 text-center">
                 <div className="flex items-center justify-center gap-2 mb-2">
                   <Shield className="w-5 h-5 text-destructive" />
                   <span className="text-2xl font-bold text-destructive">
@@ -94,7 +94,7 @@ export function ShiftComplete({ shift, onGoHome, onPlayAgain }: ShiftCompletePro
                 <p className="text-xs text-muted-foreground">{t("training.shiftComplete.compromised")}</p>
               </div>
               
-              <div className="p-4 rounded-lg bg-muted/50 text-center">
+              <div className="p-4 rounded-2xl border border-black/5 dark:border-white/10 bg-background/60 text-center">
                 <div className="flex items-center justify-center gap-2 mb-2">
                   <Flame className="w-5 h-5 text-primary" />
                   <span className="text-2xl font-bold text-primary">

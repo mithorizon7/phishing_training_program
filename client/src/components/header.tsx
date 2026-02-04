@@ -18,21 +18,25 @@ export function Header({ verificationsRemaining, inShift }: HeaderProps) {
   const showNav = !inShift;
 
   return (
-    <header className="h-16 border-b bg-background/95 backdrop-blur sticky top-0 z-50">
+    <header className="h-[72px] border-b border-black/5 dark:border-white/10 bg-background/70 backdrop-blur-xl sticky top-0 z-50">
       <div className="h-full max-w-7xl mx-auto flex items-center justify-between px-4 gap-4">
         <div className="flex items-center gap-4">
           <Link href="/" className="flex items-center gap-3">
-            <img src={logoImage} alt={t("app.title")} className="w-10 h-10 object-contain" data-testid="img-logo-header" />
-            <span className="font-semibold text-lg hidden sm:inline" data-testid="text-header-title">
+            <div className="relative flex items-center justify-center rounded-2xl bg-primary/10 p-2">
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/35 to-transparent blur" />
+              <img src={logoImage} alt={t("app.title")} className="relative w-7 h-7 object-contain" data-testid="img-logo-header" />
+            </div>
+            <span className="font-display text-sm uppercase tracking-[0.28em] hidden sm:inline" data-testid="text-header-title">
               {t('app.title')}
             </span>
           </Link>
 
           {showNav && (
-            <nav className="hidden md:flex items-center gap-1 ml-4">
+            <nav className="hidden md:flex items-center gap-1 ml-4 rounded-full border border-black/5 dark:border-white/10 bg-background/60 px-2 py-1">
               <Button 
                 variant={location === "/dashboard" ? "secondary" : "ghost"} 
-                size="sm" 
+                size="sm"
+                className="rounded-full px-4"
                 asChild
               >
                 <Link href="/dashboard" data-testid="link-dashboard">
@@ -42,7 +46,8 @@ export function Header({ verificationsRemaining, inShift }: HeaderProps) {
               </Button>
               <Button 
                 variant={location === "/training" ? "secondary" : "ghost"} 
-                size="sm" 
+                size="sm"
+                className="rounded-full px-4"
                 asChild
               >
                 <Link href="/training" data-testid="link-training">

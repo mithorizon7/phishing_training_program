@@ -149,65 +149,67 @@ export default function RecoverDrill() {
 
   if (!selectedScenario) {
     return (
-      <div className="max-w-4xl mx-auto p-6 space-y-8">
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <h1 className="text-2xl font-bold" data-testid="text-recover-title">{t("recover.title")}</h1>
-            <p className="text-muted-foreground">{t("recover.subtitle")}</p>
+      <div className="min-h-screen bg-background app-shell">
+        <div className="max-w-4xl mx-auto p-6 space-y-8">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <h1 className="text-3xl font-semibold" data-testid="text-recover-title">{t("recover.title")}</h1>
+              <p className="text-muted-foreground">{t("recover.subtitle")}</p>
+            </div>
+            <Link href="/">
+              <Button variant="outline" data-testid="link-back-dashboard">
+                {t("recover.backToDashboard")}
+              </Button>
+            </Link>
           </div>
-          <Link href="/">
-            <Button variant="outline" data-testid="link-back-dashboard">
-              {t("recover.backToDashboard")}
-            </Button>
-          </Link>
-        </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <AlertTriangle className="w-5 h-5 text-destructive" />
-              {t("recover.intro.title")}
-            </CardTitle>
-            <CardDescription>
-              {t("recover.intro.description")}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid sm:grid-cols-2 gap-4">
-              {DRILL_SCENARIOS.map((scenario) => (
-                <Card 
-                  key={scenario.id}
-                  className="hover-elevate cursor-pointer"
-                  onClick={() => setSelectedScenario(scenario)}
-                  data-testid={`card-scenario-${scenario.id}`}
-                >
-                  <CardContent className="pt-6">
-                    <h3 className="font-semibold mb-2">{t(scenario.titleKey)}</h3>
-                    <p className="text-sm text-muted-foreground">{t(scenario.descriptionKey)}</p>
-                    <div className="mt-4 flex items-center justify-between gap-2">
-                      <Badge variant="outline">
-                        {t("recover.labels.criticalStepsCount", { count: scenario.steps.filter(s => s.critical).length })}
-                      </Badge>
-                      <ArrowRight className="w-4 h-4 text-muted-foreground flex-shrink-0" />
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-muted/30">
-          <CardContent className="pt-6">
-            <div className="flex items-start gap-4">
-              <Shield className="w-8 h-8 text-primary flex-shrink-0" />
-              <div>
-                <h3 className="font-semibold mb-2">{t("recover.why.title")}</h3>
-                <p className="text-sm text-muted-foreground">{t("recover.why.description")}</p>
+          <Card className="border border-black/5 dark:border-white/10 bg-card/60">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <AlertTriangle className="w-5 h-5 text-destructive" />
+                {t("recover.intro.title")}
+              </CardTitle>
+              <CardDescription>
+                {t("recover.intro.description")}
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid sm:grid-cols-2 gap-4">
+                {DRILL_SCENARIOS.map((scenario) => (
+                  <Card 
+                    key={scenario.id}
+                    className="group cursor-pointer border border-black/5 dark:border-white/10 bg-background/60 transition hover:-translate-y-1 hover:shadow-[0_28px_70px_-50px_rgba(15,23,42,0.6)]"
+                    onClick={() => setSelectedScenario(scenario)}
+                    data-testid={`card-scenario-${scenario.id}`}
+                  >
+                    <CardContent className="pt-6">
+                      <h3 className="font-semibold mb-2">{t(scenario.titleKey)}</h3>
+                      <p className="text-sm text-muted-foreground">{t(scenario.descriptionKey)}</p>
+                      <div className="mt-4 flex items-center justify-between gap-2">
+                        <Badge variant="outline">
+                          {t("recover.labels.criticalStepsCount", { count: scenario.steps.filter(s => s.critical).length })}
+                        </Badge>
+                        <ArrowRight className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
               </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+
+          <Card className="border border-black/5 dark:border-white/10 bg-background/60">
+            <CardContent className="pt-6">
+              <div className="flex items-start gap-4">
+                <Shield className="w-8 h-8 text-primary flex-shrink-0" />
+                <div>
+                  <h3 className="font-semibold mb-2">{t("recover.why.title")}</h3>
+                  <p className="text-sm text-muted-foreground">{t("recover.why.description")}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     );
   }
@@ -219,8 +221,9 @@ export default function RecoverDrill() {
     const allCriticalDone = criticalCompleted === totalCritical;
 
     return (
-      <div className="max-w-2xl mx-auto p-6 space-y-8">
-        <Card className={allCriticalDone ? "border-chart-2" : "border-destructive"}>
+      <div className="min-h-screen bg-background app-shell">
+        <div className="max-w-2xl mx-auto p-6 space-y-8">
+          <Card className={`${allCriticalDone ? "border-chart-2" : "border-destructive"} bg-card/70`}>
           <CardHeader className="text-center">
             <div className={`w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-4 ${
               allCriticalDone ? "bg-chart-2/20" : "bg-destructive/20"
@@ -256,8 +259,8 @@ export default function RecoverDrill() {
                 return (
                   <div 
                     key={step.id}
-                    className={`flex items-center gap-3 p-3 rounded-lg ${
-                      completed ? "bg-chart-2/10" : step.critical ? "bg-destructive/10" : "bg-muted/30"
+                    className={`flex items-center gap-3 p-3 rounded-2xl border border-black/5 dark:border-white/10 ${
+                      completed ? "bg-chart-2/10 border-chart-2/30" : step.critical ? "bg-destructive/10 border-destructive/30" : "bg-background/60"
                     }`}
                   >
                     {completed ? (
@@ -281,7 +284,7 @@ export default function RecoverDrill() {
               })}
             </div>
 
-            <Card className="bg-muted/30">
+            <Card className="border border-black/5 dark:border-white/10 bg-background/60">
               <CardContent className="pt-4 pb-4">
                 <p className="text-sm font-medium mb-2">{t("recover.results.keyTakeaway")}</p>
                 <p className="text-sm text-muted-foreground">
@@ -305,101 +308,104 @@ export default function RecoverDrill() {
               </Link>
             </div>
           </CardContent>
-        </Card>
+          </Card>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-2xl mx-auto p-6 space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <div>
-          <h1 className="text-xl font-bold">{t(selectedScenario.titleKey)}</h1>
-          <p className="text-muted-foreground text-sm">{t(selectedScenario.descriptionKey)}</p>
-        </div>
-        <Button variant="ghost" onClick={handleReset} data-testid="button-change-scenario">
-          {t("recover.actions.changeScenario")}
-        </Button>
-      </div>
-
-      <Card className="bg-destructive/5 border-destructive/20">
-        <CardContent className="pt-6">
-          <div className="flex items-start gap-3">
-            <AlertTriangle className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
-            <div>
-              <p className="font-medium text-sm">{t("recover.prompt.title")}</p>
-              <p className="text-sm text-muted-foreground mt-1">
-                {t("recover.prompt.subtitle")}
-              </p>
-            </div>
+    <div className="min-h-screen bg-background app-shell">
+      <div className="max-w-2xl mx-auto p-6 space-y-6">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <h1 className="text-2xl font-semibold">{t(selectedScenario.titleKey)}</h1>
+            <p className="text-muted-foreground text-sm">{t(selectedScenario.descriptionKey)}</p>
           </div>
-        </CardContent>
-      </Card>
+          <Button variant="ghost" onClick={handleReset} data-testid="button-change-scenario">
+            {t("recover.actions.changeScenario")}
+          </Button>
+        </div>
 
-      <div className="space-y-3">
-        {selectedScenario.steps.map((step) => {
-          const completed = completedSteps.has(step.id);
-          const Icon = step.icon;
-          return (
-            <Card 
-              key={step.id}
-              className={`cursor-pointer transition-colors ${
-                completed ? "border-chart-2 bg-chart-2/5" : "hover-elevate"
-              }`}
-              onClick={() => handleStepClick(step.id)}
-              data-testid={`card-step-${step.id}`}
-            >
-              <CardContent className="py-4">
-                <div className="flex items-center gap-4">
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
-                    completed ? "bg-chart-2/20" : "bg-muted"
-                  }`}>
-                    {completed ? (
-                      <CheckCircle className="w-5 h-5 text-chart-2" />
-                    ) : (
-                      <Icon className="w-5 h-5 text-muted-foreground" />
-                    )}
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2">
-                      <span className="font-medium">{t(step.titleKey)}</span>
-                      {step.critical && (
-                        <Badge variant="outline">{t("recover.labels.critical")}</Badge>
+        <Card className="bg-destructive/5 border-destructive/20">
+          <CardContent className="pt-6">
+            <div className="flex items-start gap-3">
+              <AlertTriangle className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
+              <div>
+                <p className="font-medium text-sm">{t("recover.prompt.title")}</p>
+                <p className="text-sm text-muted-foreground mt-1">
+                  {t("recover.prompt.subtitle")}
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <div className="space-y-3">
+          {selectedScenario.steps.map((step) => {
+            const completed = completedSteps.has(step.id);
+            const Icon = step.icon;
+            return (
+              <Card 
+                key={step.id}
+                className={`cursor-pointer transition-all border ${
+                  completed ? "border-chart-2/50 bg-chart-2/10" : "border-black/5 dark:border-white/10 bg-background/60 hover:bg-background/80"
+                }`}
+                onClick={() => handleStepClick(step.id)}
+                data-testid={`card-step-${step.id}`}
+              >
+                <CardContent className="py-4">
+                  <div className="flex items-center gap-4">
+                    <div className={`w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0 ${
+                      completed ? "bg-chart-2/20" : "bg-muted/60"
+                    }`}>
+                      {completed ? (
+                        <CheckCircle className="w-5 h-5 text-chart-2" />
+                      ) : (
+                        <Icon className="w-5 h-5 text-muted-foreground" />
                       )}
                     </div>
-                    <p className="text-sm text-muted-foreground">{t(step.descriptionKey)}</p>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2">
+                        <span className="font-medium">{t(step.titleKey)}</span>
+                        {step.critical && (
+                          <Badge variant="outline">{t("recover.labels.critical")}</Badge>
+                        )}
+                      </div>
+                      <p className="text-sm text-muted-foreground">{t(step.descriptionKey)}</p>
+                    </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
-          );
-        })}
-      </div>
-
-      <div className="sticky bottom-0 z-50 bg-background pt-4 pb-2 border-t">
-        <div className="flex items-center justify-between gap-4 mb-4">
-          <span className="text-sm text-muted-foreground">
-            {t("recover.footer.stepsSelected", {
-              selected: completedSteps.size,
-              total: selectedScenario.steps.length
-            })}
-          </span>
-          <span className="text-sm font-medium flex-shrink-0">
-            {t("recover.footer.criticalSummary", {
-              completed: getCriticalStepsCompleted(),
-              total: getTotalCriticalSteps()
-            })}
-          </span>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
-        <Button 
-          className="w-full" 
-          size="lg" 
-          onClick={handleSubmit}
-          disabled={completedSteps.size === 0}
-          data-testid="button-submit-recovery"
-        >
-          {t("recover.actions.checkResponse")}
-        </Button>
+
+        <div className="sticky bottom-0 z-50 bg-background/80 backdrop-blur border-t border-black/5 dark:border-white/10 pt-4 pb-2">
+          <div className="flex items-center justify-between gap-4 mb-4">
+            <span className="text-sm text-muted-foreground">
+              {t("recover.footer.stepsSelected", {
+                selected: completedSteps.size,
+                total: selectedScenario.steps.length
+              })}
+            </span>
+            <span className="text-sm font-medium flex-shrink-0">
+              {t("recover.footer.criticalSummary", {
+                completed: getCriticalStepsCompleted(),
+                total: getTotalCriticalSteps()
+              })}
+            </span>
+          </div>
+          <Button 
+            className="w-full" 
+            size="lg" 
+            onClick={handleSubmit}
+            disabled={completedSteps.size === 0}
+            data-testid="button-submit-recovery"
+          >
+            {t("recover.actions.checkResponse")}
+          </Button>
+        </div>
       </div>
     </div>
   );

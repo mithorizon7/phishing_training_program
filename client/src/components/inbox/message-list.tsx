@@ -41,16 +41,16 @@ function MessageRow({
   
   return (
     <div
-      className={`p-4 border-b last:border-b-0 cursor-pointer transition-colors ${
+      className={`relative p-4 border-b border-black/5 dark:border-white/10 last:border-b-0 cursor-pointer transition-all ${
         isActive 
-          ? 'bg-primary/5 border-l-2 border-l-primary' 
-          : 'hover-elevate'
+          ? "bg-primary/10 before:content-[''] before:absolute before:left-2 before:top-3 before:bottom-3 before:w-1 before:rounded-full before:bg-primary/70"
+          : 'hover:bg-background/60'
       } ${isCompleted ? 'opacity-60' : ''}`}
       onClick={onClick}
       data-testid={`row-message-${scenario.id}`}
     >
       <div className="flex items-start gap-3">
-        <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
+        <div className={`w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0 ${
           scenario.channel === 'email' ? 'bg-primary/10 text-primary' :
           scenario.channel === 'sms' ? 'bg-chart-2/10 text-chart-2' :
           scenario.channel === 'call' ? 'bg-chart-3/10 text-chart-3' :
@@ -111,30 +111,30 @@ export function MessageList({
   const currentScenario = scenarios[currentIndex];
 
   return (
-    <Card className="flex flex-col h-full">
+    <Card className="flex flex-col h-full border border-black/5 dark:border-white/10 bg-card/60 overflow-hidden">
       <Tabs defaultValue="all" className="flex flex-col h-full">
-        <div className="border-b px-2 sm:px-4 pt-4">
-          <TabsList className="w-full flex flex-wrap gap-1">
-            <TabsTrigger value="all" className="flex-1 min-w-fit" data-testid="tab-all">
+        <div className="border-b border-black/5 dark:border-white/10 px-2 sm:px-4 pt-4">
+          <TabsList className="w-full flex flex-wrap gap-1 rounded-full border border-black/5 dark:border-white/10 bg-background/60 p-1 h-auto">
+            <TabsTrigger value="all" className="flex-1 min-w-fit rounded-full text-xs font-semibold data-[state=active]:bg-primary/10 data-[state=active]:text-foreground data-[state=active]:shadow-[0_10px_20px_-16px_hsl(var(--primary)/0.6)]" data-testid="tab-all">
               {t("training.inbox.all")} ({scenarios.length})
             </TabsTrigger>
-            <TabsTrigger value="email" className="flex-1 min-w-fit" data-testid="tab-email">
+            <TabsTrigger value="email" className="flex-1 min-w-fit rounded-full text-xs font-semibold data-[state=active]:bg-primary/10 data-[state=active]:text-foreground data-[state=active]:shadow-[0_10px_20px_-16px_hsl(var(--primary)/0.6)]" data-testid="tab-email">
               <Mail className="w-4 h-4 sm:mr-1" />
               <span className="hidden sm:inline">{emailScenarios.length}</span>
             </TabsTrigger>
-            <TabsTrigger value="sms" className="flex-1 min-w-fit" data-testid="tab-sms">
+            <TabsTrigger value="sms" className="flex-1 min-w-fit rounded-full text-xs font-semibold data-[state=active]:bg-primary/10 data-[state=active]:text-foreground data-[state=active]:shadow-[0_10px_20px_-16px_hsl(var(--primary)/0.6)]" data-testid="tab-sms">
               <MessageSquare className="w-4 h-4 sm:mr-1" />
               <span className="hidden sm:inline">{smsScenarios.length}</span>
             </TabsTrigger>
-            <TabsTrigger value="call" className="flex-1 min-w-fit" data-testid="tab-call">
+            <TabsTrigger value="call" className="flex-1 min-w-fit rounded-full text-xs font-semibold data-[state=active]:bg-primary/10 data-[state=active]:text-foreground data-[state=active]:shadow-[0_10px_20px_-16px_hsl(var(--primary)/0.6)]" data-testid="tab-call">
               <Phone className="w-4 h-4 sm:mr-1" />
               <span className="hidden sm:inline">{callScenarios.length}</span>
             </TabsTrigger>
-            <TabsTrigger value="teams" className="flex-1 min-w-fit" data-testid="tab-teams">
+            <TabsTrigger value="teams" className="flex-1 min-w-fit rounded-full text-xs font-semibold data-[state=active]:bg-primary/10 data-[state=active]:text-foreground data-[state=active]:shadow-[0_10px_20px_-16px_hsl(var(--primary)/0.6)]" data-testid="tab-teams">
               <Users className="w-4 h-4 sm:mr-1" />
               <span className="hidden sm:inline">{teamsScenarios.length}</span>
             </TabsTrigger>
-            <TabsTrigger value="slack" className="flex-1 min-w-fit" data-testid="tab-slack">
+            <TabsTrigger value="slack" className="flex-1 min-w-fit rounded-full text-xs font-semibold data-[state=active]:bg-primary/10 data-[state=active]:text-foreground data-[state=active]:shadow-[0_10px_20px_-16px_hsl(var(--primary)/0.6)]" data-testid="tab-slack">
               <Hash className="w-4 h-4 sm:mr-1" />
               <span className="hidden sm:inline">{slackScenarios.length}</span>
             </TabsTrigger>
@@ -276,8 +276,8 @@ function EmptyState({ channel }: { channel?: MessageChannel }) {
 
 function MessageListSkeleton() {
   return (
-    <Card className="h-full">
-      <div className="border-b p-4">
+    <Card className="h-full border border-black/5 dark:border-white/10 bg-card/60 overflow-hidden">
+      <div className="border-b border-black/5 dark:border-white/10 p-4">
         <Skeleton className="h-10 w-full" />
       </div>
       <div className="p-4 space-y-4">
