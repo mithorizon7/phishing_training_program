@@ -3,7 +3,7 @@ import { Strategy, type VerifyFunction } from "openid-client/passport";
 
 import passport from "passport";
 import session from "express-session";
-import type { Express, RequestHandler } from "express";
+import type { Express, Request, RequestHandler } from "express";
 import memoize from "memoizee";
 import connectPg from "connect-pg-simple";
 import { authStorage } from "./storage";
@@ -20,6 +20,7 @@ const getOidcConfig = memoize(
 
 export function getSession() {
   const sessionTtl = 7 * 24 * 60 * 60 * 1000; // 1 week
+  const isProduction = process.env.NODE_ENV === "production";
   const pgStore = connectPg(session);
   const sessionStore = new pgStore({
     conString: process.env.DATABASE_URL,
@@ -34,7 +35,8 @@ export function getSession() {
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      secure: true,
+      secure: isProduction,
+      sameSite: "lax",
       maxAge: sessionTtl,
     },
   });
@@ -80,17 +82,91 @@ export async function setupAuth(app: Express) {
 
   // Keep track of registered strategies
   const registeredStrategies = new Set<string>();
+  const localhostHosts = new Set(["localhost", "127.0.0.1", "::1"]);
+  const configuredHosts = new Set(
+    (process.env.ALLOWED_AUTH_HOSTS ?? process.env.REPLIT_DOMAINS ?? "")
+      .split(",")
+      .map((host) => host.trim().toLowerCase())
+      .filter(Boolean)
+  );
+  const maxDynamicStrategies = Number(process.env.AUTH_MAX_DYNAMIC_STRATEGIES ?? 5);
+
+  const normalizeHost = (hostname: string): string => hostname
+    .trim()
+    .toLowerCase()
+    .replace(/\.$/, "")
+    .replace(/^\[(.*)\]$/, "$1");
+
+  const parseHostHeader = (hostHeader: string): { host: string; hostname: string } | null => {
+    try {
+      const parsed = new URL(`http://${hostHeader}`);
+      const normalizedHostname = normalizeHost(parsed.hostname);
+      if (!normalizedHostname) {
+        return null;
+      }
+      return {
+        host: parsed.host.toLowerCase(),
+        hostname: normalizedHostname,
+      };
+    } catch {
+      return null;
+    }
+  };
+
+  const resolveAuthHost = (hostname: string): string | null => {
+    const normalizedHost = normalizeHost(hostname);
+
+    if (configuredHosts.size > 0) {
+      return configuredHosts.has(normalizedHost) ? normalizedHost : null;
+    }
+
+    if (localhostHosts.has(normalizedHost)) {
+      return normalizedHost;
+    }
+
+    if (registeredStrategies.has(`replitauth:${normalizedHost}`)) {
+      return normalizedHost;
+    }
+
+    if (!Number.isFinite(maxDynamicStrategies) || maxDynamicStrategies <= 0) {
+      return null;
+    }
+
+    return registeredStrategies.size < maxDynamicStrategies ? normalizedHost : null;
+  };
+
+  const resolveAllowedOrigin = (req: Request): string | null => {
+    const authHost = resolveAuthHost(req.hostname);
+    if (!authHost) {
+      return null;
+    }
+
+    const rawHostHeader = req.get("host");
+    let originHost = authHost;
+
+    if (rawHostHeader) {
+      const parsedHostHeader = parseHostHeader(rawHostHeader.trim().toLowerCase());
+      if (!parsedHostHeader || parsedHostHeader.hostname !== authHost) {
+        return null;
+      }
+      originHost = parsedHostHeader.host;
+    }
+
+    const protocol = localhostHosts.has(authHost) ? "http" : "https";
+    return `${protocol}://${originHost}`;
+  };
 
   // Helper function to ensure strategy exists for a domain
   const ensureStrategy = (domain: string) => {
     const strategyName = `replitauth:${domain}`;
     if (!registeredStrategies.has(strategyName)) {
+      const callbackProtocol = localhostHosts.has(domain) ? "http" : "https";
       const strategy = new Strategy(
         {
           name: strategyName,
           config,
           scope: "openid email profile offline_access",
-          callbackURL: `https://${domain}/api/callback`,
+          callbackURL: `${callbackProtocol}://${domain}/api/callback`,
         },
         verify
       );
@@ -103,27 +179,46 @@ export async function setupAuth(app: Express) {
   passport.deserializeUser((user: Express.User, cb) => cb(null, user));
 
   app.get("/api/login", (req, res, next) => {
-    ensureStrategy(req.hostname);
-    passport.authenticate(`replitauth:${req.hostname}`, {
+    const authHost = resolveAuthHost(req.hostname);
+    if (!authHost) {
+      return res.status(400).json({ message: "Unsupported host for authentication" });
+    }
+
+    ensureStrategy(authHost);
+    return passport.authenticate(`replitauth:${authHost}`, {
       prompt: "login consent",
       scope: ["openid", "email", "profile", "offline_access"],
     })(req, res, next);
   });
 
   app.get("/api/callback", (req, res, next) => {
-    ensureStrategy(req.hostname);
-    passport.authenticate(`replitauth:${req.hostname}`, {
+    const authHost = resolveAuthHost(req.hostname);
+    if (!authHost) {
+      return res.status(400).json({ message: "Unsupported host for authentication" });
+    }
+
+    ensureStrategy(authHost);
+    return passport.authenticate(`replitauth:${authHost}`, {
       successReturnToOrRedirect: "/",
       failureRedirect: "/api/login",
     })(req, res, next);
   });
 
   app.get("/api/logout", (req, res) => {
-    req.logout(() => {
-      res.redirect(
+    const origin = resolveAllowedOrigin(req);
+    if (!origin) {
+      return res.status(400).json({ message: "Unsupported host for authentication" });
+    }
+
+    return req.logout((logoutError) => {
+      if (logoutError) {
+        return res.status(500).json({ message: "Logout failed" });
+      }
+
+      return res.redirect(
         client.buildEndSessionUrl(config, {
           client_id: process.env.REPL_ID!,
-          post_logout_redirect_uri: `${req.protocol}://${req.hostname}`,
+          post_logout_redirect_uri: origin,
         }).href
       );
     });

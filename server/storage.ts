@@ -1,6 +1,7 @@
 import { 
   scenarios, shifts, decisions, userProgress, assignments, assignmentCompletions,
   type Scenario,
+  type ActionType,
   type Shift, type InsertShift,
   type Decision,
   type UserProgress, type InsertUserProgress,
@@ -96,7 +97,7 @@ export interface IStorage {
   updateAssignmentCompletion(id: string, updates: Partial<AssignmentCompletion>): Promise<AssignmentCompletion | undefined>;
 
   // Multi-turn scenario chains
-  getNextChainScenario(chainId: string, currentChainOrder: number, previousAction: string): Promise<Scenario | undefined>;
+  getNextChainScenario(chainId: string, currentChainOrder: number, previousAction: ActionType): Promise<Scenario | undefined>;
   getScenarioChains(): Promise<Array<{ chainId: string; chainName: string; scenarioCount: number }>>;
 }
 
@@ -466,8 +467,10 @@ export class DatabaseStorage implements IStorage {
   }
 
   async deleteAssignment(id: string): Promise<boolean> {
-    const result = await db.delete(assignments).where(eq(assignments.id, id));
-    return true;
+    const deleted = await db.delete(assignments)
+      .where(eq(assignments.id, id))
+      .returning({ id: assignments.id });
+    return deleted.length > 0;
   }
 
   // Assignment Completions
@@ -502,7 +505,7 @@ export class DatabaseStorage implements IStorage {
   }
 
   // Multi-turn scenario chains
-  async getNextChainScenario(chainId: string, currentChainOrder: number, previousAction: string): Promise<Scenario | undefined> {
+  async getNextChainScenario(chainId: string, currentChainOrder: number, previousAction: ActionType): Promise<Scenario | undefined> {
     // Find the next scenario in the chain that:
     // 1. Has the same chainId
     // 2. Has chainOrder = currentChainOrder + 1
@@ -513,7 +516,7 @@ export class DatabaseStorage implements IStorage {
         and(
           eq(scenarios.chainId, chainId),
           eq(scenarios.chainOrder, currentChainOrder + 1),
-          eq(scenarios.previousAction, previousAction as any)
+          eq(scenarios.previousAction, previousAction)
         )
       )
       .limit(1);
