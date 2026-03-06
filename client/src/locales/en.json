@@ -106,6 +106,31 @@
       "title": "Session-Only Training",
       "subtitle": "Progress resets when you leave. This experience is designed to be completed in one sitting."
     },
+    "firstSession": {
+      "title": "Start Here: Your First 5 Minutes",
+      "subtitle": "Follow this path once and you will know exactly how to run effective shifts.",
+      "stepLabel": "Step {step}",
+      "steps": {
+        "step1": {
+          "title": "Inspect before action",
+          "description": "Use the inspection checklist to verify sender, links, urgency, and context."
+        },
+        "step2": {
+          "title": "Choose the safest next step",
+          "description": "Report or verify when uncertain. Proceed only when the request is clearly legitimate."
+        },
+        "step3": {
+          "title": "Use feedback to build habits",
+          "description": "After each decision, study the cue that mattered most and apply it on the next message."
+        }
+      },
+      "note": "Goal: complete one message with a confident, evidence-based decision.",
+      "afterShiftTitle": "What unlocks after your first shift",
+      "afterShiftDescription": "Complete one shift and this dashboard expands with personalized coaching.",
+      "afterShiftPoint1": "Security and Operations Scores calibrated from your real decisions",
+      "afterShiftPoint2": "Most-missed cue analysis so you can target weak spots",
+      "afterShiftPoint3": "Risk profile and badge progress to track long-term growth"
+    },
     "trainingTracks": {
       "title": "Training Tracks",
       "subtitle": "Complete structured modules with specific scenarios and passing scores",
@@ -232,6 +257,12 @@
     "readyToTrain": {
       "title": "Ready to Train?",
       "description": "Start a new shift to practice identifying phishing, BEC, and other security threats.",
+      "firstSuccessTitle": "First success path",
+      "steps": {
+        "inspect": "Inspect at least 3 checklist items before acting.",
+        "decide": "Choose your safest action and set confidence.",
+        "learn": "Review feedback and carry the key cue into the next message."
+      },
       "startButton": "Start New Shift",
       "startingButton": "Starting..."
     },
@@ -288,7 +319,30 @@
       "verifyDescription": "Contact sender through a known channel to confirm",
       "proceedDescription": "Take the requested action (click link, open attachment, etc.)",
       "prompt": "What action will you take?",
+      "unlockHint": "Complete at least {count, number} checklist items before selecting an action.",
       "verificationsLeft": "{count, plural, one {# verification left} other {# verifications left}}"
+    },
+    "onboarding": {
+      "title": "Quick Guide",
+      "firstSessionSubtitle": "Use this loop for your first decision: inspect -> decide -> learn.",
+      "defaultSubtitle": "Reopen this anytime if you want a quick reminder of the decision loop.",
+      "showGuide": "Show Quick Guide",
+      "hideGuide": "Hide Quick Guide",
+      "inspectionRequired": "Safety rail active for your first decision: check at least {count, number} checklist items to unlock actions.",
+      "steps": {
+        "inspect": {
+          "title": "Inspect",
+          "description": "Run the checklist and gather evidence before acting."
+        },
+        "decide": {
+          "title": "Decide",
+          "description": "Choose the safest next action and rate your confidence."
+        },
+        "learn": {
+          "title": "Learn",
+          "description": "Use feedback to lock in the cue you should check first next time."
+        }
+      }
     },
     "confidence": {
       "title": "How confident are you?",

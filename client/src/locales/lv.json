@@ -106,6 +106,31 @@
       "title": "Apmācība vienā sesijā",
       "subtitle": "Progress tiek atiestatīts, kad izejat. Šī pieredze paredzēta vienai sēdēšanai."
     },
+    "firstSession": {
+      "title": "Sāciet šeit: pirmās 5 minūtes",
+      "subtitle": "Izpildiet šo ceļu vienu reizi, un jūs zināsiet, kā vadīt efektīvas maiņas.",
+      "stepLabel": "Solis {step}",
+      "steps": {
+        "step1": {
+          "title": "Pārbaudiet pirms darbības",
+          "description": "Izmantojiet pārbaudes sarakstu, lai pārbaudītu sūtītāju, saites, steidzamību un kontekstu."
+        },
+        "step2": {
+          "title": "Izvēlieties drošāko nākamo soli",
+          "description": "Ziņojiet vai verificējiet, ja neesat pārliecināts. Turpiniet tikai tad, ja pieprasījums ir nepārprotami leģitīms."
+        },
+        "step3": {
+          "title": "Izmantojiet atgriezenisko saiti ieradumu veidošanai",
+          "description": "Pēc katra lēmuma pārskatiet galveno pazīmi un izmantojiet to nākamajā ziņojumā."
+        }
+      },
+      "note": "Mērķis: pabeigt vienu ziņojumu ar pārliecinātu, pierādījumos balstītu lēmumu.",
+      "afterShiftTitle": "Kas atbloķējas pēc pirmās maiņas",
+      "afterShiftDescription": "Pabeidziet vienu maiņu, un panelis paplašināsies ar personalizētu koučingu.",
+      "afterShiftPoint1": "Drošības un darba plūsmas rādītāji, balstīti jūsu lēmumos",
+      "afterShiftPoint2": "Biežāk palaisto pazīmju analīze, lai mērķētu vājās vietas",
+      "afterShiftPoint3": "Riska profils un nozīmīšu progress ilgtermiņa izaugsmei"
+    },
     "trainingTracks": {
       "title": "Apmācību ceļi",
       "subtitle": "Pabeidziet strukturētus moduļus ar konkrētiem scenārijiem un nokārtošanas slieksni",
@@ -232,6 +257,12 @@
     "readyToTrain": {
       "title": "Gatavs apmācībai?",
       "description": "Sāciet jaunu maiņu, lai praktizētu pikšķerēšanas, BEC un citu drošības draudu atpazīšanu.",
+      "firstSuccessTitle": "Pirmā panākuma ceļš",
+      "steps": {
+        "inspect": "Pirms darbības atzīmējiet vismaz 3 pārbaudes saraksta punktus.",
+        "decide": "Izvēlieties drošāko darbību un norādiet pārliecību.",
+        "learn": "Pārskatiet atgriezenisko saiti un izmantojiet galveno pazīmi nākamajā ziņojumā."
+      },
       "startButton": "Sākt jaunu maiņu",
       "startingButton": "Sāk..."
     },
@@ -288,7 +319,30 @@
       "verifyDescription": "Sazināties ar sūtītāju caur zināmu kanālu, lai apstiprinātu",
       "proceedDescription": "Veikt pieprasīto darbību (noklikšķināt uz saites, atvērt pielikumu utt.)",
       "prompt": "Kādu darbību veiksiet?",
+      "unlockHint": "Pirms darbības izvēles atzīmējiet vismaz {count, number} pārbaudes saraksta punktus.",
       "verificationsLeft": "{count, plural, one {# pārbaude atlikusi} other {# pārbaudes atlikušas}}"
+    },
+    "onboarding": {
+      "title": "Ātrā pamācība",
+      "firstSessionSubtitle": "Pirmajam lēmumam izmantojiet ciklu: pārbaudīt -> lemt -> mācīties.",
+      "defaultSubtitle": "Atveriet šo jebkurā brīdī, ja nepieciešams ātrs atgādinājums par lēmumu ciklu.",
+      "showGuide": "Rādīt ātro pamācību",
+      "hideGuide": "Paslēpt ātro pamācību",
+      "inspectionRequired": "Drošības ierobežojums pirmajam lēmumam: atzīmējiet vismaz {count, number} punktus, lai atbloķētu darbības.",
+      "steps": {
+        "inspect": {
+          "title": "Pārbaudīt",
+          "description": "Izpildiet sarakstu un savāciet pierādījumus pirms darbības."
+        },
+        "decide": {
+          "title": "Lemt",
+          "description": "Izvēlieties drošāko nākamo darbību un novērtējiet pārliecību."
+        },
+        "learn": {
+          "title": "Mācīties",
+          "description": "Izmantojiet atgriezenisko saiti, lai nostiprinātu pazīmi, ko pārbaudīt nākamreiz."
+        }
+      }
     },
     "confidence": {
       "title": "Cik pārliecināts jūs esat?",

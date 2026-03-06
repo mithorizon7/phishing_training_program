@@ -12,7 +12,8 @@ import { ShiftComplete } from "@/components/inbox/shift-complete";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { PlayCircle } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
+import { PlayCircle, HelpCircle, Circle, CheckCircle2, X } from "lucide-react";
 import type { Scenario, ActionType, OutcomeType } from "@shared/schema";
 import { localizeScenario } from "@/lib/localize-scenario";
 import { useTrainingSession } from "@/lib/training-session";
@@ -40,6 +41,7 @@ export default function Training() {
   } | null>(null);
   const [showComplete, setShowComplete] = useState(false);
   const [lensChecks, setLensChecks] = useState<Set<string>>(new Set());
+  const [showGuide, setShowGuide] = useState(false);
 
   const activeShift = useMemo<LocalShift | null>(() => {
     if (!shift) return null;
@@ -193,6 +195,14 @@ export default function Training() {
     }
   }, [activeShift?.completedAt]);
 
+  const isFirstSession = progress.totalDecisions === 0;
+
+  useEffect(() => {
+    if (activeShift?.id && isFirstSession) {
+      setShowGuide(true);
+    }
+  }, [activeShift?.id, isFirstSession]);
+
   useEffect(() => {
     if (showComplete && activeShift && !activeShift.completedAt) {
       finalizeShift();
@@ -209,6 +219,14 @@ export default function Training() {
             <p className="text-muted-foreground mb-6">
               {t('training.readyToTrain.description')}
             </p>
+            <div className="rounded-2xl border border-black/5 dark:border-white/10 bg-background/60 p-4 text-left mb-6">
+              <p className="text-sm font-semibold mb-2">{t("training.readyToTrain.firstSuccessTitle")}</p>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li>{t("training.readyToTrain.steps.inspect")}</li>
+                <li>{t("training.readyToTrain.steps.decide")}</li>
+                <li>{t("training.readyToTrain.steps.learn")}</li>
+              </ul>
+            </div>
             <Button 
               size="lg" 
               onClick={createShift}
@@ -229,6 +247,15 @@ export default function Training() {
   const verificationsRemaining = activeShift 
     ? activeShift.verificationBudget - activeShift.verificationsUsed 
     : 0;
+  const requiresGuidedInspection = isFirstSession && completedIds.length === 0;
+  const requiredLensChecks = requiresGuidedInspection ? 3 : 0;
+  const firstDecisionCompleted = progress.totalDecisions > 0 || completedIds.length > 0;
+  const shiftProgress = scenarios.length > 0
+    ? Math.round((completedIds.length / scenarios.length) * 100)
+    : 0;
+  const currentMessageNumber = scenarios.length > 0
+    ? Math.min(currentIndex + 1, scenarios.length)
+    : 0;
 
   return (
     <div className="min-h-screen bg-background flex flex-col app-shell">
@@ -237,7 +264,7 @@ export default function Training() {
         verificationsRemaining={verificationsRemaining}
       />
       
-      <main className="flex-1 px-6 pb-8 pt-6 overflow-hidden">
+      <main className="flex-1 px-6 pb-8 pt-6 overflow-auto lg:overflow-hidden">
         <div className="max-w-7xl mx-auto h-full">
           {shiftLoading ? (
             <div className="grid lg:grid-cols-5 gap-6 h-full">
@@ -264,24 +291,124 @@ export default function Training() {
               </div>
             </div>
           ) : (
-            <div className="grid lg:grid-cols-5 gap-6 h-[calc(100vh-8rem)]">
-              <div className="lg:col-span-2 overflow-hidden">
-                <MessageList
-                  scenarios={scenarios}
-                  currentIndex={currentIndex}
-                  completedIds={completedIds}
-                  onSelectMessage={setCurrentIndex}
-                />
+            <div className="space-y-4 h-full">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div className="min-w-[220px] flex-1">
+                  <p className="text-sm font-medium">
+                    {t("training.progress.message", { current: currentMessageNumber, total: scenarios.length })}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    {t("training.progress.shiftProgress")}: {shiftProgress}%
+                  </p>
+                  <Progress value={shiftProgress} className="h-1.5 mt-2" />
+                </div>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowGuide((previous) => !previous)}
+                  data-testid="button-toggle-training-guide"
+                >
+                  <HelpCircle className="w-4 h-4 mr-2" />
+                  {showGuide ? t("training.onboarding.hideGuide") : t("training.onboarding.showGuide")}
+                </Button>
               </div>
-              <div className="lg:col-span-3 overflow-auto">
-                <MessageDetail
-                  scenario={currentScenario}
-                  verificationsRemaining={verificationsRemaining}
-                  onAction={handleAction}
-                  disabled={pendingAction !== null || completedIds.includes(currentScenario?.id || "")}
-                  lensChecks={lensChecks}
-                  onLensCheck={handleLensCheck}
-                />
+
+              {showGuide && (
+                <Card className="border border-black/5 dark:border-white/10 bg-card/60">
+                  <div className="p-4 sm:p-5">
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <p className="font-semibold text-sm">{t("training.onboarding.title")}</p>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          {t(isFirstSession ? "training.onboarding.firstSessionSubtitle" : "training.onboarding.defaultSubtitle")}
+                        </p>
+                      </div>
+                      <Button
+                        type="button"
+                        size="icon"
+                        variant="ghost"
+                        className="h-7 w-7"
+                        onClick={() => setShowGuide(false)}
+                        data-testid="button-close-training-guide"
+                      >
+                        <X className="w-4 h-4" />
+                        <span className="sr-only">{t("common.close")}</span>
+                      </Button>
+                    </div>
+
+                    <div className="grid gap-3 md:grid-cols-3 mt-4">
+                      {[
+                        {
+                          key: "inspect",
+                          done: lensChecks.size >= 3 || firstDecisionCompleted,
+                          active: !firstDecisionCompleted,
+                        },
+                        {
+                          key: "decide",
+                          done: pendingAction !== null || lastDecision !== null || firstDecisionCompleted,
+                          active: lensChecks.size >= 3 && !firstDecisionCompleted,
+                        },
+                        {
+                          key: "learn",
+                          done: firstDecisionCompleted,
+                          active: (pendingAction !== null || lastDecision !== null) && !firstDecisionCompleted,
+                        },
+                      ].map((step) => (
+                        <div
+                          key={step.key}
+                          className={`rounded-2xl border p-3 ${
+                            step.done
+                              ? "border-chart-2/40 bg-chart-2/5"
+                              : step.active
+                                ? "border-primary/40 bg-primary/5"
+                                : "border-black/5 dark:border-white/10 bg-background/60"
+                          }`}
+                        >
+                          <div className="flex items-center gap-2">
+                            {step.done ? (
+                              <CheckCircle2 className="w-4 h-4 text-chart-2" />
+                            ) : (
+                              <Circle className="w-4 h-4 text-muted-foreground" />
+                            )}
+                            <span className="text-sm font-medium">{t(`training.onboarding.steps.${step.key}.title`)}</span>
+                          </div>
+                          <p className="text-xs text-muted-foreground mt-1">
+                            {t(`training.onboarding.steps.${step.key}.description`)}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+
+                    {requiresGuidedInspection && (
+                      <p className="text-xs mt-3 text-amber-600 dark:text-amber-400">
+                        {t("training.onboarding.inspectionRequired", { count: requiredLensChecks })}
+                      </p>
+                    )}
+                  </div>
+                </Card>
+              )}
+
+              <div className="grid gap-6 lg:grid-cols-5 lg:h-[calc(100vh-11.5rem)]">
+                <div className="lg:col-span-2 lg:overflow-hidden">
+                  <MessageList
+                    scenarios={scenarios}
+                    currentIndex={currentIndex}
+                    completedIds={completedIds}
+                    onSelectMessage={setCurrentIndex}
+                  />
+                </div>
+                <div className="lg:col-span-3 lg:overflow-auto">
+                  <MessageDetail
+                    scenario={currentScenario}
+                    verificationsRemaining={verificationsRemaining}
+                    onAction={handleAction}
+                    disabled={pendingAction !== null || completedIds.includes(currentScenario?.id || "")}
+                    lensChecks={lensChecks}
+                    onLensCheck={handleLensCheck}
+                    requiredLensChecks={requiredLensChecks}
+                  />
+                </div>
               </div>
             </div>
           )}

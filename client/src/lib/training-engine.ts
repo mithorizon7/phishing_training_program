@@ -228,12 +228,13 @@ function findNextChainScenario(
   scenario: Scenario,
   action: ActionType
 ): Scenario | undefined {
-  if (!scenario.chainId || scenario.chainOrder === null || scenario.chainOrder === undefined) {
+  const currentChainOrder = scenario.chainOrder;
+  if (!scenario.chainId || currentChainOrder === null || currentChainOrder === undefined) {
     return undefined;
   }
   return scenarioLibrary.find((candidate) =>
     candidate.chainId === scenario.chainId &&
-    candidate.chainOrder === scenario.chainOrder + 1 &&
+    candidate.chainOrder === currentChainOrder + 1 &&
     candidate.previousAction === action
   );
 }

@@ -255,6 +255,35 @@ function BadgeCard({
   );
 }
 
+function IncidentResponseCard() {
+  const { t } = useTranslation();
+
+  return (
+    <Card className="border-2 border-destructive/20 bg-card/60">
+      <CardHeader className="pb-2">
+        <CardTitle className="flex items-center gap-2">
+          <LifeBuoy className="w-5 h-5 text-destructive" />
+          {t("dashboard.incidentResponse.title")}
+        </CardTitle>
+        <CardDescription>
+          {t("dashboard.incidentResponse.subtitle")}
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <p className="text-sm text-muted-foreground mb-4">
+          {t("dashboard.incidentResponse.description")}
+        </p>
+        <Link href="/recover">
+          <Button variant="outline" className="w-full" data-testid="link-recover-drill">
+            <LifeBuoy className="w-4 h-4 mr-2" />
+            {t("dashboard.incidentResponse.button")}
+          </Button>
+        </Link>
+      </CardContent>
+    </Card>
+  );
+}
+
 export function Dashboard({ 
   progress, 
   isLoading, 
@@ -335,6 +364,7 @@ export function Dashboard({
     streak_master: streakProgress,
     perfect_shift: progress?.earnedBadges?.includes("perfect_shift") ? 1 : 0,
   };
+  const isFirstSession = (progress?.totalDecisions || 0) === 0;
 
   if (isLoading) {
     return <DashboardSkeleton />;
@@ -364,6 +394,39 @@ export function Dashboard({
           {t("dashboard.startShift")}
         </Button>
       </div>
+
+      {isFirstSession && (
+        <Card className="border border-primary/30 bg-primary/5">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Target className="w-5 h-5 text-primary" />
+              {t("dashboard.firstSession.title")}
+            </CardTitle>
+            <CardDescription>{t("dashboard.firstSession.subtitle")}</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <div className="grid gap-3 md:grid-cols-3">
+              {[1, 2, 3].map((step) => (
+                <div
+                  key={step}
+                  className="rounded-2xl border border-black/5 dark:border-white/10 bg-background/70 p-3"
+                >
+                  <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                    {t("dashboard.firstSession.stepLabel", { step })}
+                  </p>
+                  <p className="text-sm font-medium mt-1">{t(`dashboard.firstSession.steps.step${step}.title`)}</p>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {t(`dashboard.firstSession.steps.step${step}.description`)}
+                  </p>
+                </div>
+              ))}
+            </div>
+            <p className="text-xs text-muted-foreground">
+              {t("dashboard.firstSession.note")}
+            </p>
+          </CardContent>
+        </Card>
+      )}
 
       <Card className="border border-black/5 dark:border-white/10 bg-card/60">
         <CardHeader>
@@ -435,260 +498,264 @@ export function Dashboard({
         </CardContent>
       </Card>
 
-      {/* Dual Score Display - Security vs Operations Balance */}
-      <div className="grid sm:grid-cols-2 gap-6">
-        <Card className="border-2 border-chart-2/30 bg-card/60">
-          <CardContent className="pt-6">
-            <div className="flex items-center gap-4">
-              <div className="w-16 h-16 rounded-full bg-chart-2/20 flex items-center justify-center">
-                <ShieldCheck className="w-8 h-8 text-chart-2" />
-              </div>
-              <div className="flex-1">
-                <p className="text-sm text-muted-foreground mb-1">{t("dashboard.securityScore.title")}</p>
-                <div className="flex items-baseline gap-2">
-                  <span className="text-4xl font-bold" data-testid="text-security-score">{securityScore}%</span>
-                </div>
-                <p className="text-xs text-muted-foreground mt-1">
-                  {t("dashboard.securityScore.stopped", {
-                    correct: progress?.correctMaliciousHandling || 0,
-                    total: progress?.totalMaliciousSeen || 0
-                  })}
-                </p>
-              </div>
-            </div>
-            <Progress value={securityScore} className="h-2 mt-4" />
-            <p className="text-xs text-muted-foreground mt-2 text-center">
-              {t("dashboard.securityScore.description")}
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card className="border-2 border-chart-3/30 bg-card/60">
-          <CardContent className="pt-6">
-            <div className="flex items-center gap-4">
-              <div className="w-16 h-16 rounded-full bg-chart-3/20 flex items-center justify-center">
-                <Briefcase className="w-8 h-8 text-chart-3" />
-              </div>
-              <div className="flex-1">
-                <p className="text-sm text-muted-foreground mb-1">{t("dashboard.operationsScore.title")}</p>
-                <div className="flex items-baseline gap-2">
-                  <span className="text-4xl font-bold" data-testid="text-operations-score">{operationsScore}%</span>
-                </div>
-                <p className="text-xs text-muted-foreground mt-1">
-                  {t("dashboard.operationsScore.processed", {
-                    correct: progress?.correctLegitimateHandling || 0,
-                    total: progress?.totalLegitimateSeen || 0
-                  })}
-                </p>
-              </div>
-            </div>
-            <Progress value={operationsScore} className="h-2 mt-4" />
-            <p className="text-xs text-muted-foreground mt-2 text-center">
-              {t("dashboard.operationsScore.description")}
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard
-          title={t("dashboard.stats.detectionRate")}
-          value={`${detectionRate}%`}
-          subtitle={t("dashboard.stats.detectionRateSubtitle", {
-            correct: progress?.correctMaliciousHandling || 0,
-            total: progress?.totalMaliciousSeen || 0
-          })}
-          icon={ShieldAlert}
-          color="bg-chart-2"
-          testId="detection-rate"
-        />
-        <StatCard
-          title={t("dashboard.stats.reportAccuracy")}
-          value={`${reportAccuracy}%`}
-          subtitle={t("dashboard.stats.reportAccuracySubtitle", {
-            total: progress?.totalReports || 0
-          })}
-          icon={Flag}
-          color="bg-primary"
-          testId="report-accuracy"
-        />
-        <StatCard
-          title={t("dashboard.stats.falsePositiveRate")}
-          value={`${falsePositiveRate}%`}
-          subtitle={t("dashboard.stats.falsePositiveRateSubtitle", {
-            count: progress?.falsePositives || 0
-          })}
-          icon={AlertTriangle}
-          color="bg-chart-4"
-          testId="false-positive-rate"
-        />
-        <StatCard
-          title={t("dashboard.stats.currentStreak")}
-          value={progress?.currentStreak || 0}
-          subtitle={t("dashboard.stats.bestStreak", {
-            count: progress?.longestStreak || 0
-          })}
-          icon={Flame}
-          color="bg-chart-5"
-          testId="current-streak"
-        />
-      </div>
-
-      <Card className="border border-black/5 dark:border-white/10 bg-card/60">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Zap className="w-5 h-5" />
-            {t("dashboard.metrics.title")}
-          </CardTitle>
-          <CardDescription>
-            {t("dashboard.metrics.subtitle")}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="p-4 rounded-2xl border border-black/5 dark:border-white/10 bg-background/60">
-              <div className="flex items-center gap-2 mb-2">
-                <Target className="w-4 h-4 text-muted-foreground" />
-                <span className="text-sm text-muted-foreground">{t("dashboard.metrics.overallAccuracy")}</span>
-              </div>
-              <div className="text-2xl font-bold" data-testid="text-accuracy">{accuracy}%</div>
-              <p className="text-xs text-muted-foreground">
-                {t("dashboard.metrics.correctDecisions", { count: progress?.correctDecisions || 0 })}
-              </p>
-            </div>
-            <div className="p-4 rounded-2xl border border-black/5 dark:border-white/10 bg-background/60">
-              <div className="flex items-center gap-2 mb-2">
-                <Shield className="w-4 h-4 text-muted-foreground" />
-                <span className="text-sm text-muted-foreground">{t("dashboard.metrics.unsafeActions")}</span>
-              </div>
-              <div className="text-2xl font-bold" data-testid="text-unsafe-actions">{progress?.unsafeActions || 0}</div>
-              <p className="text-xs text-muted-foreground">{t("dashboard.metrics.threatsAllowed")}</p>
-            </div>
-            <div className="p-4 rounded-2xl border border-black/5 dark:border-white/10 bg-background/60">
-              <div className="flex items-center gap-2 mb-2">
-                <AlertTriangle className="w-4 h-4 text-muted-foreground" />
-                <span className="text-sm text-muted-foreground">{t("dashboard.metrics.compromised")}</span>
-              </div>
-              <div className="text-2xl font-bold" data-testid="text-compromised">{progress?.compromised || 0}</div>
-              <p className="text-xs text-muted-foreground">{t("dashboard.metrics.securityBreaches")}</p>
-            </div>
-            <div className="p-4 rounded-2xl border border-black/5 dark:border-white/10 bg-background/60">
-              <div className="flex items-center gap-2 mb-2">
-                <CheckCircle className="w-4 h-4 text-muted-foreground" />
-                <span className="text-sm text-muted-foreground">{t("dashboard.metrics.highConfidenceErrors")}</span>
-              </div>
-              <div className="text-2xl font-bold" data-testid="text-high-confidence-wrong">{progress?.highConfidenceWrong || 0}</div>
-              <p className="text-xs text-muted-foreground">{t("dashboard.metrics.wrongWithConfidence")}</p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      <div className="grid lg:grid-cols-3 gap-6">
-        <Card className="lg:col-span-2 border border-black/5 dark:border-white/10 bg-card/60">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Star className="w-5 h-5" />
-              {t("dashboard.badges.title")}
-            </CardTitle>
-            <CardDescription>
-              {t("dashboard.badges.subtitle")}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid sm:grid-cols-2 gap-4">
-              {Object.keys(BADGES).map((badgeId) => (
-                <BadgeCard
-                  key={badgeId}
-                  badgeId={badgeId}
-                  earned={progress?.earnedBadges?.includes(badgeId) || false}
-                  progress={badgeProgressMap[badgeId]}
-                />
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="border border-black/5 dark:border-white/10 bg-card/60">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <TrendingUp className="w-5 h-5" />
-              {t("dashboard.areasToImprove.title")}
-            </CardTitle>
-            <CardDescription>
-              {t("dashboard.areasToImprove.subtitle")}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            {missedCuesEntries.length > 0 ? (
-              <div className="space-y-3">
-                {missedCuesEntries.map(([cue, count]) => (
-                  <div key={cue} className="flex items-center justify-between gap-3">
-                    <span className="text-sm truncate flex-1 min-w-0">{t(cue)}</span>
-                    <Badge variant="secondary" className="text-xs flex-shrink-0">
-                      {count}
-                    </Badge>
+      {!isFirstSession && (
+        <>
+          {/* Dual Score Display - Security vs Operations Balance */}
+          <div className="grid sm:grid-cols-2 gap-6">
+            <Card className="border-2 border-chart-2/30 bg-card/60">
+              <CardContent className="pt-6">
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 rounded-full bg-chart-2/20 flex items-center justify-center">
+                    <ShieldCheck className="w-8 h-8 text-chart-2" />
                   </div>
-                ))}
-              </div>
-            ) : (
-              <div className="text-center py-8 text-muted-foreground">
-                <Target className="w-10 h-10 mx-auto mb-3 opacity-50" />
-                <p className="text-sm">{t("dashboard.areasToImprove.noData")}</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
+                  <div className="flex-1">
+                    <p className="text-sm text-muted-foreground mb-1">{t("dashboard.securityScore.title")}</p>
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-4xl font-bold" data-testid="text-security-score">{securityScore}%</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {t("dashboard.securityScore.stopped", {
+                        correct: progress?.correctMaliciousHandling || 0,
+                        total: progress?.totalMaliciousSeen || 0
+                      })}
+                    </p>
+                  </div>
+                </div>
+                <Progress value={securityScore} className="h-2 mt-4" />
+                <p className="text-xs text-muted-foreground mt-2 text-center">
+                  {t("dashboard.securityScore.description")}
+                </p>
+              </CardContent>
+            </Card>
 
-      <RiskMeter progress={progress} />
+            <Card className="border-2 border-chart-3/30 bg-card/60">
+              <CardContent className="pt-6">
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 rounded-full bg-chart-3/20 flex items-center justify-center">
+                    <Briefcase className="w-8 h-8 text-chart-3" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-sm text-muted-foreground mb-1">{t("dashboard.operationsScore.title")}</p>
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-4xl font-bold" data-testid="text-operations-score">{operationsScore}%</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {t("dashboard.operationsScore.processed", {
+                        correct: progress?.correctLegitimateHandling || 0,
+                        total: progress?.totalLegitimateSeen || 0
+                      })}
+                    </p>
+                  </div>
+                </div>
+                <Progress value={operationsScore} className="h-2 mt-4" />
+                <p className="text-xs text-muted-foreground mt-2 text-center">
+                  {t("dashboard.operationsScore.description")}
+                </p>
+              </CardContent>
+            </Card>
+          </div>
 
-      <div className="grid sm:grid-cols-2 gap-6">
-        <Card className="border border-black/5 dark:border-white/10 bg-card/60">
-          <CardHeader>
-            <CardTitle>{t("dashboard.trainingSummary.title")}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-3 gap-4">
-              <div className="text-center p-3 rounded-2xl border border-black/5 dark:border-white/10 bg-background/60">
-                <div className="text-2xl font-bold text-primary">{progress?.totalShifts || 0}</div>
-                <p className="text-xs text-muted-foreground mt-1">{t("dashboard.trainingSummary.shifts")}</p>
-              </div>
-              <div className="text-center p-3 rounded-2xl border border-black/5 dark:border-white/10 bg-background/60">
-                <div className="text-2xl font-bold text-chart-2">{progress?.totalDecisions || 0}</div>
-                <p className="text-xs text-muted-foreground mt-1">{t("dashboard.trainingSummary.messages")}</p>
-              </div>
-              <div className="text-center p-3 rounded-2xl border border-black/5 dark:border-white/10 bg-background/60">
-                <div className="text-2xl font-bold text-chart-3">{progress?.totalScore || 0}</div>
-                <p className="text-xs text-muted-foreground mt-1">{t("dashboard.trainingSummary.points")}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <StatCard
+              title={t("dashboard.stats.detectionRate")}
+              value={`${detectionRate}%`}
+              subtitle={t("dashboard.stats.detectionRateSubtitle", {
+                correct: progress?.correctMaliciousHandling || 0,
+                total: progress?.totalMaliciousSeen || 0
+              })}
+              icon={ShieldAlert}
+              color="bg-chart-2"
+              testId="detection-rate"
+            />
+            <StatCard
+              title={t("dashboard.stats.reportAccuracy")}
+              value={`${reportAccuracy}%`}
+              subtitle={t("dashboard.stats.reportAccuracySubtitle", {
+                total: progress?.totalReports || 0
+              })}
+              icon={Flag}
+              color="bg-primary"
+              testId="report-accuracy"
+            />
+            <StatCard
+              title={t("dashboard.stats.falsePositiveRate")}
+              value={`${falsePositiveRate}%`}
+              subtitle={t("dashboard.stats.falsePositiveRateSubtitle", {
+                count: progress?.falsePositives || 0
+              })}
+              icon={AlertTriangle}
+              color="bg-chart-4"
+              testId="false-positive-rate"
+            />
+            <StatCard
+              title={t("dashboard.stats.currentStreak")}
+              value={progress?.currentStreak || 0}
+              subtitle={t("dashboard.stats.bestStreak", {
+                count: progress?.longestStreak || 0
+              })}
+              icon={Flame}
+              color="bg-chart-5"
+              testId="current-streak"
+            />
+          </div>
 
-        <Card className="border-2 border-destructive/20 bg-card/60">
-          <CardHeader className="pb-2">
-            <CardTitle className="flex items-center gap-2">
-              <LifeBuoy className="w-5 h-5 text-destructive" />
-              {t("dashboard.incidentResponse.title")}
-            </CardTitle>
-            <CardDescription>
-              {t("dashboard.incidentResponse.subtitle")}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-muted-foreground mb-4">
-              {t("dashboard.incidentResponse.description")}
-            </p>
-            <Link href="/recover">
-              <Button variant="outline" className="w-full" data-testid="link-recover-drill">
-                <LifeBuoy className="w-4 h-4 mr-2" />
-                {t("dashboard.incidentResponse.button")}
-              </Button>
-            </Link>
-          </CardContent>
-        </Card>
-      </div>
+          <Card className="border border-black/5 dark:border-white/10 bg-card/60">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Zap className="w-5 h-5" />
+                {t("dashboard.metrics.title")}
+              </CardTitle>
+              <CardDescription>
+                {t("dashboard.metrics.subtitle")}
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="p-4 rounded-2xl border border-black/5 dark:border-white/10 bg-background/60">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Target className="w-4 h-4 text-muted-foreground" />
+                    <span className="text-sm text-muted-foreground">{t("dashboard.metrics.overallAccuracy")}</span>
+                  </div>
+                  <div className="text-2xl font-bold" data-testid="text-accuracy">{accuracy}%</div>
+                  <p className="text-xs text-muted-foreground">
+                    {t("dashboard.metrics.correctDecisions", { count: progress?.correctDecisions || 0 })}
+                  </p>
+                </div>
+                <div className="p-4 rounded-2xl border border-black/5 dark:border-white/10 bg-background/60">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Shield className="w-4 h-4 text-muted-foreground" />
+                    <span className="text-sm text-muted-foreground">{t("dashboard.metrics.unsafeActions")}</span>
+                  </div>
+                  <div className="text-2xl font-bold" data-testid="text-unsafe-actions">{progress?.unsafeActions || 0}</div>
+                  <p className="text-xs text-muted-foreground">{t("dashboard.metrics.threatsAllowed")}</p>
+                </div>
+                <div className="p-4 rounded-2xl border border-black/5 dark:border-white/10 bg-background/60">
+                  <div className="flex items-center gap-2 mb-2">
+                    <AlertTriangle className="w-4 h-4 text-muted-foreground" />
+                    <span className="text-sm text-muted-foreground">{t("dashboard.metrics.compromised")}</span>
+                  </div>
+                  <div className="text-2xl font-bold" data-testid="text-compromised">{progress?.compromised || 0}</div>
+                  <p className="text-xs text-muted-foreground">{t("dashboard.metrics.securityBreaches")}</p>
+                </div>
+                <div className="p-4 rounded-2xl border border-black/5 dark:border-white/10 bg-background/60">
+                  <div className="flex items-center gap-2 mb-2">
+                    <CheckCircle className="w-4 h-4 text-muted-foreground" />
+                    <span className="text-sm text-muted-foreground">{t("dashboard.metrics.highConfidenceErrors")}</span>
+                  </div>
+                  <div className="text-2xl font-bold" data-testid="text-high-confidence-wrong">{progress?.highConfidenceWrong || 0}</div>
+                  <p className="text-xs text-muted-foreground">{t("dashboard.metrics.wrongWithConfidence")}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <div className="grid lg:grid-cols-3 gap-6">
+            <Card className="lg:col-span-2 border border-black/5 dark:border-white/10 bg-card/60">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Star className="w-5 h-5" />
+                  {t("dashboard.badges.title")}
+                </CardTitle>
+                <CardDescription>
+                  {t("dashboard.badges.subtitle")}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid sm:grid-cols-2 gap-4">
+                  {Object.keys(BADGES).map((badgeId) => (
+                    <BadgeCard
+                      key={badgeId}
+                      badgeId={badgeId}
+                      earned={progress?.earnedBadges?.includes(badgeId) || false}
+                      progress={badgeProgressMap[badgeId]}
+                    />
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border border-black/5 dark:border-white/10 bg-card/60">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <TrendingUp className="w-5 h-5" />
+                  {t("dashboard.areasToImprove.title")}
+                </CardTitle>
+                <CardDescription>
+                  {t("dashboard.areasToImprove.subtitle")}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {missedCuesEntries.length > 0 ? (
+                  <div className="space-y-3">
+                    {missedCuesEntries.map(([cue, count]) => (
+                      <div key={cue} className="flex items-center justify-between gap-3">
+                        <span className="text-sm truncate flex-1 min-w-0">{t(cue)}</span>
+                        <Badge variant="secondary" className="text-xs flex-shrink-0">
+                          {count}
+                        </Badge>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-8 text-muted-foreground">
+                    <Target className="w-10 h-10 mx-auto mb-3 opacity-50" />
+                    <p className="text-sm">{t("dashboard.areasToImprove.noData")}</p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+
+          <RiskMeter progress={progress} />
+        </>
+      )}
+
+      {isFirstSession ? (
+        <div className="grid sm:grid-cols-2 gap-6">
+          <Card className="border border-black/5 dark:border-white/10 bg-card/60">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <ShieldCheck className="w-5 h-5 text-chart-2" />
+                {t("dashboard.firstSession.afterShiftTitle")}
+              </CardTitle>
+              <CardDescription>
+                {t("dashboard.firstSession.afterShiftDescription")}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3 text-sm text-muted-foreground">
+              <p>{t("dashboard.firstSession.afterShiftPoint1")}</p>
+              <p>{t("dashboard.firstSession.afterShiftPoint2")}</p>
+              <p>{t("dashboard.firstSession.afterShiftPoint3")}</p>
+            </CardContent>
+          </Card>
+          <IncidentResponseCard />
+        </div>
+      ) : (
+        <div className="grid sm:grid-cols-2 gap-6">
+          <Card className="border border-black/5 dark:border-white/10 bg-card/60">
+            <CardHeader>
+              <CardTitle>{t("dashboard.trainingSummary.title")}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-3 gap-4">
+                <div className="text-center p-3 rounded-2xl border border-black/5 dark:border-white/10 bg-background/60">
+                  <div className="text-2xl font-bold text-primary">{progress?.totalShifts || 0}</div>
+                  <p className="text-xs text-muted-foreground mt-1">{t("dashboard.trainingSummary.shifts")}</p>
+                </div>
+                <div className="text-center p-3 rounded-2xl border border-black/5 dark:border-white/10 bg-background/60">
+                  <div className="text-2xl font-bold text-chart-2">{progress?.totalDecisions || 0}</div>
+                  <p className="text-xs text-muted-foreground mt-1">{t("dashboard.trainingSummary.messages")}</p>
+                </div>
+                <div className="text-center p-3 rounded-2xl border border-black/5 dark:border-white/10 bg-background/60">
+                  <div className="text-2xl font-bold text-chart-3">{progress?.totalScore || 0}</div>
+                  <p className="text-xs text-muted-foreground mt-1">{t("dashboard.trainingSummary.points")}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <IncidentResponseCard />
+        </div>
+      )}
     </div>
   );
 }
