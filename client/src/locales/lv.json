@@ -34,6 +34,23 @@
       "tertiaryCta": "Atgūšanās treniņš",
       "note": "Konts nav nepieciešams. Progress tiek saglabāts šajā ierīcē."
     },
+    "startHere": {
+      "badge": "Jauns šeit?",
+      "title": "Vienreiz izpildiet šo secību, pēc tam atkārtojiet to.",
+      "subtitle": "Sāciet ar apmācību maiņu. Pārskats kļūst daudz saprotamāks pēc vienas vadītas maiņas.",
+      "step1": {
+        "title": "Atveriet apmācību",
+        "description": "Izvēlieties “Sākt apmācību”, lai sāktu pirmo maiņu."
+      },
+      "step2": {
+        "title": "Strādājiet ar izcelto ziņojumu",
+        "description": "Sekojiet pašreizējam ziņojumam un pabeidziet vienu lēmumu vienlaikus."
+      },
+      "step3": {
+        "title": "Pēc maiņas pārskatiet rezultātus",
+        "description": "Pēc maiņas izmantojiet pārskatu, lai redzētu progresu un izvēlētos nākamo praksi."
+      }
+    },
     "highlights": {
       "feedback": "Tūlītēja atgriezeniskā saite par katru lēmumu",
       "decisions": "Fokuss uz drošāko nākamo soli, nevis uz sīkumiem",
@@ -125,6 +142,8 @@
         }
       },
       "note": "Mērķis: pabeigt vienu ziņojumu ar pārliecinātu, pierādījumos balstītu lēmumu.",
+      "primaryCta": "Sākt pirmo treniņa maiņu",
+      "ctaHint": "Jūs strādāsiet ar vienu izcelto ziņojumu vienlaikus un pēc katra lēmuma saņemsiet tūlītēju koučingu.",
       "afterShiftTitle": "Kas atbloķējas pēc pirmās maiņas",
       "afterShiftDescription": "Pabeidziet vienu maiņu, un panelis paplašināsies ar personalizētu koučingu.",
       "afterShiftPoint1": "Drošības un darba plūsmas rādītāji, balstīti jūsu lēmumos",
@@ -272,6 +291,10 @@
       "noMessages": "Iesūtnē nav ziņojumu",
       "all": "Visi",
       "done": "Pabeigts",
+      "currentTask": "Pašreizējais uzdevums",
+      "upNext": "Tālāk",
+      "guidedTitle": "Vadīta pirmā maiņa",
+      "guidedSubtitle": "Vispirms apstrādājiet izcelto ziņojumu. Nākamais tiks atbloķēts pēc turpināšanas.",
       "emptyAll": "Nav ziņojumu, ko apstrādāt",
       "emptyChannel": "Šajā maiņā nav {channel} ziņojumu"
     },
@@ -342,6 +365,25 @@
           "title": "Mācīties",
           "description": "Izmantojiet atgriezenisko saiti, lai nostiprinātu pazīmi, ko pārbaudīt nākamreiz."
         }
+      }
+    },
+    "nextStep": {
+      "kicker": "Nākamais solis",
+      "badges": {
+        "guided": "Vadīta maiņa",
+        "recommended": "Ieteikts"
+      },
+      "inspect": {
+        "title": "Sāciet ar izcelto ziņojumu",
+        "description": "Atveriet pārbaudes paneli, atklājiet detaļas, kad nepieciešams, un pirms darbības atzīmējiet vismaz {count, number} saraksta punktus."
+      },
+      "decide": {
+        "title": "Izvēlieties drošāko nākamo darbību",
+        "description": "Ziņojumam {current, number} no {total, number} izmantojiet darbību pogas zemāk un pirms iesniegšanas novērtējiet pārliecību."
+      },
+      "continue": {
+        "title": "Strādājiet ar ekrānā redzamo ziņojumu",
+        "description": "Pabeidziet pašreizējo ziņojumu un tad pārejiet pie nākamā. Ja vajag atgādinājumu, jebkurā brīdī atveriet ātro pamācību."
       }
     },
     "confidence": {

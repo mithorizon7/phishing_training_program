@@ -12,8 +12,9 @@ import { ShiftComplete } from "@/components/inbox/shift-complete";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { PlayCircle, HelpCircle, Circle, CheckCircle2, X } from "lucide-react";
+import { PlayCircle, HelpCircle, Circle, CheckCircle2, Search, Target, X } from "lucide-react";
 import type { Scenario, ActionType, OutcomeType } from "@shared/schema";
 import { localizeScenario } from "@/lib/localize-scenario";
 import { useTrainingSession } from "@/lib/training-session";
@@ -247,6 +248,10 @@ export default function Training() {
   const verificationsRemaining = activeShift 
     ? activeShift.verificationBudget - activeShift.verificationsUsed 
     : 0;
+  const isGuidedShift = activeShift
+    ? (progress.totalShifts || 0) === 0 && !activeShift.completedAt
+    : false;
+  const recommendedIndex = Math.max(0, scenarios.findIndex((scenario) => !completedIds.includes(scenario.id)));
   const requiresGuidedInspection = isFirstSession && completedIds.length === 0;
   const requiredLensChecks = requiresGuidedInspection ? 3 : 0;
   const firstDecisionCompleted = progress.totalDecisions > 0 || completedIds.length > 0;
@@ -256,6 +261,12 @@ export default function Training() {
   const currentMessageNumber = scenarios.length > 0
     ? Math.min(currentIndex + 1, scenarios.length)
     : 0;
+  const nextStepMode = isGuidedShift && lensChecks.size < requiredLensChecks
+    ? "inspect"
+    : isGuidedShift
+      ? "decide"
+      : "continue";
+  const NextStepIcon = nextStepMode === "inspect" ? Search : Target;
 
   return (
     <div className="min-h-screen bg-background flex flex-col app-shell">
@@ -313,6 +324,34 @@ export default function Training() {
                   {showGuide ? t("training.onboarding.hideGuide") : t("training.onboarding.showGuide")}
                 </Button>
               </div>
+
+              <Card className={isGuidedShift ? "border border-primary/30 bg-primary/5" : "border border-black/5 dark:border-white/10 bg-card/60"}>
+                <div className="flex flex-col gap-3 p-4 sm:flex-row sm:items-start sm:justify-between">
+                  <div className="flex items-start gap-3">
+                    <div className={`mt-0.5 flex h-10 w-10 items-center justify-center rounded-2xl ${isGuidedShift ? "bg-primary/10 text-primary" : "bg-background/70 text-foreground"}`}>
+                      <NextStepIcon className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                        {t("training.nextStep.kicker")}
+                      </p>
+                      <p className="font-semibold mt-1">
+                        {t(`training.nextStep.${nextStepMode}.title`, { current: currentMessageNumber, total: scenarios.length })}
+                      </p>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        {t(`training.nextStep.${nextStepMode}.description`, {
+                          count: requiredLensChecks,
+                          current: currentMessageNumber,
+                          total: scenarios.length,
+                        })}
+                      </p>
+                    </div>
+                  </div>
+                  <Badge variant={isGuidedShift ? "default" : "secondary"}>
+                    {t(isGuidedShift ? "training.nextStep.badges.guided" : "training.nextStep.badges.recommended")}
+                  </Badge>
+                </div>
+              </Card>
 
               {showGuide && (
                 <Card className="border border-black/5 dark:border-white/10 bg-card/60">
@@ -396,6 +435,8 @@ export default function Training() {
                     currentIndex={currentIndex}
                     completedIds={completedIds}
                     onSelectMessage={setCurrentIndex}
+                    guidedMode={isGuidedShift}
+                    recommendedIndex={recommendedIndex}
                   />
                 </div>
                 <div className="lg:col-span-3 lg:overflow-auto">

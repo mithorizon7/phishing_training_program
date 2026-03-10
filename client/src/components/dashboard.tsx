@@ -364,7 +364,10 @@ export function Dashboard({
     streak_master: streakProgress,
     perfect_shift: progress?.earnedBadges?.includes("perfect_shift") ? 1 : 0,
   };
-  const isFirstSession = (progress?.totalDecisions || 0) === 0;
+  const isFirstSession = (progress?.totalShifts || 0) === 0;
+  const primaryActionLabel = isFirstSession
+    ? t("dashboard.firstSession.primaryCta")
+    : t("dashboard.startShift");
 
   if (isLoading) {
     return <DashboardSkeleton />;
@@ -389,10 +392,17 @@ export function Dashboard({
           <h1 className="text-3xl font-semibold" data-testid="text-dashboard-title">{t("dashboard.title")}</h1>
           <p className="text-muted-foreground">{t("dashboard.subtitle")}</p>
         </div>
-        <Button size="lg" onClick={onStartShift} data-testid="button-start-shift">
-          <PlayCircle className="w-5 h-5 mr-2" />
-          {t("dashboard.startShift")}
-        </Button>
+        <div className="flex flex-col items-start gap-2 sm:items-end">
+          <Button size="lg" onClick={onStartShift} data-testid="button-start-shift">
+            <PlayCircle className="w-5 h-5 mr-2" />
+            {primaryActionLabel}
+          </Button>
+          {isFirstSession && (
+            <p className="max-w-xs text-xs text-muted-foreground sm:text-right">
+              {t("dashboard.firstSession.ctaHint")}
+            </p>
+          )}
+        </div>
       </div>
 
       {isFirstSession && (

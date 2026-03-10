@@ -34,6 +34,23 @@
       "tertiaryCta": "Recovery Drill",
       "note": "No account required. Progress is saved on this device."
     },
+    "startHere": {
+      "badge": "New here?",
+      "title": "Use this order once, then repeat it.",
+      "subtitle": "Start with the training shift. The overview makes more sense after you finish one guided run.",
+      "step1": {
+        "title": "Open Training",
+        "description": "Choose Start Training to begin your first shift."
+      },
+      "step2": {
+        "title": "Work the highlighted message",
+        "description": "Follow the current message and complete one decision at a time."
+      },
+      "step3": {
+        "title": "Check your overview after the shift",
+        "description": "Use the dashboard after the shift to review progress and choose your next practice."
+      }
+    },
     "highlights": {
       "feedback": "Instant feedback on every decision",
       "decisions": "Focus on the safest next action, not trivia",
@@ -125,6 +142,8 @@
         }
       },
       "note": "Goal: complete one message with a confident, evidence-based decision.",
+      "primaryCta": "Start First Practice Shift",
+      "ctaHint": "You will work one highlighted message at a time and get instant coaching after every decision.",
       "afterShiftTitle": "What unlocks after your first shift",
       "afterShiftDescription": "Complete one shift and this dashboard expands with personalized coaching.",
       "afterShiftPoint1": "Security and Operations Scores calibrated from your real decisions",
@@ -272,6 +291,10 @@
       "noMessages": "No messages in inbox",
       "all": "All",
       "done": "Done",
+      "currentTask": "Current task",
+      "upNext": "Up next",
+      "guidedTitle": "Guided first shift",
+      "guidedSubtitle": "Work the highlighted message first. The next message unlocks after you continue.",
       "emptyAll": "No messages to process",
       "emptyChannel": "No {channel} messages in this shift"
     },
@@ -342,6 +365,25 @@
           "title": "Learn",
           "description": "Use feedback to lock in the cue you should check first next time."
         }
+      }
+    },
+    "nextStep": {
+      "kicker": "Next step",
+      "badges": {
+        "guided": "Guided shift",
+        "recommended": "Recommended"
+      },
+      "inspect": {
+        "title": "Start with the highlighted message",
+        "description": "Open the inspection panel, reveal details when needed, and complete at least {count, number} checklist items before acting."
+      },
+      "decide": {
+        "title": "Choose the safest next action",
+        "description": "Use the action buttons below for message {current, number} of {total, number}, then rate your confidence before you submit."
+      },
+      "continue": {
+        "title": "Work the message on screen",
+        "description": "Finish the current message, then continue to the next one. Reopen the Quick Guide anytime if you need a reminder."
       }
     },
     "confidence": {

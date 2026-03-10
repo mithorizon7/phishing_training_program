@@ -12,6 +12,8 @@ interface MessageListProps {
   completedIds: string[];
   onSelectMessage: (index: number) => void;
   isLoading?: boolean;
+  guidedMode?: boolean;
+  recommendedIndex?: number;
 }
 
 function getChannelIcon(channel: MessageChannel) {
@@ -29,24 +31,32 @@ function MessageRow({
   scenario, 
   isActive, 
   isCompleted,
+  isLocked,
+  isRecommended,
   onClick 
 }: { 
   scenario: Scenario; 
   isActive: boolean;
   isCompleted: boolean;
+  isLocked: boolean;
+  isRecommended: boolean;
   onClick: () => void;
 }) {
   const { t } = useTranslation();
   const Icon = getChannelIcon(scenario.channel as MessageChannel);
   
   return (
-    <div
-      className={`relative p-4 border-b border-black/5 dark:border-white/10 last:border-b-0 cursor-pointer transition-all ${
+    <button
+      type="button"
+      className={`relative w-full p-4 border-b border-black/5 dark:border-white/10 last:border-b-0 text-left transition-all ${
         isActive 
           ? "bg-primary/10 before:content-[''] before:absolute before:left-2 before:top-3 before:bottom-3 before:w-1 before:rounded-full before:bg-primary/70"
-          : 'hover:bg-background/60'
-      } ${isCompleted ? 'opacity-60' : ''}`}
+          : isLocked
+            ? "bg-background/30"
+            : "hover:bg-background/60"
+      } ${isCompleted ? 'opacity-60' : ''} ${isLocked ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}
       onClick={onClick}
+      disabled={isLocked}
       data-testid={`row-message-${scenario.id}`}
     >
       <div className="flex items-start gap-3">
@@ -71,6 +81,12 @@ function MessageRow({
             {isCompleted && (
               <Badge variant="secondary" className="text-xs flex-shrink-0">{t("training.inbox.done")}</Badge>
             )}
+            {!isCompleted && isRecommended && (
+              <Badge variant="default" className="text-xs flex-shrink-0">{t("training.inbox.currentTask")}</Badge>
+            )}
+            {!isCompleted && !isRecommended && isLocked && (
+              <Badge variant="outline" className="text-xs flex-shrink-0">{t("training.inbox.upNext")}</Badge>
+            )}
           </div>
           {scenario.subject && (
             <p className={`text-sm truncate ${isCompleted ? 'text-muted-foreground' : ''}`}>
@@ -86,7 +102,7 @@ function MessageRow({
           <span>{scenario.timestamp}</span>
         </div>
       </div>
-    </div>
+    </button>
   );
 }
 
@@ -95,7 +111,9 @@ export function MessageList({
   currentIndex, 
   completedIds,
   onSelectMessage,
-  isLoading 
+  isLoading,
+  guidedMode = false,
+  recommendedIndex = 0,
 }: MessageListProps) {
   const { t } = useTranslation();
   const emailScenarios = scenarios.filter(s => s.channel === 'email');
@@ -140,6 +158,13 @@ export function MessageList({
             </TabsTrigger>
           </TabsList>
         </div>
+
+        {guidedMode && (
+          <div className="border-b border-black/5 dark:border-white/10 bg-primary/5 px-4 py-3">
+            <p className="text-sm font-medium">{t("training.inbox.guidedTitle")}</p>
+            <p className="text-xs text-muted-foreground mt-1">{t("training.inbox.guidedSubtitle")}</p>
+          </div>
+        )}
         
         <div className="flex-1 overflow-auto">
           <TabsContent value="all" className="m-0">
@@ -152,6 +177,8 @@ export function MessageList({
                   scenario={scenario}
                   isActive={currentScenario?.id === scenario.id}
                   isCompleted={completedIds.includes(scenario.id)}
+                  isLocked={guidedMode && index !== recommendedIndex}
+                  isRecommended={guidedMode && index === recommendedIndex}
                   onClick={() => onSelectMessage(index)}
                 />
               ))
@@ -170,6 +197,8 @@ export function MessageList({
                     scenario={scenario}
                     isActive={currentScenario?.id === scenario.id}
                     isCompleted={completedIds.includes(scenario.id)}
+                    isLocked={guidedMode && index !== recommendedIndex}
+                    isRecommended={guidedMode && index === recommendedIndex}
                     onClick={() => onSelectMessage(index)}
                   />
                 );
@@ -189,6 +218,8 @@ export function MessageList({
                     scenario={scenario}
                     isActive={currentScenario?.id === scenario.id}
                     isCompleted={completedIds.includes(scenario.id)}
+                    isLocked={guidedMode && index !== recommendedIndex}
+                    isRecommended={guidedMode && index === recommendedIndex}
                     onClick={() => onSelectMessage(index)}
                   />
                 );
@@ -208,6 +239,8 @@ export function MessageList({
                     scenario={scenario}
                     isActive={currentScenario?.id === scenario.id}
                     isCompleted={completedIds.includes(scenario.id)}
+                    isLocked={guidedMode && index !== recommendedIndex}
+                    isRecommended={guidedMode && index === recommendedIndex}
                     onClick={() => onSelectMessage(index)}
                   />
                 );
@@ -227,6 +260,8 @@ export function MessageList({
                     scenario={scenario}
                     isActive={currentScenario?.id === scenario.id}
                     isCompleted={completedIds.includes(scenario.id)}
+                    isLocked={guidedMode && index !== recommendedIndex}
+                    isRecommended={guidedMode && index === recommendedIndex}
                     onClick={() => onSelectMessage(index)}
                   />
                 );
@@ -246,6 +281,8 @@ export function MessageList({
                     scenario={scenario}
                     isActive={currentScenario?.id === scenario.id}
                     isCompleted={completedIds.includes(scenario.id)}
+                    isLocked={guidedMode && index !== recommendedIndex}
+                    isRecommended={guidedMode && index === recommendedIndex}
                     onClick={() => onSelectMessage(index)}
                   />
                 );
