@@ -1,5 +1,7 @@
-import type { InsertScenario } from "@shared/schema";
+import type { scenarios } from "@shared/schema";
 import { calculateNISTDifficulty } from "@shared/nist-phish-scale";
+
+type InsertScenario = typeof scenarios.$inferInsert;
 
 // Helper type for scenarios without calculated difficulty
 type ScenarioWithoutDifficulty = Omit<InsertScenario, 'difficultyScore'>;

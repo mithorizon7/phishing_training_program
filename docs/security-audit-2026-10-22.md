@@ -9,8 +9,8 @@ This section supersedes the October 22 baseline findings and access limitations 
 | Release check | Final local result |
 | --- | --- |
 | Runtime | Official Node 22.23.4 archive SHA256 verified; build and tests executed with this runtime. The current workstation default is now 24.22.1; no global runtime was changed by this audit. |
-| Dependencies | Full graph and production-only `npm audit --ignore-scripts`: **0 vulnerabilities** on October 23. Tailwind 4.3.3 and its Vite integration remove the affected Tailwind 3/braces chain. |
-| Regression checks | Typecheck, all **12 tests**, i18n validation and production build pass after the final code edits. Only the non-blocking large-chunk build warning remains. |
+| Dependencies | Full graph and production-only `npm audit --ignore-scripts`: **0 vulnerabilities** on October 23. Tailwind 4.3.3 removes the affected Tailwind 3/braces chain. Zod4.6.7/drizzle-zod0.8.3 remove the independently detected Zod finding; final OSV472 pairs0. |
+| Regression checks | Typecheck, all **17 tests**, i18n validation and production build pass after the final code edits. Non-blocking large-chunk and third-party pure-comment annotation warnings remain. |
 | Learner correctness | All 69 authored correct actions produce safe positive outcomes. Correct deletion of informational legitimate messages no longer produces a penalty. Duplicate decisions, streak reset and verification-budget regressions pass. |
 | CSS migration | Preserved legacy utility semantics, restored button cursor behavior, retained theme configuration and corrected desktop heading line height. Requires modern browsers: Safari 16.4+, Chrome 111+, Firefox 128+. |
 | Learner privacy/copy | English, Latvian and Russian landing copy correctly states that refresh/close clears memory-only practice progress. |
@@ -18,6 +18,16 @@ This section supersedes the October 22 baseline findings and access limitations 
 | Deployment | User explicitly authorized committing and deployment. Sync, runtime verification, publication and public smoke verification are tracked separately in the living checklist. No schema migration is required. |
 
 The remaining historical platform, provider-host, credential-exposure and log-retention questions are not resolved by an application deployment. No compromise was confirmed and no unrelated credentials were rotated. A successful app release must not be described as comprehensive infrastructure or incident-response sign-off.
+
+### Same-day independent advisory update
+
+The initial October 23 OSV crosscheck of 474 locked name/version pairs found **GHSA-mrhx-c7xc-m3w5**, updated that day at 18:30 UTC, for Zod 3.24.2 even while npm audit returned zero. The [reviewed advisory](https://github.com/advisories/GHSA-mrhx-c7xc-m3w5) lists versions below 4.6.6; the [maintainer fix](https://github.com/colinhacks/zod/pull/6652) short-circuits oversized constrained collections before element parsing. The active API exposes only three read-only GET endpoints, not attacker-submitted schema validation, and body parsing is bounded. Nevertheless the release upgrades Zod and the matching schema adapter, removing unused form/error adapters rather than treating npm's result as complete coverage. Dedicated tests validate all authored scenario insert schemas and the early oversized-array rejection behavior. The patched graph has472 distinct pairs and zero OSV matches; both new schema tests pass. The complete suite and build are rerun before publication.
+
+### Final data and localization regression fixes
+
+The actual public scenario library contains69 legacy rows without localization keys; each exactly matches an authored scenario fingerprint. Key-only startup insertion would duplicate these rows. Startup now transactionally backfills only their localization keys, preserving IDs and content, and serializes concurrent startups with a transaction-scoped PostgreSQL advisory lock. Disposable PostgreSQL verification with two concurrent startups restored69 keys, created0 rows and preserved all69 IDs; a repeat made0 changes. Three new tests cover legacy/partial/custom libraries and idempotence. This is automatic data backfill, not a schema migration or deletion.
+
+Replit's production-build browser run completed ten-message first shifts, confidence, feedback, cue checks, summaries, dashboard return and recovery in all six desktop/mobile-language combinations (1365x900 and390x844; English/Latvian/Russian). It identified recovery-result action overflow in Latvian/Russian. The final patch stacks/wraps actions, wraps result badges and uses a single semantic training link. Hosted layout rerun and actual publication remain separately tracked. These browser results are connector-reported, not a claim of independent local mobile observation.
 
 ## Historical baseline: October 22 release decision
 

@@ -271,8 +271,8 @@ export default function RecoverDrill() {
                     ) : (
                       <XCircle className={`w-5 h-5 shrink-0 ${step.critical ? "text-destructive" : "text-muted-foreground"}`} />
                     )}
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2">
+                    <div className="min-w-0 flex-1">
+                      <div className="flex flex-wrap items-center gap-2">
                         <span className={`font-medium text-sm ${!completed && step.critical ? "text-destructive" : ""}`}>
                           {t(step.titleKey)}
                         </span>
@@ -299,16 +299,16 @@ export default function RecoverDrill() {
               </CardContent>
             </Card>
 
-            <div className="flex gap-3">
-              <Button variant="outline" className="flex-1" onClick={handleReset} data-testid="button-try-again">
-                <RotateCcw className="w-4 h-4 mr-2" />
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <Button variant="outline" className="h-auto min-h-9 min-w-0 flex-1 whitespace-normal py-2" onClick={handleReset} data-testid="button-try-again">
+                <RotateCcw className="w-4 h-4 mr-2 shrink-0" />
                 {t("recover.results.tryAnother")}
               </Button>
-              <Link href="/training" className="flex-1">
-                <Button className="w-full" data-testid="button-back-training">
+              <Button asChild className="h-auto min-h-9 min-w-0 flex-1 whitespace-normal py-2">
+                <Link href="/training" data-testid="button-back-training">
                   {t("recover.results.backToTraining")}
-                </Button>
-              </Link>
+                </Link>
+              </Button>
             </div>
           </CardContent>
           </Card>
