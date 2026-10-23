@@ -176,23 +176,26 @@ export default function RecoverDrill() {
             <CardContent>
               <div className="grid sm:grid-cols-2 gap-4">
                 {DRILL_SCENARIOS.map((scenario) => (
-                  <Card 
+                  <button
+                    type="button"
                     key={scenario.id}
-                    className="group cursor-pointer border border-black/5 dark:border-white/10 bg-background/60 transition hover:-translate-y-1 hover:shadow-[0_28px_70px_-50px_rgba(15,23,42,0.6)]"
+                    className="group w-full text-left"
                     onClick={() => setSelectedScenario(scenario)}
                     data-testid={`card-scenario-${scenario.id}`}
                   >
-                    <CardContent className="pt-6">
-                      <h3 className="font-semibold mb-2">{t(scenario.titleKey)}</h3>
-                      <p className="text-sm text-muted-foreground">{t(scenario.descriptionKey)}</p>
-                      <div className="mt-4 flex items-center justify-between gap-2">
-                        <Badge variant="outline">
-                          {t("recover.labels.criticalStepsCount", { count: scenario.steps.filter(s => s.critical).length })}
-                        </Badge>
-                        <ArrowRight className="w-4 h-4 text-muted-foreground flex-shrink-0" />
-                      </div>
-                    </CardContent>
-                  </Card>
+                    <Card className="border border-black/5 dark:border-white/10 bg-background/60 transition group-hover:-translate-y-1 group-hover:shadow-[0_28px_70px_-50px_rgba(15,23,42,0.6)] group-focus-visible:outline-hidden group-focus-visible:ring-2 group-focus-visible:ring-ring group-focus-visible:ring-offset-2">
+                      <CardContent className="pt-6">
+                        <h3 className="font-semibold mb-2">{t(scenario.titleKey)}</h3>
+                        <p className="text-sm text-muted-foreground">{t(scenario.descriptionKey)}</p>
+                        <div className="mt-4 flex items-center justify-between gap-2">
+                          <Badge variant="outline">
+                            {t("recover.labels.criticalStepsCount", { count: scenario.steps.filter(s => s.critical).length })}
+                          </Badge>
+                          <ArrowRight className="w-4 h-4 text-muted-foreground shrink-0" />
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </button>
                 ))}
               </div>
             </CardContent>
@@ -201,7 +204,7 @@ export default function RecoverDrill() {
           <Card className="border border-black/5 dark:border-white/10 bg-background/60">
             <CardContent className="pt-6">
               <div className="flex items-start gap-4">
-                <Shield className="w-8 h-8 text-primary flex-shrink-0" />
+                <Shield className="w-8 h-8 text-primary shrink-0" />
                 <div>
                   <h3 className="font-semibold mb-2">{t("recover.why.title")}</h3>
                   <p className="text-sm text-muted-foreground">{t("recover.why.description")}</p>
@@ -264,9 +267,9 @@ export default function RecoverDrill() {
                     }`}
                   >
                     {completed ? (
-                      <CheckCircle className="w-5 h-5 text-chart-2 flex-shrink-0" />
+                      <CheckCircle className="w-5 h-5 text-chart-2 shrink-0" />
                     ) : (
-                      <XCircle className={`w-5 h-5 flex-shrink-0 ${step.critical ? "text-destructive" : "text-muted-foreground"}`} />
+                      <XCircle className={`w-5 h-5 shrink-0 ${step.critical ? "text-destructive" : "text-muted-foreground"}`} />
                     )}
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
@@ -330,7 +333,7 @@ export default function RecoverDrill() {
         <Card className="bg-destructive/5 border-destructive/20">
           <CardContent className="pt-6">
             <div className="flex items-start gap-3">
-              <AlertTriangle className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
+              <AlertTriangle className="w-5 h-5 text-destructive shrink-0 mt-0.5" />
               <div>
                 <p className="font-medium text-sm">{t("recover.prompt.title")}</p>
                 <p className="text-sm text-muted-foreground mt-1">
@@ -346,42 +349,45 @@ export default function RecoverDrill() {
             const completed = completedSteps.has(step.id);
             const Icon = step.icon;
             return (
-              <Card 
+              <button
+                type="button"
                 key={step.id}
-                className={`cursor-pointer transition-all border ${
-                  completed ? "border-chart-2/50 bg-chart-2/10" : "border-black/5 dark:border-white/10 bg-background/60 hover:bg-background/80"
-                }`}
+                className="w-full text-left"
                 onClick={() => handleStepClick(step.id)}
                 data-testid={`card-step-${step.id}`}
               >
-                <CardContent className="py-4">
-                  <div className="flex items-center gap-4">
-                    <div className={`w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0 ${
-                      completed ? "bg-chart-2/20" : "bg-muted/60"
-                    }`}>
-                      {completed ? (
-                        <CheckCircle className="w-5 h-5 text-chart-2" />
-                      ) : (
-                        <Icon className="w-5 h-5 text-muted-foreground" />
-                      )}
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2">
-                        <span className="font-medium">{t(step.titleKey)}</span>
-                        {step.critical && (
-                          <Badge variant="outline">{t("recover.labels.critical")}</Badge>
+                <Card className={`transition-all border ${
+                  completed ? "border-chart-2/50 bg-chart-2/10" : "border-black/5 dark:border-white/10 bg-background/60 hover:bg-background/80"
+                } focus-within:outline-hidden focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2`}>
+                  <CardContent className="py-4">
+                    <div className="flex items-center gap-4">
+                      <div className={`w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 ${
+                        completed ? "bg-chart-2/20" : "bg-muted/60"
+                      }`}>
+                        {completed ? (
+                          <CheckCircle className="w-5 h-5 text-chart-2" />
+                        ) : (
+                          <Icon className="w-5 h-5 text-muted-foreground" />
                         )}
                       </div>
-                      <p className="text-sm text-muted-foreground">{t(step.descriptionKey)}</p>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2">
+                          <span className="font-medium">{t(step.titleKey)}</span>
+                          {step.critical && (
+                            <Badge variant="outline">{t("recover.labels.critical")}</Badge>
+                          )}
+                        </div>
+                        <p className="text-sm text-muted-foreground">{t(step.descriptionKey)}</p>
+                      </div>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              </button>
             );
           })}
         </div>
 
-        <div className="sticky bottom-0 z-50 bg-background/80 backdrop-blur border-t border-black/5 dark:border-white/10 pt-4 pb-2">
+        <div className="sticky bottom-0 z-50 bg-background/80 backdrop-blur-sm border-t border-black/5 dark:border-white/10 pt-4 pb-2">
           <div className="flex items-center justify-between gap-4 mb-4">
             <span className="text-sm text-muted-foreground">
               {t("recover.footer.stepsSelected", {
@@ -389,7 +395,7 @@ export default function RecoverDrill() {
                 total: selectedScenario.steps.length
               })}
             </span>
-            <span className="text-sm font-medium flex-shrink-0">
+            <span className="text-sm font-medium shrink-0">
               {t("recover.footer.criticalSummary", {
                 completed: getCriticalStepsCompleted(),
                 total: getTotalCriticalSteps()

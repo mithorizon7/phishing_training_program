@@ -75,7 +75,7 @@ export default function Home() {
       .map((scenarioId) => scenarioMap.get(scenarioId))
       .filter(Boolean) as Scenario[];
 
-    if (scenarios.length === 0) {
+    if (scenarios.length === 0 || scenarios.length !== assignment.scenarioIds.length) {
       toast({
         title: t("common.error"),
         description: t("errors.assignmentStartFailed"),

@@ -4,13 +4,22 @@ import { storage } from "./storage";
 import { scenariosSeed } from "./scenarios-seed";
 
 async function seedScenariosIfNeeded() {
-  const count = await storage.getScenariosCount();
-  if (count === 0) {
-    console.log("Seeding scenarios...");
-    for (const scenario of scenariosSeed) {
+  const existingScenarios = await storage.getScenarios();
+  const existingScenarioKeys = new Set(
+    existingScenarios
+      .map((scenario) => scenario.i18nKey)
+      .filter((key): key is string => Boolean(key))
+  );
+  const missingScenarios = scenariosSeed.filter((scenario) => (
+    scenario.i18nKey ? !existingScenarioKeys.has(scenario.i18nKey) : true
+  ));
+
+  if (missingScenarios.length > 0) {
+    console.log(`Seeding ${missingScenarios.length} missing scenarios...`);
+    for (const scenario of missingScenarios) {
       await storage.createScenario(scenario as Parameters<typeof storage.createScenario>[0]);
     }
-    console.log(`Seeded ${scenariosSeed.length} scenarios`);
+    console.log(`Scenario library ready: ${existingScenarios.length + missingScenarios.length} total scenarios`);
   }
 }
 
@@ -26,7 +35,7 @@ export async function registerRoutes(
       const scenarios = await storage.getScenarios();
       res.json(scenarios);
     } catch (error) {
-      console.error("Error fetching scenarios:", error);
+      console.error("Scenario query failed");
       res.status(500).json({ message: "Failed to fetch scenarios" });
     }
   });
@@ -36,7 +45,7 @@ export async function registerRoutes(
       const assignments = await storage.getPublishedAssignments();
       res.json(assignments);
     } catch (error) {
-      console.error("Error fetching assignments:", error);
+      console.error("Assignment list query failed");
       res.status(500).json({ message: "Failed to fetch assignments" });
     }
   });
@@ -50,7 +59,7 @@ export async function registerRoutes(
       }
       res.json(assignment);
     } catch (error) {
-      console.error("Error fetching assignment:", error);
+      console.error("Assignment query failed");
       res.status(500).json({ message: "Failed to fetch assignment" });
     }
   });

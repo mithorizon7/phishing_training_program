@@ -23,7 +23,7 @@ export function Header({ verificationsRemaining, inShift }: HeaderProps) {
         <div className="flex items-center gap-4">
           <Link href="/" className="flex items-center gap-3">
             <div className="relative flex items-center justify-center rounded-2xl bg-primary/10 p-2">
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/35 to-transparent blur" />
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/35 to-transparent blur-sm" />
               <img src={logoImage} alt={t("app.title")} className="relative w-11 h-11 object-contain" data-testid="img-logo-header" />
             </div>
             <span className="font-display text-sm uppercase tracking-[0.28em] hidden sm:inline" data-testid="text-header-title">

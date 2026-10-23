@@ -153,9 +153,9 @@ export function MessageDetail({
   return (
     <div className="flex flex-col gap-4 pb-2">
       <Card className="flex flex-col min-h-0 border border-black/5 dark:border-white/10 bg-card/70 overflow-hidden">
-        <CardHeader className="flex-shrink-0 pb-4">
+        <CardHeader className="shrink-0 pb-4">
           <div className="flex items-start gap-4">
-            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 ${
+            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 ${
               scenario.channel === 'email' ? 'bg-primary/10 text-primary' :
               scenario.channel === 'sms' ? 'bg-chart-2/10 text-chart-2' :
               scenario.channel === 'call' ? 'bg-chart-3/10 text-chart-3' :
@@ -350,7 +350,7 @@ export function MessageDetail({
       </Card>
 
       {onLensCheck && (
-        <Card className={`flex-shrink-0 transition-colors bg-card/60 ${lensComplete ? 'border-chart-2/50' : 'border-amber-500/50'}`}>
+        <Card className={`shrink-0 transition-colors bg-card/60 ${lensComplete ? 'border-chart-2/50' : 'border-amber-500/50'}`}>
           <CardHeader className="pb-2">
             <div className="flex items-center justify-between gap-2">
               <h3 className="font-semibold text-sm flex items-center gap-2">
@@ -395,7 +395,7 @@ export function MessageDetail({
                     />
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-1.5">
-                        <Icon className="w-3.5 h-3.5 text-muted-foreground flex-shrink-0" />
+                        <Icon className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
                         <span className="text-xs font-medium truncate">{t(check.labelKey)}</span>
                       </div>
                       <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">{t(check.descriptionKey)}</p>
@@ -408,7 +408,7 @@ export function MessageDetail({
         </Card>
       )}
 
-      <Card className="flex-shrink-0 border border-black/5 dark:border-white/10 bg-card/60">
+      <Card className="shrink-0 border border-black/5 dark:border-white/10 bg-card/60">
         <CardContent className="py-4">
           <div className="flex items-center justify-between gap-2 mb-4">
             <p className="text-sm text-muted-foreground">{t("training.actions.prompt")}</p>

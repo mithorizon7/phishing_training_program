@@ -101,7 +101,7 @@ export default function Landing() {
           <div className="h-full max-w-7xl mx-auto flex items-center justify-between px-6">
             <Link href="/" className="flex items-center gap-3">
               <div className="relative flex items-center justify-center rounded-2xl bg-primary/10 p-2">
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/35 to-transparent blur" />
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/35 to-transparent blur-sm" />
                 <img
                   src={logoImage}
                   alt={t("landing.alt.logo")}
@@ -138,7 +138,7 @@ export default function Landing() {
                 <Badge variant="outline" className="mb-6 chip animate-rise [animation-delay:40ms]">
                   {t("landing.badge")}
                 </Badge>
-                <h1 className="text-4xl md:text-6xl font-semibold leading-tight animate-rise [animation-delay:120ms]" data-testid="text-landing-hero">
+                <h1 className="text-4xl md:text-6xl font-semibold leading-tight md:leading-none animate-rise [animation-delay:120ms]" data-testid="text-landing-hero">
                   {t("landing.hero.title")}
                 </h1>
                 <p className="mt-5 text-lg text-muted-foreground max-w-xl animate-rise [animation-delay:200ms]">

@@ -5,7 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-semibold tracking-tight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:-translate-y-0.5 active:translate-y-0" +
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-semibold tracking-tight focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:-translate-y-0.5 active:translate-y-0" +
   " hover-elevate active-elevate-2",
   {
     variants: {
@@ -17,7 +17,7 @@ const buttonVariants = cva(
         outline:
           // Shows the background color of whatever card / sidebar / accent background it is inside of.
           // Inherits the current text color.
-          " border [border-color:var(--button-outline)] bg-background/60 backdrop-blur shadow-xs active:shadow-none hover:bg-background/80",
+          " border [border-color:var(--button-outline)] bg-background/60 backdrop-blur-sm shadow-xs active:shadow-none hover:bg-background/80",
         secondary: "border bg-secondary/80 text-secondary-foreground border border-secondary-border ",
         // Add a transparent border so that when someone toggles a border on later, it doesn't shift layout/size.
         ghost: "border border-transparent text-foreground hover:bg-muted/40",

@@ -12,7 +12,10 @@ export async function setupVite(server: Server, app: Express) {
   const serverOptions = {
     middlewareMode: true,
     hmr: { server, path: "/vite-hmr" },
-    allowedHosts: true as const,
+    allowedHosts: (process.env.DEV_ALLOWED_HOSTS ?? process.env.REPLIT_DOMAINS ?? "")
+      .split(",")
+      .map((host) => host.trim().toLowerCase())
+      .filter((host) => /^[a-z0-9][a-z0-9.-]*$/.test(host)),
   };
 
   const vite = await createViteServer({

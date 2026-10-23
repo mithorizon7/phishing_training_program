@@ -4,7 +4,7 @@ Source of truth checklist for a large/intense task.
 
 ## Metadata
 - Created: 2026-03-06T15:42:33
-- Last Updated: 2026-03-06T15:56:14
+- Last Updated: 2026-03-10T11:07:42 EDT
 - Workspace: /Users/davedxn/Downloads/phishing_training_program
 - Checklist Doc: /Users/davedxn/Downloads/phishing_training_program/docs/full-production-readiness-audit-production-checklist.md
 
@@ -23,10 +23,10 @@ Source of truth checklist for a large/intense task.
 
 ## Audit Queue
 - [x] Q-001 [status:verified] Create checklist and baseline scope.
-- [x] Q-002 [status:verified] Complete discovery/audit of impacted systems.
-- [x] Q-003 [status:verified] Implement required changes.
+- [x] Q-002 [status:verified] Complete renewed discovery/audit after onboarding and recent code changes.
+- [x] Q-003 [status:verified] Implement required changes from the renewed audit pass.
 - [x] Q-004 [status:accepted_risk] Expand or update automated tests.
-- [x] Q-005 [status:verified] Run full validation suite.
+- [x] Q-005 [status:verified] Run full validation suite on the post-audit code state.
 - [x] Q-006 [status:verified] Final code-quality pass and sign-off review.
 
 ## Findings Log
@@ -58,6 +58,26 @@ Source of truth checklist for a large/intense task.
   - Evidence: fixed in `server/index.ts` with strict numeric parsing fallback and `API_RATE_LIMIT_MAX_CLIENTS` bounding/eviction.
   - Owner: codex
   - Linked Fix: P-007
+- [x] F-008 [status:verified] [P1] [confidence:0.93] Scenario localization can leak raw i18n keys in production and leaves cue arrays untranslated, breaking non-English coaching/feedback and causing missing-key regressions to render user-visible internals.
+  - Evidence: `client/src/lib/localize-scenario.ts` used `t(key, { defaultValue: '' })` with raw-key production fallback and returned `scenario.cues` unchanged.
+  - Owner: codex
+  - Linked Fix: P-008
+- [x] F-009 [status:verified] [P1] [confidence:0.91] Consecutive streak tracking only resets on `compromised`, so false alarms and delayed-work mistakes can preserve streaks and incorrectly unlock streak-based progress.
+  - Evidence: `client/src/lib/training-engine.ts` computed `currentStreak` from `isCompromised` instead of from correctness.
+  - Owner: codex
+  - Linked Fix: P-009
+- [x] F-010 [status:verified] [P2] [confidence:0.88] Assignment start flow silently drops missing scenarios and starts a truncated module instead of failing closed, hiding data drift and changing the authored training content.
+  - Evidence: `client/src/pages/home.tsx` mapped `assignment.scenarioIds` and filtered missing entries without verifying the expected count.
+  - Owner: codex
+  - Linked Fix: P-010
+- [x] F-011 [status:verified] [P2] [confidence:0.86] Scenario seed repair only runs when the database is completely empty, so partial libraries are never backfilled after data drift or interrupted seed operations.
+  - Evidence: `server/routes.ts` previously checked `getScenariosCount() === 0` before seeding and skipped missing-key repair.
+  - Owner: codex
+  - Linked Fix: P-011
+- [x] F-012 [status:verified] [P3] [confidence:0.89] Recovery drill scenario and step cards are pointer-only interactive elements, reducing accessibility and making core drill flow harder to operate with keyboard navigation.
+  - Evidence: `client/src/pages/recover.tsx` used clickable `Card` containers with `onClick` and no button semantics.
+  - Owner: codex
+  - Linked Fix: P-012
 
 ## Fix Log
 - [x] P-001 [status:verified] Replace crash-prone error middleware behavior with resilient logging + consistent error responses.
@@ -81,6 +101,21 @@ Source of truth checklist for a large/intense task.
 - [x] P-007 [status:verified] Add bounded API rate-limit bucket cardinality and robust numeric env parsing defaults.
   - Addresses: F-007
   - Evidence: `server/index.ts`.
+- [x] P-008 [status:verified] Fix scenario localization fallback semantics and localize cue arrays so translated coaching surfaces render correctly.
+  - Addresses: F-008
+  - Evidence: `client/src/lib/localize-scenario.ts`.
+- [x] P-009 [status:verified] Reset streaks on any incorrect decision so badge and progress streak logic reflects actual consecutive correctness.
+  - Addresses: F-009
+  - Evidence: `client/src/lib/training-engine.ts`.
+- [x] P-010 [status:verified] Fail closed when an assignment references missing scenarios instead of launching a partial training module.
+  - Addresses: F-010
+  - Evidence: `client/src/pages/home.tsx`.
+- [x] P-011 [status:verified] Backfill missing seeded scenarios on startup by `i18nKey` rather than seeding only from a zero-count state.
+  - Addresses: F-011
+  - Evidence: `server/routes.ts`.
+- [x] P-012 [status:verified] Make recovery drill scenario and step selection keyboard-accessible by using real button semantics around the interactive cards.
+  - Addresses: F-012
+  - Evidence: `client/src/pages/recover.tsx`.
 
 ## Validation Log
 - [x] V-001 [status:verified] `npm run check`
@@ -95,6 +130,14 @@ Source of truth checklist for a large/intense task.
   - Evidence: 2026-03-06 15:53 EST pass; vulnerable transitive esbuild copies removed and deduped to `esbuild@0.25.12`.
 - [x] V-006 [status:accepted_risk] `npm run dev` startup smoke
   - Evidence: 2026-03-06 15:53 EST fail due missing required `DATABASE_URL`; runtime smoke deferred until environment provisioning.
+- [x] V-007 [status:verified] `npm run check`
+  - Evidence: 2026-03-10 11:01 EDT pass.
+- [x] V-008 [status:verified] `npm run build`
+  - Evidence: 2026-03-10 11:01 EDT pass with existing non-blocking warnings (PostCSS `from` warning, large chunk warning).
+- [x] V-009 [status:verified] `npx tsx scripts/i18n-validate.ts`
+  - Evidence: 2026-03-10 11:00 EDT pass.
+- [x] V-010 [status:verified] `npm audit --json`
+  - Evidence: 2026-03-10 11:00 EDT pass (0 vulnerabilities).
 
 ## Residual Risks
 - [x] R-001 [status:accepted_risk] Local interactive runtime smoke (`npm run dev`) could not be completed in this environment because `DATABASE_URL` is not set.
@@ -111,3 +154,6 @@ Source of truth checklist for a large/intense task.
 - 2026-03-06T15:47:34: Discovery completed; findings/fixes logged; baseline validations and dependency audit captured.
 - 2026-03-06T15:53:39: Additional hardening complete (rate-limiter bounds, auth logout origin validation), dependency audit reduced to zero vulnerabilities, validations rerun, and residual risks documented for final sign-off.
 - 2026-03-06T15:56:14: Final post-fix rerun completed after IPv6 localhost auth-host normalization update.
+- 2026-03-10T10:57:53 EDT: Audit reopened for a fresh robustness pass after subsequent onboarding and UX changes.
+- 2026-03-10T11:03:06 EDT: Renewed audit found and fixed localization fallback regressions, incorrect streak logic, partial assignment launch behavior, incomplete seed repair behavior, and recovery drill keyboard accessibility; validations rerun cleanly.
+- 2026-03-10T11:07:42 EDT: Final checklist audit pass completed; no additional static hygiene findings required changes, and sign-off bookkeeping was corrected.

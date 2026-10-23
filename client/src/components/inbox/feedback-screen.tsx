@@ -231,7 +231,7 @@ export function FeedbackScreen({
             {hasAnswered && (
               <div className="p-4 rounded-2xl border border-chart-2/30 bg-chart-2/5">
                 <div className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-chart-2 mt-0.5 flex-shrink-0" />
+                  <CheckCircle className="w-5 h-5 text-chart-2 mt-0.5 shrink-0" />
                   <div>
                     <p className="font-medium text-chart-2 mb-1">{t("training.feedbackPanel.quickCheck.successTitle")}</p>
                     <p className="text-sm text-muted-foreground">

@@ -59,7 +59,7 @@ function StatCard({
       <div className="absolute right-0 top-0 h-20 w-20 bg-gradient-to-br from-white/10 to-transparent" />
       <CardHeader className="flex flex-row items-center justify-between gap-4 pb-2">
         <CardTitle className="text-[0.7rem] uppercase tracking-[0.3em] text-muted-foreground">{title}</CardTitle>
-        <div className={`w-9 h-9 rounded-xl ${color} flex items-center justify-center shadow-sm`}>
+        <div className={`w-9 h-9 rounded-xl ${color} flex items-center justify-center shadow-xs`}>
           <Icon className="w-4 h-4 text-white" />
         </div>
       </CardHeader>
@@ -173,7 +173,7 @@ function RiskMeter({ progress }: { progress: UserProgress | null }) {
             }} 
           />
           <div 
-            className="absolute top-1/2 -translate-y-1/2 w-3 h-5 rounded bg-foreground/80 border-2 border-background shadow-sm transition-all duration-300"
+            className="absolute top-1/2 -translate-y-1/2 w-3 h-5 rounded bg-foreground/80 border-2 border-background shadow-xs transition-all duration-300"
             style={{ left: `calc(${Math.min(100, riskScore)}% - 6px)` }}
           />
         </div>
@@ -191,7 +191,7 @@ function RiskMeter({ progress }: { progress: UserProgress | null }) {
               {topVulnerabilities.map(([cue, count]) => (
                 <div key={cue} className="flex items-center justify-between gap-2 text-xs px-3 py-2 rounded-lg border border-black/5 dark:border-white/10 bg-background/60">
                   <span className="truncate flex-1 min-w-0">{t(cue)}</span>
-                  <Badge variant="secondary" className="flex-shrink-0">{count}</Badge>
+                  <Badge variant="secondary" className="shrink-0">{count}</Badge>
                 </div>
               ))}
             </div>
@@ -378,7 +378,7 @@ export function Dashboard({
       <Card className="border border-sky-500/40 bg-sky-500/10">
         <CardContent className="py-4">
           <div className="flex items-center gap-3">
-            <AlertTriangle className="w-5 h-5 text-sky-600 dark:text-sky-400 flex-shrink-0" />
+            <AlertTriangle className="w-5 h-5 text-sky-600 dark:text-sky-400 shrink-0" />
             <div>
               <p className="font-medium text-sky-600 dark:text-sky-400">{t("dashboard.sessionOnly.title")}</p>
               <p className="text-sm text-muted-foreground">{t("dashboard.sessionOnly.subtitle")}</p>
@@ -700,7 +700,7 @@ export function Dashboard({
                     {missedCuesEntries.map(([cue, count]) => (
                       <div key={cue} className="flex items-center justify-between gap-3">
                         <span className="text-sm truncate flex-1 min-w-0">{t(cue)}</span>
-                        <Badge variant="secondary" className="text-xs flex-shrink-0">
+                        <Badge variant="secondary" className="text-xs shrink-0">
                           {count}
                         </Badge>
                       </div>
