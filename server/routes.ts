@@ -1,33 +1,17 @@
 import type { Express } from "express";
 import type { Server } from "http";
 import { storage } from "./storage";
-import { scenariosSeed } from "./scenarios-seed";
-
-async function seedScenariosIfNeeded() {
-  const existingScenarios = await storage.getScenarios();
-  const existingScenarioKeys = new Set(
-    existingScenarios
-      .map((scenario) => scenario.i18nKey)
-      .filter((key): key is string => Boolean(key))
-  );
-  const missingScenarios = scenariosSeed.filter((scenario) => (
-    scenario.i18nKey ? !existingScenarioKeys.has(scenario.i18nKey) : true
-  ));
-
-  if (missingScenarios.length > 0) {
-    console.log(`Seeding ${missingScenarios.length} missing scenarios...`);
-    for (const scenario of missingScenarios) {
-      await storage.createScenario(scenario as Parameters<typeof storage.createScenario>[0]);
-    }
-    console.log(`Scenario library ready: ${existingScenarios.length + missingScenarios.length} total scenarios`);
-  }
-}
+import { db } from "./db";
+import { seedScenarioLibrary } from "./scenario-seeding";
 
 export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
-  await seedScenariosIfNeeded();
+  const seeded = await seedScenarioLibrary(db);
+  if (seeded.backfilled || seeded.created) {
+    console.log(`Scenario library ready: ${seeded.backfilled} localization keys restored, ${seeded.created} scenarios added`);
+  }
 
   // Public data endpoints for the fully anonymous training experience
   app.get("/api/scenarios", async (_req, res) => {
