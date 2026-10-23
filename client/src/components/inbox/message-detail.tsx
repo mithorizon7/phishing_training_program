@@ -60,6 +60,7 @@ interface MessageDetailProps {
   disabled?: boolean;
   lensChecks?: Set<string>;
   onLensCheck?: (checkId: string, checked: boolean) => void;
+  requiredLensChecks?: number;
 }
 
 function getChannelIcon(channel: MessageChannel) {
@@ -90,11 +91,32 @@ export function MessageDetail({
   onAction,
   disabled,
   lensChecks = new Set(),
-  onLensCheck
+  onLensCheck,
+  requiredLensChecks = 0,
 }: MessageDetailProps) {
   const { t } = useTranslation();
   const [showRealSender, setShowRealSender] = useState(false);
   const [showLinkTarget, setShowLinkTarget] = useState(false);
+
+  const handleToggleSenderReveal = () => {
+    setShowRealSender((previous) => {
+      const next = !previous;
+      if (next && onLensCheck) {
+        onLensCheck("sender", true);
+      }
+      return next;
+    });
+  };
+
+  const handleToggleLinkReveal = () => {
+    setShowLinkTarget((previous) => {
+      const next = !previous;
+      if (next && onLensCheck) {
+        onLensCheck("links", true);
+      }
+      return next;
+    });
+  };
 
   useEffect(() => {
     setShowRealSender(false);
@@ -103,6 +125,8 @@ export function MessageDetail({
   
   const lensProgress = (lensChecks.size / LENS_CHECKS.length) * 100;
   const lensComplete = lensChecks.size >= 3;
+  const actionLockedByChecklist = requiredLensChecks > 0 && lensChecks.size < requiredLensChecks;
+  const actionDisabled = Boolean(disabled) || actionLockedByChecklist;
 
   if (!scenario) {
     return (
@@ -129,9 +153,9 @@ export function MessageDetail({
   return (
     <div className="flex flex-col gap-4 pb-2">
       <Card className="flex flex-col min-h-0 border border-black/5 dark:border-white/10 bg-card/70 overflow-hidden">
-        <CardHeader className="flex-shrink-0 pb-4">
+        <CardHeader className="shrink-0 pb-4">
           <div className="flex items-start gap-4">
-            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 ${
+            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 ${
               scenario.channel === 'email' ? 'bg-primary/10 text-primary' :
               scenario.channel === 'sms' ? 'bg-chart-2/10 text-chart-2' :
               scenario.channel === 'call' ? 'bg-chart-3/10 text-chart-3' :
@@ -220,7 +244,7 @@ export function MessageDetail({
                             variant="ghost" 
                             size="icon"
                             className="h-7 w-7"
-                            onClick={() => setShowRealSender(!showRealSender)}
+                            onClick={handleToggleSenderReveal}
                             data-testid="button-reveal-sender"
                           >
                             {showRealSender ? (
@@ -283,7 +307,7 @@ export function MessageDetail({
                           variant="ghost" 
                           size="icon"
                           className="h-7 w-7"
-                          onClick={() => setShowLinkTarget(!showLinkTarget)}
+                          onClick={handleToggleLinkReveal}
                           data-testid="button-reveal-link"
                         >
                           {showLinkTarget ? (
@@ -326,7 +350,7 @@ export function MessageDetail({
       </Card>
 
       {onLensCheck && (
-        <Card className={`flex-shrink-0 transition-colors bg-card/60 ${lensComplete ? 'border-chart-2/50' : 'border-amber-500/50'}`}>
+        <Card className={`shrink-0 transition-colors bg-card/60 ${lensComplete ? 'border-chart-2/50' : 'border-amber-500/50'}`}>
           <CardHeader className="pb-2">
             <div className="flex items-center justify-between gap-2">
               <h3 className="font-semibold text-sm flex items-center gap-2">
@@ -353,16 +377,25 @@ export function MessageDetail({
                     className={`flex items-start gap-2 p-3 rounded-xl border border-black/5 dark:border-white/10 cursor-pointer transition-all ${
                       isChecked ? 'bg-chart-2/10 border-chart-2/40' : 'bg-background/60 hover:bg-background/80'
                     }`}
+                    role="checkbox"
+                    aria-checked={isChecked}
+                    tabIndex={0}
                     onClick={() => onLensCheck(check.id, !isChecked)}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        onLensCheck(check.id, !isChecked);
+                      }
+                    }}
                     data-testid={`lens-check-${check.id}`}
                   >
                     <Checkbox 
                       checked={isChecked}
-                      className="mt-0.5"
+                      className="mt-0.5 pointer-events-none"
                     />
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-1.5">
-                        <Icon className="w-3.5 h-3.5 text-muted-foreground flex-shrink-0" />
+                        <Icon className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
                         <span className="text-xs font-medium truncate">{t(check.labelKey)}</span>
                       </div>
                       <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">{t(check.descriptionKey)}</p>
@@ -375,7 +408,7 @@ export function MessageDetail({
         </Card>
       )}
 
-      <Card className="flex-shrink-0 border border-black/5 dark:border-white/10 bg-card/60">
+      <Card className="shrink-0 border border-black/5 dark:border-white/10 bg-card/60">
         <CardContent className="py-4">
           <div className="flex items-center justify-between gap-2 mb-4">
             <p className="text-sm text-muted-foreground">{t("training.actions.prompt")}</p>
@@ -383,12 +416,37 @@ export function MessageDetail({
               {t("training.actions.verificationsLeft", { count: verificationsRemaining })}
             </Badge>
           </div>
+          {actionLockedByChecklist && (
+            <p className="text-xs text-amber-600 dark:text-amber-400 mb-4">
+              {t("training.actions.unlockHint", { count: requiredLensChecks })}
+            </p>
+          )}
+          {requiredLensChecks > 0 && (
+            <div className="grid sm:grid-cols-2 gap-2 mb-4 text-xs text-muted-foreground">
+              <p>
+                <span className="font-medium text-foreground">{t("training.actions.report")}:</span>{" "}
+                {t("training.actions.reportDescription")}
+              </p>
+              <p>
+                <span className="font-medium text-foreground">{t("training.actions.verify")}:</span>{" "}
+                {t("training.actions.verifyDescription")}
+              </p>
+              <p>
+                <span className="font-medium text-foreground">{t("training.actions.delete")}:</span>{" "}
+                {t("training.actions.deleteDescription")}
+              </p>
+              <p>
+                <span className="font-medium text-foreground">{t("training.actions.proceed")}:</span>{" "}
+                {t("training.actions.proceedDescription")}
+              </p>
+            </div>
+          )}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             <Button
               variant="default"
               size="lg"
               onClick={() => onAction("report")}
-              disabled={disabled}
+              disabled={actionDisabled}
               data-testid="button-action-report"
             >
               <Shield className="w-4 h-4 mr-2" />
@@ -398,7 +456,7 @@ export function MessageDetail({
               variant="outline"
               size="lg"
               onClick={() => onAction("delete")}
-              disabled={disabled}
+              disabled={actionDisabled}
               data-testid="button-action-delete"
             >
               <Trash2 className="w-4 h-4 mr-2" />
@@ -408,7 +466,7 @@ export function MessageDetail({
               variant="outline"
               size="lg"
               onClick={() => onAction("verify")}
-              disabled={disabled || verificationsRemaining <= 0}
+              disabled={actionDisabled || verificationsRemaining <= 0}
               data-testid="button-action-verify"
             >
               <CheckCircle className="w-4 h-4 mr-2" />
@@ -418,7 +476,7 @@ export function MessageDetail({
               variant="destructive"
               size="lg"
               onClick={() => onAction("proceed")}
-              disabled={disabled}
+              disabled={actionDisabled}
               data-testid="button-action-proceed"
             >
               <ArrowRight className="w-4 h-4 mr-2" />

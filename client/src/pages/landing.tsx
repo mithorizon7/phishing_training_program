@@ -73,6 +73,21 @@ export default function Landing() {
     t("landing.snapshot.insights"),
   ];
 
+  const startHereSteps = [
+    {
+      title: t("landing.startHere.step1.title"),
+      description: t("landing.startHere.step1.description"),
+    },
+    {
+      title: t("landing.startHere.step2.title"),
+      description: t("landing.startHere.step2.description"),
+    },
+    {
+      title: t("landing.startHere.step3.title"),
+      description: t("landing.startHere.step3.description"),
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-background app-shell">
       <div className="relative overflow-hidden">
@@ -86,7 +101,7 @@ export default function Landing() {
           <div className="h-full max-w-7xl mx-auto flex items-center justify-between px-6">
             <Link href="/" className="flex items-center gap-3">
               <div className="relative flex items-center justify-center rounded-2xl bg-primary/10 p-2">
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/35 to-transparent blur" />
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/35 to-transparent blur-sm" />
                 <img
                   src={logoImage}
                   alt={t("landing.alt.logo")}
@@ -123,7 +138,7 @@ export default function Landing() {
                 <Badge variant="outline" className="mb-6 chip animate-rise [animation-delay:40ms]">
                   {t("landing.badge")}
                 </Badge>
-                <h1 className="text-4xl md:text-6xl font-semibold leading-tight animate-rise [animation-delay:120ms]" data-testid="text-landing-hero">
+                <h1 className="text-4xl md:text-6xl font-semibold leading-tight md:leading-none animate-rise [animation-delay:120ms]" data-testid="text-landing-hero">
                   {t("landing.hero.title")}
                 </h1>
                 <p className="mt-5 text-lg text-muted-foreground max-w-xl animate-rise [animation-delay:200ms]">
@@ -148,6 +163,31 @@ export default function Landing() {
                   </Button>
                 </div>
                 <p className="mt-4 text-sm text-muted-foreground animate-rise [animation-delay:320ms]">{t("landing.hero.note")}</p>
+                <Card className="mt-6 border border-primary/30 bg-primary/5 animate-rise [animation-delay:340ms]">
+                  <CardContent className="py-5">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <Badge variant="outline">{t("landing.startHere.badge")}</Badge>
+                      <p className="text-sm font-medium">{t("landing.startHere.title")}</p>
+                    </div>
+                    <p className="text-sm text-muted-foreground mt-2">
+                      {t("landing.startHere.subtitle")}
+                    </p>
+                    <div className="mt-4 grid gap-3 sm:grid-cols-3">
+                      {startHereSteps.map((step, index) => (
+                        <div
+                          key={step.title}
+                          className="rounded-2xl border border-black/5 dark:border-white/10 bg-background/70 px-4 py-3"
+                        >
+                          <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                            {index + 1}
+                          </p>
+                          <p className="text-sm font-medium mt-1">{step.title}</p>
+                          <p className="text-xs text-muted-foreground mt-1">{step.description}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
                 <div className="mt-6 grid gap-3 animate-rise [animation-delay:360ms]">
                   {highlights.map((item) => (
                     <div key={item} className="flex items-center gap-3 rounded-full border border-black/5 dark:border-white/10 bg-background/60 px-4 py-2 text-sm text-muted-foreground">

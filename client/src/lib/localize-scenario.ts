@@ -12,9 +12,13 @@ export function localizeScenario(scenario: Scenario, t: TFunction): Scenario {
   // Helper to get translation with fallback to original value
   const getTranslation = (key: string, fallback: string | null | undefined): string | null => {
     if (fallback === null || fallback === undefined) return fallback as null;
-    const translated = t(key, { defaultValue: '' });
-    return translated && !translated.startsWith('[MISSING:') ? translated : fallback;
+    const translated = t(key, { defaultValue: fallback });
+    return translated || fallback;
   };
+
+  const localizeCues = (): string[] => scenario.cues.map((cue, index) => (
+    getTranslation(`${baseKey}.cues.${index}`, cue) ?? cue
+  ));
 
   return {
     ...scenario,
@@ -23,7 +27,7 @@ export function localizeScenario(scenario: Scenario, t: TFunction): Scenario {
     body: getTranslation(`${baseKey}.body`, scenario.body) ?? scenario.body,
     timestamp: getTranslation(`${baseKey}.timestamp`, scenario.timestamp) ?? scenario.timestamp,
     explanation: getTranslation(`${baseKey}.explanation`, scenario.explanation) ?? scenario.explanation,
-    cues: scenario.cues,
+    cues: localizeCues(),
     linkText: getTranslation(`${baseKey}.linkText`, scenario.linkText),
     attachmentName: getTranslation(`${baseKey}.attachmentName`, scenario.attachmentName),
   };

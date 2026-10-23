@@ -32,7 +32,24 @@
       "primaryCta": "Sākt apmācību maiņu",
       "secondaryCta": "Atvērt apmācību pārskatu",
       "tertiaryCta": "Atgūšanās treniņš",
-      "note": "Konts nav nepieciešams. Progress tiek saglabāts šajā ierīcē."
+      "note": "Konts nav nepieciešams. Atsvaidzinot vai aizverot šo lapu, treniņa progress tiek dzēsts."
+    },
+    "startHere": {
+      "badge": "Jauns šeit?",
+      "title": "Vienreiz izpildiet šo secību, pēc tam atkārtojiet to.",
+      "subtitle": "Sāciet ar apmācību maiņu. Pārskats kļūst daudz saprotamāks pēc vienas vadītas maiņas.",
+      "step1": {
+        "title": "Atveriet apmācību",
+        "description": "Izvēlieties “Sākt apmācību”, lai sāktu pirmo maiņu."
+      },
+      "step2": {
+        "title": "Strādājiet ar izcelto ziņojumu",
+        "description": "Sekojiet pašreizējam ziņojumam un pabeidziet vienu lēmumu vienlaikus."
+      },
+      "step3": {
+        "title": "Pēc maiņas pārskatiet rezultātus",
+        "description": "Pēc maiņas izmantojiet pārskatu, lai redzētu progresu un izvēlētos nākamo praksi."
+      }
     },
     "highlights": {
       "feedback": "Tūlītēja atgriezeniskā saite par katru lēmumu",
@@ -105,6 +122,33 @@
     "sessionOnly": {
       "title": "Apmācība vienā sesijā",
       "subtitle": "Progress tiek atiestatīts, kad izejat. Šī pieredze paredzēta vienai sēdēšanai."
+    },
+    "firstSession": {
+      "title": "Sāciet šeit: pirmās 5 minūtes",
+      "subtitle": "Izpildiet šo ceļu vienu reizi, un jūs zināsiet, kā vadīt efektīvas maiņas.",
+      "stepLabel": "Solis {step}",
+      "steps": {
+        "step1": {
+          "title": "Pārbaudiet pirms darbības",
+          "description": "Izmantojiet pārbaudes sarakstu, lai pārbaudītu sūtītāju, saites, steidzamību un kontekstu."
+        },
+        "step2": {
+          "title": "Izvēlieties drošāko nākamo soli",
+          "description": "Ziņojiet vai verificējiet, ja neesat pārliecināts. Turpiniet tikai tad, ja pieprasījums ir nepārprotami leģitīms."
+        },
+        "step3": {
+          "title": "Izmantojiet atgriezenisko saiti ieradumu veidošanai",
+          "description": "Pēc katra lēmuma pārskatiet galveno pazīmi un izmantojiet to nākamajā ziņojumā."
+        }
+      },
+      "note": "Mērķis: pabeigt vienu ziņojumu ar pārliecinātu, pierādījumos balstītu lēmumu.",
+      "primaryCta": "Sākt pirmo treniņa maiņu",
+      "ctaHint": "Jūs strādāsiet ar vienu izcelto ziņojumu vienlaikus un pēc katra lēmuma saņemsiet tūlītēju koučingu.",
+      "afterShiftTitle": "Kas atbloķējas pēc pirmās maiņas",
+      "afterShiftDescription": "Pabeidziet vienu maiņu, un panelis paplašināsies ar personalizētu koučingu.",
+      "afterShiftPoint1": "Drošības un darba plūsmas rādītāji, balstīti jūsu lēmumos",
+      "afterShiftPoint2": "Biežāk palaisto pazīmju analīze, lai mērķētu vājās vietas",
+      "afterShiftPoint3": "Riska profils un nozīmīšu progress ilgtermiņa izaugsmei"
     },
     "trainingTracks": {
       "title": "Apmācību ceļi",
@@ -232,6 +276,12 @@
     "readyToTrain": {
       "title": "Gatavs apmācībai?",
       "description": "Sāciet jaunu maiņu, lai praktizētu pikšķerēšanas, BEC un citu drošības draudu atpazīšanu.",
+      "firstSuccessTitle": "Pirmā panākuma ceļš",
+      "steps": {
+        "inspect": "Pirms darbības atzīmējiet vismaz 3 pārbaudes saraksta punktus.",
+        "decide": "Izvēlieties drošāko darbību un norādiet pārliecību.",
+        "learn": "Pārskatiet atgriezenisko saiti un izmantojiet galveno pazīmi nākamajā ziņojumā."
+      },
       "startButton": "Sākt jaunu maiņu",
       "startingButton": "Sāk..."
     },
@@ -241,6 +291,10 @@
       "noMessages": "Iesūtnē nav ziņojumu",
       "all": "Visi",
       "done": "Pabeigts",
+      "currentTask": "Pašreizējais uzdevums",
+      "upNext": "Tālāk",
+      "guidedTitle": "Vadīta pirmā maiņa",
+      "guidedSubtitle": "Vispirms apstrādājiet izcelto ziņojumu. Nākamais tiks atbloķēts pēc turpināšanas.",
       "emptyAll": "Nav ziņojumu, ko apstrādāt",
       "emptyChannel": "Šajā maiņā nav {channel} ziņojumu"
     },
@@ -288,7 +342,49 @@
       "verifyDescription": "Sazināties ar sūtītāju caur zināmu kanālu, lai apstiprinātu",
       "proceedDescription": "Veikt pieprasīto darbību (noklikšķināt uz saites, atvērt pielikumu utt.)",
       "prompt": "Kādu darbību veiksiet?",
+      "unlockHint": "Pirms darbības izvēles atzīmējiet vismaz {count, number} pārbaudes saraksta punktus.",
       "verificationsLeft": "{count, plural, one {# pārbaude atlikusi} other {# pārbaudes atlikušas}}"
+    },
+    "onboarding": {
+      "title": "Ātrā pamācība",
+      "firstSessionSubtitle": "Pirmajam lēmumam izmantojiet ciklu: pārbaudīt -> lemt -> mācīties.",
+      "defaultSubtitle": "Atveriet šo jebkurā brīdī, ja nepieciešams ātrs atgādinājums par lēmumu ciklu.",
+      "showGuide": "Rādīt ātro pamācību",
+      "hideGuide": "Paslēpt ātro pamācību",
+      "inspectionRequired": "Drošības ierobežojums pirmajam lēmumam: atzīmējiet vismaz {count, number} punktus, lai atbloķētu darbības.",
+      "steps": {
+        "inspect": {
+          "title": "Pārbaudīt",
+          "description": "Izpildiet sarakstu un savāciet pierādījumus pirms darbības."
+        },
+        "decide": {
+          "title": "Lemt",
+          "description": "Izvēlieties drošāko nākamo darbību un novērtējiet pārliecību."
+        },
+        "learn": {
+          "title": "Mācīties",
+          "description": "Izmantojiet atgriezenisko saiti, lai nostiprinātu pazīmi, ko pārbaudīt nākamreiz."
+        }
+      }
+    },
+    "nextStep": {
+      "kicker": "Nākamais solis",
+      "badges": {
+        "guided": "Vadīta maiņa",
+        "recommended": "Ieteikts"
+      },
+      "inspect": {
+        "title": "Sāciet ar izcelto ziņojumu",
+        "description": "Atveriet pārbaudes paneli, atklājiet detaļas, kad nepieciešams, un pirms darbības atzīmējiet vismaz {count, number} saraksta punktus."
+      },
+      "decide": {
+        "title": "Izvēlieties drošāko nākamo darbību",
+        "description": "Ziņojumam {current, number} no {total, number} izmantojiet darbību pogas zemāk un pirms iesniegšanas novērtējiet pārliecību."
+      },
+      "continue": {
+        "title": "Strādājiet ar ekrānā redzamo ziņojumu",
+        "description": "Pabeidziet pašreizējo ziņojumu un tad pārejiet pie nākamā. Ja vajag atgādinājumu, jebkurā brīdī atveriet ātro pamācību."
+      }
     },
     "confidence": {
       "title": "Cik pārliecināts jūs esat?",

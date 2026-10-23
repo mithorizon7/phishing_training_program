@@ -175,6 +175,10 @@ export function calculateOutcome(
   const isLegitimate = scenario.legitimacy === "legitimate";
   const isSuspiciousLegit = scenario.legitimacy === "suspicious_legitimate";
 
+  if (isCorrect && action === "delete") {
+    return { outcome: "safe", points: 10 };
+  }
+
   if (action === "proceed" && isMalicious) {
     return { outcome: "compromised", points: -20 };
   }
@@ -228,12 +232,13 @@ function findNextChainScenario(
   scenario: Scenario,
   action: ActionType
 ): Scenario | undefined {
-  if (!scenario.chainId || scenario.chainOrder === null || scenario.chainOrder === undefined) {
+  const currentChainOrder = scenario.chainOrder;
+  if (!scenario.chainId || currentChainOrder === null || currentChainOrder === undefined) {
     return undefined;
   }
   return scenarioLibrary.find((candidate) =>
     candidate.chainId === scenario.chainId &&
-    candidate.chainOrder === scenario.chainOrder + 1 &&
+    candidate.chainOrder === currentChainOrder + 1 &&
     candidate.previousAction === action
   );
 }
@@ -290,7 +295,7 @@ export function applyDecision({
     completedScenarioIds,
   };
 
-  const currentStreak = isCompromised ? 0 : (progress.currentStreak || 0) + (isCorrect ? 1 : 0);
+  const currentStreak = isCorrect ? (progress.currentStreak || 0) + 1 : 0;
   const longestStreak = Math.max(currentStreak, progress.longestStreak || 0);
 
   const missedCues = { ...(progress.missedCues as Record<string, number> || {}) };

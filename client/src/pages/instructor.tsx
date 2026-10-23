@@ -628,7 +628,7 @@ function AssignmentsTab() {
                 <div className="space-y-2">
                   <div className="flex items-center justify-between gap-4">
                     <Label>Select Scenarios ({formData.scenarioIds.length} selected)</Label>
-                    <span className="text-sm text-muted-foreground flex-shrink-0">
+                    <span className="text-sm text-muted-foreground shrink-0">
                       {filteredScenarios.length} matching scenarios
                     </span>
                   </div>

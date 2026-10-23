@@ -7,6 +7,7 @@ import type { Express, RequestHandler } from "express";
 import memoize from "memoizee";
 import connectPg from "connect-pg-simple";
 import { authStorage } from "./storage";
+import { resolveAuthOrigin } from "./origin";
 
 const getOidcConfig = memoize(
   async () => {
@@ -20,11 +21,12 @@ const getOidcConfig = memoize(
 
 export function getSession() {
   const sessionTtl = 7 * 24 * 60 * 60 * 1000; // 1 week
+  const isProduction = process.env.NODE_ENV === "production";
   const pgStore = connectPg(session);
   const sessionStore = new pgStore({
     conString: process.env.DATABASE_URL,
     createTableIfMissing: false,
-    ttl: sessionTtl,
+    ttl: sessionTtl / 1000,
     tableName: "sessions",
   });
   return session({
@@ -34,7 +36,8 @@ export function getSession() {
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      secure: true,
+      secure: isProduction,
+      sameSite: "lax",
       maxAge: sessionTtl,
     },
   });
@@ -82,48 +85,73 @@ export async function setupAuth(app: Express) {
   const registeredStrategies = new Set<string>();
 
   // Helper function to ensure strategy exists for a domain
-  const ensureStrategy = (domain: string) => {
-    const strategyName = `replitauth:${domain}`;
+  const ensureStrategy = (origin: string) => {
+    const strategyName = `replitauth:${origin}`;
     if (!registeredStrategies.has(strategyName)) {
+      if (registeredStrategies.size >= 32) return false;
       const strategy = new Strategy(
         {
           name: strategyName,
           config,
           scope: "openid email profile offline_access",
-          callbackURL: `https://${domain}/api/callback`,
+          callbackURL: `${origin}/api/callback`,
         },
         verify
       );
       passport.use(strategy);
       registeredStrategies.add(strategyName);
     }
+    return true;
   };
 
   passport.serializeUser((user: Express.User, cb) => cb(null, user));
   passport.deserializeUser((user: Express.User, cb) => cb(null, user));
 
   app.get("/api/login", (req, res, next) => {
-    ensureStrategy(req.hostname);
-    passport.authenticate(`replitauth:${req.hostname}`, {
+    const origin = resolveAuthOrigin(req.get("host"));
+    if (!origin) {
+      return res.status(400).json({ message: "Unsupported host for authentication" });
+    }
+
+    if (!ensureStrategy(origin)) {
+      return res.status(400).json({ message: "Authentication origin limit reached" });
+    }
+    return passport.authenticate(`replitauth:${origin}`, {
       prompt: "login consent",
       scope: ["openid", "email", "profile", "offline_access"],
     })(req, res, next);
   });
 
   app.get("/api/callback", (req, res, next) => {
-    ensureStrategy(req.hostname);
-    passport.authenticate(`replitauth:${req.hostname}`, {
+    const origin = resolveAuthOrigin(req.get("host"));
+    if (!origin) {
+      return res.status(400).json({ message: "Unsupported host for authentication" });
+    }
+
+    if (!ensureStrategy(origin)) {
+      return res.status(400).json({ message: "Authentication origin limit reached" });
+    }
+    return passport.authenticate(`replitauth:${origin}`, {
       successReturnToOrRedirect: "/",
       failureRedirect: "/api/login",
     })(req, res, next);
   });
 
   app.get("/api/logout", (req, res) => {
-    req.logout(() => {
-      res.redirect(
+    const origin = resolveAuthOrigin(req.get("host"));
+    if (!origin) {
+      return res.status(400).json({ message: "Unsupported host for authentication" });
+    }
+
+    return req.logout((logoutError) => {
+      if (logoutError) {
+        return res.status(500).json({ message: "Logout failed" });
+      }
+
+      return res.redirect(
         client.buildEndSessionUrl(config, {
           client_id: process.env.REPL_ID!,
-          post_logout_redirect_uri: `${req.protocol}://${req.hostname}`,
+          post_logout_redirect_uri: origin,
         }).href
       );
     });
