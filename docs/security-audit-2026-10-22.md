@@ -15,9 +15,15 @@ This section supersedes the October 22 baseline findings and access limitations 
 | CSS migration | Preserved legacy utility semantics, restored button cursor behavior, retained theme configuration and corrected desktop heading line height. Requires modern browsers: Safari 16.4+, Chrome 111+, Firefox 128+. |
 | Learner privacy/copy | English, Latvian and Russian landing copy correctly states that refresh/close clears memory-only practice progress. |
 | Hosting access | Correct existing Replit app is now accessible through the connector. Public URL: `https://phishing-program--mithorizon7.replit.app`. Before release, its workspace was revision `166a4125b3a00d459dc87ff66ca4d2464f1982b1`, Node 20.20.0, with an existing `.replit` modification. This is not evidence that the new fixes have been published. |
-| Deployment | User explicitly authorized committing and deployment. Sync, runtime verification, publication and public smoke verification are tracked separately in the living checklist. No schema migration is required. |
+| Deployment | Application fixes committed/pushed as925d512 and published October23 as Replit mergebe101a7. Actual publicJS/CSS match the reviewed build byte-for-byte;69 original scenario IDs preserved,69 unique keys restored, no duplicates. Public desktopEnglish/mobileLatvian/Russian complete shifts and recovery. Final font/zoom polish is tracked separately. No schema migration or record deletion. |
 
 The remaining historical platform, provider-host, credential-exposure and log-retention questions are not resolved by an application deployment. No compromise was confirmed and no unrelated credentials were rotated. A successful app release must not be described as comprehensive infrastructure or incident-response sign-off.
+
+### Publication evidence and remaining limits
+
+Deploymentc5742419-34d2-4d17-831c-bff8f5f7d87b successfully serves `https://phishing-program--mithorizon7.replit.app`. October23 production logs identify mergebe101a7eeee4c997e72f80134f59460744b38016, containing reviewed925d512c6695304dfa87872b7cb8b978dee79641. The preserved hosting-only difference is the existing python-base module. Production startup passed the unchanged patched-Node guard, but logs do not expose an exact version string; preview22.23.4 is not exact production-version evidence. Production read replica reports PostgreSQL16.15. Backup timestamps, retention and restore-readiness evidence and historical infrastructure questions remain unverified.
+
+Public checks confirm application headers, no-store API responses, JSON404, compiled assets and data preservation. Independently observed live onboarding unlocks after three checks, awards correct feedback and advances messages; correct informational Delete now yields safe/+10. Replit's public desktopEnglish/mobileLatvian/Russian runs complete ten-message shifts and recovery100/100 without application failures. An external font stylesheet failure led to a final, separately validated font-loading patch and restoration of browser zoom. October26 hosting status remains success; final polish publication is tracked in the living checklist.
 
 ### Same-day independent advisory update
 
