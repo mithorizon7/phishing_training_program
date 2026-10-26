@@ -2,6 +2,17 @@
 
 Audit reference date: October 22, 2026, America/New_York. Advisory and scan snapshots were collected that afternoon; execution timestamps are retained in the local evidence. Repository baseline: `c3c0244`, branch `main`, with six pre-existing modified files preserved. This report supersedes March's vulnerability counts; it does not certify the live deployment.
 
+## Application release closure: October 26
+
+The application fixes are committed/pushed through canonical main `ffb6eb93520392b6ad2a9e987a69582bb15d818f` and published at `https://phishing-program--mithorizon7.replit.app`. Successful deployment metadata identifies hosting-preserving merge `0efc823e3e217c2ef776e05a78e7914b93565daf`; the approved existing Python module is the only hosting-specific difference.
+
+- Final local typecheck,17 regressions, all three locales and production build pass. Full/production npm scans0 and refreshed OSV472 pairs0.
+- Loaded-font acceptance passes in all nine English/Latvian/Russian x320/390/1365 combinations, including nine full shifts and36 recovery drills. Final review refinements also pass six short-screen combinations for accessible filters, readable timestamps, long cues and confidence scrolling/keyboard access.
+- Actual public checks at2026-10-26T15:40:11Z verify byte-identical finalJS/CSS, valid font/zoom metadata, CSP/HSTS/nosniff/no-store, JSON404 and69 preserved original scenario IDs with69 unique localization keys and no duplicates.
+- Actual public320px Russian landing/initial training passes after all four fonts load: no clipping/out-of-bounds controls, all five filter names and four correctly gated learner actions present, font requests200, no ORB/console/page failures.
+
+No further application source changes remain. The final receipt update is documentation-only. This is application-release verification, not blanket infrastructure/incident-response certification: backup/restore metadata, historical provider/device exposure and an exact production Node-version string remain the deployment administrator's evidence follow-ups. The unchanged production startup guard enforces the required patched22.x minimum; preview/build22.23.4 must not be represented as a directly observed exact live runtime version.
+
 ## Final remediation update: October 23, 2026
 
 This section supersedes the October 22 baseline findings and access limitations below. The historical baseline is retained to distinguish initial observations from verified remediation.

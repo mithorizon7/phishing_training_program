@@ -6,9 +6,9 @@
 ## Sign-off Gate
 - [ ] G-001 [status:blocked] Comprehensive platform sign-off remains limited by F-008/R-001; the application release is separately verified in G-020.
 - [ ] G-002 [status:blocked] F-008 retains historical platform/log coverage gaps; no risk acceptance inferred.
-- [x] G-003 [status:verified] October26 final checks pass after font/zoom patch: typecheck,17 tests,i18n,build and full/production npm audits0.
+- [x] G-003 [status:verified] October26 final checks pass after all responsive/accessibility edits: typecheck,17 tests,i18n,build and full/production npm audits0; focused hosted checks pass.
 - [ ] G-004 [status:blocked] R-001 retains provider and historical exposure questions, with owner and closure evidence below.
-- [x] G-020 [status:verified] Application release925d512 published and public behavior/data verified October23; final presentation patch tracked separately in Q-009.
+- [x] G-020 [status:verified] Complete application releaseffb6eb9 published October26 as Replit0efc823; public artifact/data/security/mobile checks pass. Broader provider sign-off remains separate.
 
 ## Rerun Matrix
 - [x] G-010 [status:verified] Typecheck/build/i18n/17 tests rerun after final code edits. Full/production npm scans0 and final472-pair OSV scan0 cover current lockfile.
@@ -23,7 +23,8 @@
 - [x] Q-007 [status:verified] Write findings, matrix and deployment/credential/device follow-ups. Evidence: docs/security-audit-2026-10-22.md; unresolved issues explicitly retained.
 - [x] Q-008 [status:verified] Commit/push application fixes and publish existing Replit service.
   - Evidence: main925d512; deployed mergebe101a7; public assets byte-identical,69 original IDs/keyed rows retained, headers/JSON404 and complete public learner flows pass October23. Existing hosting settings/history preserved.
-- [ ] Q-009 [status:in_progress] Finish font-request and browser-zoom accessibility patch; validate loaded-font responsive layout, commit/push and republish.
+- [x] Q-009 [status:verified] Finish font/zoom/responsive/accessibility fixes, commit/push canonical main and republish existing service.
+  - Evidence: mainffb6eb9, deployed0efc823; publish success, publicJS/CSS byte-identical, font/zoom metadata correct,69 IDs/keys retained, security headers/JSON404 pass; actual public320pxRU loaded-font/initial-training smoke passes without errors.
 
 ## Findings Log
 - [x] F-001 [status:verified] [P1] [confidence:0.99] Obsolete/unpinned Node configuration remediated locally; machine/default and deployment follow-ups remain R-001.
@@ -71,8 +72,8 @@
 - [x] F-015 [status:verified] [P2] [confidence:1.0] Loaded-font mobile layout overflows resolved without clipping or hiding learner actions.
   - Evidence: reviewed branch commit251bc67 fixes eight presentation-only components. Replit reports all nine EN/LV/RU x320/390/1365 combinations pass, nine complete shifts and36 recovery drills pass with no errors. Source diff independently reviewed/integrated without hosting-history changes. Final focused accessibility rerun remains Q-009.
   - Owner: codex
-- [ ] F-016 [status:in_progress] [P2] [confidence:0.99] Review identified unnamed icon-only channel tabs and short-screen/long-cue clipping risks.
-  - Evidence: added existing localized channel labels/tooltips, scroll-bounded confidence card, auto-height cue options and readable12px wrapping timestamps. Final local17-test/typecheck/i18n/build and npm0/0 pass; focused browser rerun pending.
+- [x] F-016 [status:verified] [P2] [confidence:0.99] Channel naming and short-screen/long-cue access corrected.
+  - Evidence: finalffb6eb9/0efc823 focused checks pass in all six EN/LV/RU x320/390 combinations with320px-tall viewport: localized tab labels/tooltips/keyboard switching,12px timestamps, full cue text, scroll/keyboard-reachable confidence controls; no overflow/errors. Local final suite also passes.
   - Owner: codex
 
 ## Fix Log
@@ -102,8 +103,8 @@
   - Addresses: F-014. Evidence: client/index.html, client/src/index.css; local suite and hosted request/zoom verification pass. Responsive corrections remain P-013 before publication.
 - [x] P-013 [status:verified] Reflow headers, long text and training/recovery controls at narrow phone widths without hiding actions or clipping content.
   - Addresses: F-015. Evidence:251bc67 independently reviewed; nine-combination loaded-font checks, keyboard checks, nine shifts and36 recovery drills pass. Local integrated suite rerun passes.
-- [ ] P-014 [status:in_progress] Label channel filters and keep confidence/cue content reachable in short/narrow viewports.
-  - Addresses: F-016. Evidence: message-list.tsx, confidence-rating.tsx, feedback-screen.tsx; focused final browser checks pending.
+- [x] P-014 [status:verified] Label channel filters and keep confidence/cue content reachable in short/narrow viewports.
+  - Addresses: F-016. Evidence: message-list.tsx, confidence-rating.tsx, feedback-screen.tsx; final six-combination short-screen checks and full local regression suite pass.
 
 ## Validation Log
 - [x] V-001 [status:verified] Final npm full/production scans.
@@ -117,7 +118,7 @@
 - [x] V-005 [status:verified] CycloneDX SBOM and CISA baseline crosscheck.
   - Evidence: 2026-10-22 pass; SBOM outside git; KEV1754 entries snapshot2026-10-21, 30 explicit CVEs checked; BeyondTrust match dated2026-10-16. Absence is not safety evidence.
 - [x] V-006 [status:verified] Checklist structure and release-gate enforcement.
-  - Evidence: 2026-10-22 pass for structural validation with0 warnings/errors; --require-signoff correctly fails for G-001/G-002/G-004 and F-005/F-008/P-005. No production sign-off claimed.
+  - Evidence: 2026-10-26 pass for structural validation with0 warnings/errors; --require-signoff correctly remains blocked by broad platform gatesG-001/G-002/G-004 and coverage findingF-008. All application findings/fixes and application-release gateG-020/Q-009 are verified. No blanket infrastructure sign-off claimed.
 - [x] V-007 [status:verified] Final production-build database/API smoke.
   - Evidence: 2026-10-23 pass: disposable PostgreSQL17.9 private Unix socket, schema applied only there, built server returns69 scenarios with69 unique keys and API404 JSON; CSP/HSTS/nosniff/no-store verified. No production migration executed.
 - [x] V-008 [status:verified] Independent final dependency crosscheck and schema regression.
@@ -134,14 +135,19 @@
   - Evidence: 2026-10-26 pass: Replit preview confirms all four fonts loaded, combined stylesheet/font requests200, no ORB/failed requests and200% mobile zoom. Current OSV472-pair query0. Responsive acceptance deliberately fails separately under F-015; font success is not layout sign-off.
 - [x] V-014 [status:verified] Responsive source review and final integrated local regression pass.
   - Evidence: 2026-10-26 pass:251bc67 reviewed across all eight TSX files, no behavior/security/data changes; integrated without the hosting-only Python module. Local final17 tests/typecheck/i18n/build/npm full0/production0 pass after accessibility refinements. Replit baseline nine loaded-font viewport/language combinations, nine full shifts and36 recovery drills pass.
+- [x] V-015 [status:verified] Canonical main parity and focused final accessibility checks.
+  - Evidence: 2026-10-26 pass: mainffb6eb9 synchronized as Replit0efc823, exact tracked parity except approved Python hosting module; history/review branch retained. Final production build Node22.23.4/guard unchanged. Six EN/LV/RU x320/390 short-screen checks pass for filters, timestamps, cues, confidence scrolling/keyboard; no overflow or request/console/ORB errors. Existing nine shifts/36 drills reused, not redundantly rerun.
+- [x] V-016 [status:verified] Final actual-public publication and artifact/data/accessibility smoke.
+  - Evidence: 2026-10-26T15:40:11Z pass: publish successc5742419; publicJS SHA256d4f89a6390e3cb9fedff01b70fa9b690c177a3600db73003e35205119c6fc491 andCSSdd67568eb48fac103a7ae7e051842100038892904decd0009970db6e7ab0fea8 byte-match localffb6eb9 build; corrected font/zoom metadata,69 preserved original IDs/unique keys, JSON404/CSP/HSTS/nosniff/no-store confirmed. Replit actual-public320pxRU landing/training passes after four fonts load; all five filter names/four gated actions present, requests200 and no ORB/console/page failures. Build metadata identifies0efc823. No further source changes.
 
 ## Residual Risks
-- [ ] R-001 [status:blocked] Actual deployment, database, historical gateway/images, host/edge and October logs unverified.
-  - Owner: deployment administrator/device owner. Closure: actual revisions/runtime/trust/DB/security configuration, build history and logs from October17 onward. App access/URL established October23; user authorized deployment. Provider history and device checklist remain separate from app publication.
+- [ ] R-001 [status:blocked] Provider backup/restore evidence, historical exposure, host/edge/device coverage and exact production Node-version string remain unverified.
+  - Owner: deployment administrator/device owner. Closure: backup timestamps/retention/restore evidence, exact runtime/trust/provider security configuration and historical logs from October17 onward. Application release/revision/public behavior and patched-Node guard verified; production replica reports PostgreSQL16.15. These platform/history limits do not undo the completed application deployment, and no risk acceptance is inferred.
 - [x] R-002 [status:verified] Build-only braces dependency removed rather than risk-accepted.
   - Owner: codex. Evidence: Tailwind4.3.3 migration, final full/production scans0 and passing build/regressions. Modern browser floor documented; final public browser smoke tracked by Q-008.
 
 ## Change Log
+- 2026-10-26: Complete application releaseffb6eb9 published as0efc823 and actual public artifact/data/security/mobile checks pass. All application findings/fixes closed; F-008/R-001 retain only explicitly unverified platform/history evidence. Final changes after this release are documentation-only receipt updates.
 - 2026-10-26: Resumed after stalled browser-emulation call. Rechecked cleanly scoped pending font/zoom patch and current successful hosting status; avoiding the stalled browser path. No new application feature scope added.
 - 2026-10-23: Committed/pushed base release b1967c8. Replit merged without discarding prior history (8b18f1d), retained only python-base module difference, verified build/preview Node22.23.4 and completed first shifts/recovery in six desktop/mobile-language combinations. Found two mobile recovery overflows; final patch also prevents duplication of the actual legacy production library. Public deployment remains unchanged until final verification.
 - 2026-10-23: Final12-test suite/typecheck/build/i18n pass; full and production audits0. Recreated disposable DB and verified69 scenarios/API controls. Correct Replit connector access restored; app-release work continues with historical infrastructure questions explicitly separate.
