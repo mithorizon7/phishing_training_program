@@ -4,10 +4,11 @@
 - [x] Q-000 [status:verified] Complete authorized source/dependency audit and safe local remediation, preserve existing work, and document unresolved release requirements. Evidence: docs/security-audit-2026-10-22.md. This is not production sign-off.
 
 ## Sign-off Gate
-- [ ] G-001 [status:in_progress] Verify application publication and public smoke before declaring the release complete; broader infrastructure sign-off remains separate.
+- [ ] G-001 [status:blocked] Comprehensive platform sign-off remains limited by F-008/R-001; the application release is separately verified in G-020.
 - [ ] G-002 [status:blocked] F-008 retains historical platform/log coverage gaps; no risk acceptance inferred.
-- [x] G-003 [status:verified] Final code passes typecheck,17 tests,i18n,production build and full/production npm scans after Zod/mobile/seeding edits.
+- [x] G-003 [status:verified] October26 final checks pass after font/zoom patch: typecheck,17 tests,i18n,build and full/production npm audits0.
 - [ ] G-004 [status:blocked] R-001 retains provider and historical exposure questions, with owner and closure evidence below.
+- [x] G-020 [status:verified] Application release925d512 published and public behavior/data verified October23; final presentation patch tracked separately in Q-009.
 
 ## Rerun Matrix
 - [x] G-010 [status:verified] Typecheck/build/i18n/17 tests rerun after final code edits. Full/production npm scans0 and final472-pair OSV scan0 cover current lockfile.
@@ -20,7 +21,9 @@
 - [x] Q-005 [status:verified] Implement compatible security fixes. Evidence: runtime controls, server/security.ts, Vite restrictions, dormant auth-origin/TTL fixes, dependency updates and secret-file ignore patterns.
 - [x] Q-006 [status:verified] Run dependency/static/secret-history and meaningful regression checks. Evidence: validation log below; sensitive outputs outside git in mode-0700 /private/tmp/phishing-security-20261022.
 - [x] Q-007 [status:verified] Write findings, matrix and deployment/credential/device follow-ups. Evidence: docs/security-audit-2026-10-22.md; unresolved issues explicitly retained.
-- [ ] Q-008 [status:in_progress] Commit/push verified fixes; preserve remote hosting settings, sync Replit, verify patched build/runtime, publish and smoke-test the actual public service.
+- [x] Q-008 [status:verified] Commit/push application fixes and publish existing Replit service.
+  - Evidence: main925d512; deployed mergebe101a7; public assets byte-identical,69 original IDs/keyed rows retained, headers/JSON404 and complete public learner flows pass October23. Existing hosting settings/history preserved.
+- [ ] Q-009 [status:in_progress] Finish font-request and browser-zoom accessibility patch; validate loaded-font responsive layout, commit/push and republish.
 
 ## Findings Log
 - [x] F-001 [status:verified] [P1] [confidence:0.99] Obsolete/unpinned Node configuration remediated locally; machine/default and deployment follow-ups remain R-001.
@@ -44,8 +47,8 @@
 - [x] F-007 [status:verified] [P2] [confidence:0.98] Dormant auth rejected arbitrary hosts, corrected session TTL and origin-port/IPv6 handling.
   - Evidence: origin.ts strict allowlist/canonicalization, strategy cap32, TTL converted to seconds; origin regression and typecheck pass. Integration not enabled.
   - Owner: codex
-- [ ] F-008 [status:in_progress] [P2] [confidence:1.0] Deployment verification in progress; historical infrastructure/log coverage remains incomplete.
-  - Evidence: October 23 connector now resolves correct app; existing published URL found, workspace Node20.20.0 and revision166a412. Q-008 tracks publication. Disposable PostgreSQL17.9 smoke has69 unique scenario keys; this is not production DB patch/backup evidence.
+- [ ] F-008 [status:blocked] [P2] [confidence:1.0] Application release verified; historical infrastructure/log coverage and backup metadata remain incomplete.
+  - Evidence: production startup logs identify mergebe101a7 and passed Node guard, without exact version string. Production read replica reports PostgreSQL16.15. Public flows, assets and69 retained scenario IDs verified. Backup timestamps/retention/restore evidence and historical provider/device coverage remain unavailable; previewNode22.23.4 is not exact production-version proof.
   - Owner: codex for app release; deployment administrator for provider/DB/history checks in report.
 - [x] F-009 [status:verified] [P3] [confidence:0.99] Historical secret-scan candidate triaged as false positive.
   - Evidence: Gitleaks generic-api-key at commit620c8c1b3b, localize-scenario.ts:5 is a scenario i18n variable expression; no credential. Working scan zero candidates.
@@ -56,11 +59,14 @@
 - [x] F-011 [status:verified] [P1] [confidence:0.99] Zod advisory GHSA-mrhx-c7xc-m3w5 independently identified and patched despite npm audit0.
   - Evidence: October23 initial474-pair OSV query found Zod3.24.2; upgraded4.6.7/drizzle-zod0.8.3, removed two unused adapters rather than forcing incompatible peers. Final472-pair query0. New schema/early-rejection tests2/2 pass; whole-suite rerun tracked in G-003.
   - Owner: codex
-- [ ] F-012 [status:in_progress] [P2] [confidence:1.0] Mobile recovery-result actions overflow in Latvian/Russian.
-  - Evidence: Replit real-browser checks measured439px/504px page widths at390px. Stack/wrap result actions and wrap badges; final hosted rerun required.
+- [x] F-012 [status:verified] [P2] [confidence:1.0] Localized mobile recovery-result overflow resolved.
+  - Evidence: Replit final production-build checks measure390px page width in all three languages at390px. Independent local browser confirms English390px, Latvian/Russian390px and320px without overflow; recovery100/100 and no browser errors.
   - Owner: codex
 - [x] F-013 [status:verified] [P1] [confidence:1.0] Legacy unkeyed scenario duplication prevented by key backfill and serialized startup.
   - Evidence: actual public API69 null-key rows exactly match authored fingerprints. Disposable PostgreSQL concurrent startup preserves69 IDs, restores69 keys, creates0 rows; repeated startup changes0.
+  - Owner: codex
+- [ ] F-014 [status:in_progress] [P3] [confidence:1.0] Malformed Google Fonts request blocked; viewport also prohibited browser zoom.
+  - Evidence: public browser reports external stylesheet ERR_BLOCKED_BY_ORB; invalid CSS font-axis tuples replaced by one valid request for four used font families. Official corrected endpoint returnsHTTP200. Removed maximum-scale=1. Final loaded-font layout checks pending.
   - Owner: codex
 
 ## Fix Log
@@ -82,10 +88,12 @@
   - Addresses: F-010. Evidence: client/src/lib/training-engine.ts, tests/training-engine.test.ts; locale validator and12 tests pass.
 - [x] P-009 [status:verified] Upgrade Zod4.6.7 and drizzle-zod0.8.3; remove unused form/error adapters.
   - Addresses: F-011. Evidence: package/lock and tests/schema.test.ts; authored insert validation and bounded-collection early rejection pass; OSV472 pairs0.
-- [ ] P-010 [status:in_progress] Stack/wrap localized recovery results and replace nested link/button with one semantic action.
-  - Addresses: F-012. Evidence: client/src/pages/recover.tsx; final browser rerun pending.
+- [x] P-010 [status:verified] Stack/wrap localized recovery results and replace nested link/button with one semantic action.
+  - Addresses: F-012. Evidence: client/src/pages/recover.tsx; final Replit and independent local browser checks above pass.
 - [x] P-011 [status:verified] Backfill legacy keys without duplicating data; serialize startup synchronization.
   - Addresses: F-013. Evidence: server/scenario-seeding.ts, tests/scenario-seeding.test.ts; actual concurrent-DB/idempotence smoke passes. Native insert types replace widened Zod enum inference in authored seed typing.
+- [ ] P-012 [status:in_progress] Consolidate valid font loading, remove unused scaffold font requests and restore browser zoom.
+  - Addresses: F-014. Evidence: client/index.html, client/src/index.css; final build/browser checks pending.
 
 ## Validation Log
 - [x] V-001 [status:verified] Final npm full/production scans.
@@ -106,6 +114,12 @@
   - Evidence: 2026-10-23 pass: OSV472 distinct locked name/version pairs0 advisory matches; CycloneDX SBOM regenerated outside Git; schema regression2/2. Full-suite rerun remains G-003.
 - [x] V-009 [status:verified] Concurrent legacy startup/data-retention smoke.
   - Evidence: 2026-10-23 pass against disposable PostgreSQL only:69 unkeyed fixtures, two concurrent transactions restore69 keys, create0 rows, preserve all69 IDs; repeat returns0 changes. Public pre-release69 rows have exact matching fingerprints; no destructive production operation.
+- [x] V-010 [status:verified] Final synchronized production-build browser/runtime checks.
+  - Evidence: 2026-10-23 pass reported by Replit for mergebe101a7 including925d512; code/lock parity except retained python-base module, Node22.23.4 build/preview/test,17 tests, npm0/0, OSV472/0. Six desktop/mobile-language combinations complete first10-message shift, feedback/cues/summary/dashboard and recovery100/100. Independent local mobile checks pass390px and320px for long translations. Actual public checks remain Q-008.
+- [x] V-011 [status:verified] Actual public deployment and end-to-end/data verification.
+  - Evidence: 2026-10-23 pass: Replit publish success; direct publicJS/CSS byte comparison, CSP/HSTS/nosniff/no-store/JSON404,69 preserved IDs and69 distinct keys. Replit public desktopEnglish/mobileLatvian/Russian complete10-message shifts and recovery100/100; independent browser verifies initial rail, progression and Delete safe/+10 with no application errors. External font error tracked in F-014. Exact runtime minor/patch and backups remain F-008.
+- [x] V-012 [status:verified] Final font/zoom patch local regression pass.
+  - Evidence: 2026-10-26 pass on Node22.23.4: npm run check, npm test17/17, i18n validation, production build, full/production audits0; corrected Google Fonts requestHTTP200. Loaded-font hosted responsive/public checks remain Q-009.
 
 ## Residual Risks
 - [ ] R-001 [status:blocked] Actual deployment, database, historical gateway/images, host/edge and October logs unverified.
@@ -114,6 +128,7 @@
   - Owner: codex. Evidence: Tailwind4.3.3 migration, final full/production scans0 and passing build/regressions. Modern browser floor documented; final public browser smoke tracked by Q-008.
 
 ## Change Log
+- 2026-10-26: Resumed after stalled browser-emulation call. Rechecked cleanly scoped pending font/zoom patch and current successful hosting status; avoiding the stalled browser path. No new application feature scope added.
 - 2026-10-23: Committed/pushed base release b1967c8. Replit merged without discarding prior history (8b18f1d), retained only python-base module difference, verified build/preview Node22.23.4 and completed first shifts/recovery in six desktop/mobile-language combinations. Found two mobile recovery overflows; final patch also prevents duplication of the actual legacy production library. Public deployment remains unchanged until final verification.
 - 2026-10-23: Final12-test suite/typecheck/build/i18n pass; full and production audits0. Recreated disposable DB and verified69 scenarios/API controls. Correct Replit connector access restored; app-release work continues with historical infrastructure questions explicitly separate.
 - 2026-10-22: User authorized finishing fixes, committing and deployment. Reopened validation gate; created isolated PostgreSQL17.9 cluster on a private Unix socket for actual database smoke; production database remains untouched.

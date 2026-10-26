@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Instrument+Sans:opsz,wght@8..144,400,500,600,700&family=Instrument+Serif:opsz,wght@8..144,400,500,600&family=Unbounded:wght@400,500,600,700&display=swap");
-
 @import "tailwindcss" source(none);
 @config "../../tailwind.config.ts";
 @source ".";
