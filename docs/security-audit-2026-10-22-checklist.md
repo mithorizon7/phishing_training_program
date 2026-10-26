@@ -65,8 +65,14 @@
 - [x] F-013 [status:verified] [P1] [confidence:1.0] Legacy unkeyed scenario duplication prevented by key backfill and serialized startup.
   - Evidence: actual public API69 null-key rows exactly match authored fingerprints. Disposable PostgreSQL concurrent startup preserves69 IDs, restores69 keys, creates0 rows; repeated startup changes0.
   - Owner: codex
-- [ ] F-014 [status:in_progress] [P3] [confidence:1.0] Malformed Google Fonts request blocked; viewport also prohibited browser zoom.
-  - Evidence: public browser reports external stylesheet ERR_BLOCKED_BY_ORB; invalid CSS font-axis tuples replaced by one valid request for four used font families. Official corrected endpoint returnsHTTP200. Removed maximum-scale=1. Final loaded-font layout checks pending.
+- [x] F-014 [status:verified] [P3] [confidence:1.0] Font requests and browser zoom corrected; exposed layout issues separately tracked in F-015.
+  - Evidence: October26 Replit977a17e/a887a8f confirms all four families loaded, one combined stylesheet, all font/stylesheet requests200 with no ORB failures, and mobile zoom200%. Removed maximum-scale=1; independent endpointHTTP200.
+  - Owner: codex
+- [x] F-015 [status:verified] [P2] [confidence:1.0] Loaded-font mobile layout overflows resolved without clipping or hiding learner actions.
+  - Evidence: reviewed branch commit251bc67 fixes eight presentation-only components. Replit reports all nine EN/LV/RU x320/390/1365 combinations pass, nine complete shifts and36 recovery drills pass with no errors. Source diff independently reviewed/integrated without hosting-history changes. Final focused accessibility rerun remains Q-009.
+  - Owner: codex
+- [ ] F-016 [status:in_progress] [P2] [confidence:0.99] Review identified unnamed icon-only channel tabs and short-screen/long-cue clipping risks.
+  - Evidence: added existing localized channel labels/tooltips, scroll-bounded confidence card, auto-height cue options and readable12px wrapping timestamps. Final local17-test/typecheck/i18n/build and npm0/0 pass; focused browser rerun pending.
   - Owner: codex
 
 ## Fix Log
@@ -92,8 +98,12 @@
   - Addresses: F-012. Evidence: client/src/pages/recover.tsx; final Replit and independent local browser checks above pass.
 - [x] P-011 [status:verified] Backfill legacy keys without duplicating data; serialize startup synchronization.
   - Addresses: F-013. Evidence: server/scenario-seeding.ts, tests/scenario-seeding.test.ts; actual concurrent-DB/idempotence smoke passes. Native insert types replace widened Zod enum inference in authored seed typing.
-- [ ] P-012 [status:in_progress] Consolidate valid font loading, remove unused scaffold font requests and restore browser zoom.
-  - Addresses: F-014. Evidence: client/index.html, client/src/index.css; final build/browser checks pending.
+- [x] P-012 [status:verified] Consolidate valid font loading, remove unused scaffold font requests and restore browser zoom.
+  - Addresses: F-014. Evidence: client/index.html, client/src/index.css; local suite and hosted request/zoom verification pass. Responsive corrections remain P-013 before publication.
+- [x] P-013 [status:verified] Reflow headers, long text and training/recovery controls at narrow phone widths without hiding actions or clipping content.
+  - Addresses: F-015. Evidence:251bc67 independently reviewed; nine-combination loaded-font checks, keyboard checks, nine shifts and36 recovery drills pass. Local integrated suite rerun passes.
+- [ ] P-014 [status:in_progress] Label channel filters and keep confidence/cue content reachable in short/narrow viewports.
+  - Addresses: F-016. Evidence: message-list.tsx, confidence-rating.tsx, feedback-screen.tsx; focused final browser checks pending.
 
 ## Validation Log
 - [x] V-001 [status:verified] Final npm full/production scans.
@@ -120,6 +130,10 @@
   - Evidence: 2026-10-23 pass: Replit publish success; direct publicJS/CSS byte comparison, CSP/HSTS/nosniff/no-store/JSON404,69 preserved IDs and69 distinct keys. Replit public desktopEnglish/mobileLatvian/Russian complete10-message shifts and recovery100/100; independent browser verifies initial rail, progression and Delete safe/+10 with no application errors. External font error tracked in F-014. Exact runtime minor/patch and backups remain F-008.
 - [x] V-012 [status:verified] Final font/zoom patch local regression pass.
   - Evidence: 2026-10-26 pass on Node22.23.4: npm run check, npm test17/17, i18n validation, production build, full/production audits0; corrected Google Fonts requestHTTP200. Loaded-font hosted responsive/public checks remain Q-009.
+- [x] V-013 [status:verified] Font delivery/zoom and independent advisory refresh.
+  - Evidence: 2026-10-26 pass: Replit preview confirms all four fonts loaded, combined stylesheet/font requests200, no ORB/failed requests and200% mobile zoom. Current OSV472-pair query0. Responsive acceptance deliberately fails separately under F-015; font success is not layout sign-off.
+- [x] V-014 [status:verified] Responsive source review and final integrated local regression pass.
+  - Evidence: 2026-10-26 pass:251bc67 reviewed across all eight TSX files, no behavior/security/data changes; integrated without the hosting-only Python module. Local final17 tests/typecheck/i18n/build/npm full0/production0 pass after accessibility refinements. Replit baseline nine loaded-font viewport/language combinations, nine full shifts and36 recovery drills pass.
 
 ## Residual Risks
 - [ ] R-001 [status:blocked] Actual deployment, database, historical gateway/images, host/edge and October logs unverified.

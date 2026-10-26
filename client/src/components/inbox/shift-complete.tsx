@@ -41,7 +41,7 @@ export function ShiftComplete({ shift, onGoHome, onPlayAgain }: ShiftCompletePro
                 isPerfect ? 'text-chart-2' : accuracy >= 70 ? 'text-primary' : 'text-chart-4'
               }`} />
             </div>
-            <CardTitle className="text-2xl">{t("training.shiftComplete.title")}</CardTitle>
+            <CardTitle className="break-words text-2xl">{t("training.shiftComplete.title")}</CardTitle>
             {isPerfect && (
               <Badge className="mt-2 bg-chart-2 text-white">{t("training.shiftComplete.perfectShift")}</Badge>
             )}
@@ -63,7 +63,7 @@ export function ShiftComplete({ shift, onGoHome, onPlayAgain }: ShiftCompletePro
               <Progress value={accuracy} className="h-2" />
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid min-w-0 grid-cols-2 gap-3 sm:gap-4">
               <div className="p-4 rounded-2xl border border-black/5 dark:border-white/10 bg-background/60 text-center">
                 <div className="flex items-center justify-center gap-2 mb-2">
                   <Target className="w-5 h-5 text-chart-2" />
@@ -71,7 +71,7 @@ export function ShiftComplete({ shift, onGoHome, onPlayAgain }: ShiftCompletePro
                     {shift.correctDecisions}
                   </span>
                 </div>
-                <p className="text-xs text-muted-foreground">{t("training.shiftComplete.correctDecisions")}</p>
+                <p className="break-words text-xs text-muted-foreground">{t("training.shiftComplete.correctDecisions")}</p>
               </div>
               
               <div className="p-4 rounded-2xl border border-black/5 dark:border-white/10 bg-background/60 text-center">
@@ -81,7 +81,7 @@ export function ShiftComplete({ shift, onGoHome, onPlayAgain }: ShiftCompletePro
                     {shift.falsePositives}
                   </span>
                 </div>
-                <p className="text-xs text-muted-foreground">{t("training.shiftComplete.falsePositives")}</p>
+                <p className="break-words text-xs text-muted-foreground">{t("training.shiftComplete.falsePositives")}</p>
               </div>
               
               <div className="p-4 rounded-2xl border border-black/5 dark:border-white/10 bg-background/60 text-center">
@@ -91,7 +91,7 @@ export function ShiftComplete({ shift, onGoHome, onPlayAgain }: ShiftCompletePro
                     {shift.compromised}
                   </span>
                 </div>
-                <p className="text-xs text-muted-foreground">{t("training.shiftComplete.compromised")}</p>
+                <p className="break-words text-xs text-muted-foreground">{t("training.shiftComplete.compromised")}</p>
               </div>
               
               <div className="p-4 rounded-2xl border border-black/5 dark:border-white/10 bg-background/60 text-center">
@@ -101,26 +101,26 @@ export function ShiftComplete({ shift, onGoHome, onPlayAgain }: ShiftCompletePro
                     {shift.verificationsUsed}
                   </span>
                 </div>
-                <p className="text-xs text-muted-foreground">{t("training.shiftComplete.verificationsUsed")}</p>
+                <p className="break-words text-xs text-muted-foreground">{t("training.shiftComplete.verificationsUsed")}</p>
               </div>
             </div>
 
-            <div className="flex gap-3 pt-4">
+            <div className="flex flex-col gap-3 pt-4 sm:flex-row">
               <Button 
                 variant="outline" 
-                className="flex-1"
+                className="h-auto min-h-10 min-w-0 flex-1 whitespace-normal px-2 py-2 sm:min-h-9 sm:px-4"
                 onClick={onGoHome}
                 data-testid="button-go-home"
               >
-                <Home className="w-4 h-4 mr-2" />
+                <Home className="w-4 h-4 shrink-0 mr-2" />
                 {t("training.shiftComplete.backToDashboard")}
               </Button>
               <Button 
-                className="flex-1"
+                className="h-auto min-h-10 min-w-0 flex-1 whitespace-normal px-2 py-2 sm:min-h-9 sm:px-4"
                 onClick={onPlayAgain}
                 data-testid="button-play-again"
               >
-                <RotateCcw className="w-4 h-4 mr-2" />
+                <RotateCcw className="w-4 h-4 shrink-0 mr-2" />
                 {t("training.shiftComplete.startNewShift")}
               </Button>
             </div>

@@ -97,24 +97,24 @@ export default function Landing() {
           <div className="absolute bottom-[-10rem] right-10 h-72 w-72 rounded-full bg-chart-3/20 blur-[110px] opacity-70 animate-float" />
         </div>
 
-        <header className="relative z-10 h-[72px] border-b border-black/5 dark:border-white/10 bg-background/70 backdrop-blur-xl">
-          <div className="h-full max-w-7xl mx-auto flex items-center justify-between px-6">
-            <Link href="/" className="flex items-center gap-3">
+        <header className="relative z-10 min-h-[72px] border-b border-black/5 dark:border-white/10 bg-background/70 backdrop-blur-xl sm:h-[72px]">
+          <div className="h-full min-h-[72px] max-w-7xl mx-auto flex items-center justify-between gap-2 px-3 py-2 sm:px-6 sm:py-0">
+            <Link href="/" className="flex min-w-0 items-center gap-2 sm:gap-3">
               <div className="relative flex items-center justify-center rounded-2xl bg-primary/10 p-2">
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/35 to-transparent blur-sm" />
                 <img
                   src={logoImage}
                   alt={t("landing.alt.logo")}
-                  className="relative w-12 h-12 object-contain"
+                  className="relative h-10 w-10 shrink-0 object-contain sm:h-12 sm:w-12"
                   data-testid="img-logo-landing"
                 />
               </div>
-              <span className="font-display text-base sm:text-lg tracking-[0.08em]" data-testid="text-landing-title">
+              <span className="min-w-0 break-words font-display text-sm tracking-[0.04em] sm:text-lg sm:tracking-[0.08em]" data-testid="text-landing-title">
                 {t("app.title")}
               </span>
             </Link>
 
-            <div className="flex items-center gap-2">
+            <div className="flex min-w-0 flex-wrap items-center justify-end gap-1 sm:gap-2">
               <LanguageSwitcher />
               <ThemeToggle />
               <Button asChild size="sm" variant="ghost" className="hidden sm:inline-flex">
@@ -122,8 +122,8 @@ export default function Landing() {
                   {t("landing.hero.secondaryCta")}
                 </Link>
               </Button>
-              <Button asChild size="sm">
-                <Link href="/training" data-testid="link-landing-start">
+              <Button asChild size="sm" className="h-auto min-h-9 min-w-0 max-w-[96px] whitespace-normal px-2 text-center leading-tight sm:min-h-8 sm:max-w-none sm:px-3 sm:leading-normal">
+                <Link href="/training" className="whitespace-normal" data-testid="link-landing-start">
                   {t("landing.hero.primaryCta")}
                 </Link>
               </Button>
@@ -134,24 +134,24 @@ export default function Landing() {
         <main className="relative z-10">
           <section className="px-6 pt-20 pb-16">
             <div className="max-w-7xl mx-auto grid gap-14 lg:grid-cols-[1.15fr_0.85fr] items-center">
-              <div>
-                <Badge variant="outline" className="mb-6 chip animate-rise [animation-delay:40ms]">
+              <div className="min-w-0">
+                <Badge variant="outline" className="mb-6 max-w-full whitespace-normal break-words chip animate-rise [animation-delay:40ms]">
                   {t("landing.badge")}
                 </Badge>
-                <h1 className="text-4xl md:text-6xl font-semibold leading-tight md:leading-none animate-rise [animation-delay:120ms]" data-testid="text-landing-hero">
+                <h1 className="max-w-full break-words text-3xl font-semibold leading-tight animate-rise [animation-delay:120ms] sm:text-4xl md:text-6xl md:leading-none" data-testid="text-landing-hero">
                   {t("landing.hero.title")}
                 </h1>
                 <p className="mt-5 text-lg text-muted-foreground max-w-xl animate-rise [animation-delay:200ms]">
                   {t("landing.hero.subtitle")}
                 </p>
                 <div className="mt-8 flex flex-wrap items-center gap-3 animate-rise [animation-delay:260ms]">
-                  <Button asChild size="lg" data-testid="button-landing-primary">
+                  <Button asChild size="lg" className="max-w-full whitespace-normal text-center" data-testid="button-landing-primary">
                     <Link href="/training">
                       <PlayCircle className="w-5 h-5 mr-2" />
                       {t("landing.hero.primaryCta")}
                     </Link>
                   </Button>
-                  <Button asChild size="lg" variant="outline" data-testid="button-landing-dashboard">
+                  <Button asChild size="lg" variant="outline" className="max-w-full whitespace-normal text-center" data-testid="button-landing-dashboard">
                     <Link href="/dashboard">
                       {t("landing.hero.secondaryCta")}
                     </Link>
@@ -291,13 +291,13 @@ export default function Landing() {
                       </p>
                     </div>
                     <div className="flex flex-wrap gap-3">
-                      <Button asChild size="lg">
+                      <Button asChild size="lg" className="max-w-full whitespace-normal text-center">
                         <Link href="/training">
                           <PlayCircle className="w-5 h-5 mr-2" />
                           {t("landing.cta.start")}
                         </Link>
                       </Button>
-                      <Button asChild size="lg" variant="outline">
+                      <Button asChild size="lg" variant="outline" className="max-w-full whitespace-normal text-center">
                         <Link href="/recover">
                           {t("landing.cta.recover")}
                         </Link>

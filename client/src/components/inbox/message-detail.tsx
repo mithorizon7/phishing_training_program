@@ -172,11 +172,11 @@ export function MessageDetail({
                 </Badge>
                 <span className="text-xs text-muted-foreground">{scenario.timestamp}</span>
               </div>
-              <h2 className="font-semibold text-lg" data-testid="text-sender-name">
+              <h2 className="break-words font-semibold text-lg [overflow-wrap:anywhere]" data-testid="text-sender-name">
                 {scenario.senderName}
               </h2>
               {scenario.subject && (
-                <p className="text-muted-foreground" data-testid="text-subject">
+                <p className="break-words text-muted-foreground [overflow-wrap:anywhere]" data-testid="text-subject">
                   {scenario.subject}
                 </p>
               )}
@@ -188,7 +188,7 @@ export function MessageDetail({
         
         <CardContent className="py-6">
           <div 
-            className="prose prose-sm max-w-none dark:prose-invert whitespace-pre-wrap"
+            className="prose prose-sm max-w-none break-words dark:prose-invert whitespace-pre-wrap [overflow-wrap:anywhere]"
             data-testid="text-message-body"
           >
             {scenario.body}
@@ -225,16 +225,16 @@ export function MessageDetail({
                 </AccordionTrigger>
                 <AccordionContent>
                   <div className="space-y-3 text-sm">
-                    <div className="flex items-center justify-between gap-2">
+                    <div className="flex flex-col items-start justify-between gap-1 sm:flex-row sm:items-center sm:gap-2">
                       <span className="text-muted-foreground">{t("training.message.displayName")}:</span>
-                      <span className="font-medium">{scenario.senderName}</span>
+                      <span className="min-w-0 break-words font-medium sm:text-right [overflow-wrap:anywhere]">{scenario.senderName}</span>
                     </div>
                     {scenario.senderEmail && (
-                      <div className="flex items-center justify-between gap-2">
+                      <div className="flex flex-col items-start justify-between gap-1 sm:flex-row sm:items-center sm:gap-2">
                         <span className="text-muted-foreground">{senderIdentifierLabel}:</span>
-                        <div className="flex items-center gap-2">
+                        <div className="flex min-w-0 max-w-full items-center gap-2 sm:justify-end">
                           {showRealSender ? (
-                            <code className="text-xs bg-background/60 border border-black/5 dark:border-white/10 px-2 py-1 rounded font-mono">
+                            <code className="min-w-0 break-all whitespace-normal rounded border border-black/5 bg-background/60 px-2 py-1 font-mono text-xs dark:border-white/10">
                               {scenario.senderEmail}
                             </code>
                           ) : (
@@ -257,17 +257,17 @@ export function MessageDetail({
                       </div>
                     )}
                     {scenario.senderPhone && (
-                      <div className="flex items-center justify-between gap-2">
+                      <div className="flex flex-col items-start justify-between gap-1 sm:flex-row sm:items-center sm:gap-2">
                         <span className="text-muted-foreground">{t("training.message.phoneNumber")}:</span>
-                        <code className="text-xs bg-background/60 border border-black/5 dark:border-white/10 px-2 py-1 rounded font-mono">
+                        <code className="break-all rounded border border-black/5 bg-background/60 px-2 py-1 font-mono text-xs dark:border-white/10">
                           {scenario.senderPhone}
                         </code>
                       </div>
                     )}
                     {scenario.replyTo && scenario.replyTo !== scenario.senderEmail && (
-                      <div className="flex items-center justify-between gap-2">
+                      <div className="flex flex-col items-start justify-between gap-1 sm:flex-row sm:items-center sm:gap-2">
                         <span className="text-muted-foreground">{t("training.message.replyTo")}:</span>
-                        <code className="text-xs bg-destructive/10 text-destructive px-2 py-1 rounded font-mono">
+                        <code className="break-all rounded bg-destructive/10 px-2 py-1 font-mono text-xs text-destructive">
                           {scenario.replyTo}
                         </code>
                       </div>
@@ -288,16 +288,16 @@ export function MessageDetail({
                 <AccordionContent>
                   <div className="space-y-3 text-sm">
                     {scenario.linkText && (
-                      <div className="flex items-center justify-between gap-2">
+                      <div className="flex flex-col items-start justify-between gap-1 sm:flex-row sm:items-center sm:gap-2">
                         <span className="text-muted-foreground">{t("training.message.linkText")}:</span>
-                        <span className="text-primary underline">{scenario.linkText}</span>
+                        <span className="min-w-0 break-all text-primary underline sm:text-right">{scenario.linkText}</span>
                       </div>
                     )}
-                    <div className="flex items-center justify-between gap-2">
+                    <div className="flex flex-col items-start justify-between gap-1 sm:flex-row sm:items-center sm:gap-2">
                       <span className="text-muted-foreground">{t("training.message.actualUrl")}:</span>
-                      <div className="flex items-center gap-2">
+                      <div className="flex min-w-0 max-w-full items-center gap-2 sm:justify-end">
                         {showLinkTarget ? (
-                          <code className="text-xs bg-background/60 border border-black/5 dark:border-white/10 px-2 py-1 rounded font-mono max-w-[200px] truncate">
+                          <code className="min-w-0 break-all whitespace-normal rounded border border-black/5 bg-background/60 px-2 py-1 font-mono text-xs dark:border-white/10">
                             {scenario.linkUrl}
                           </code>
                         ) : (
@@ -352,8 +352,8 @@ export function MessageDetail({
       {onLensCheck && (
         <Card className={`shrink-0 transition-colors bg-card/60 ${lensComplete ? 'border-chart-2/50' : 'border-amber-500/50'}`}>
           <CardHeader className="pb-2">
-            <div className="flex items-center justify-between gap-2">
-              <h3 className="font-semibold text-sm flex items-center gap-2">
+            <div className="flex flex-wrap items-start justify-between gap-2">
+              <h3 className="flex min-w-0 items-center gap-2 font-semibold text-sm">
                 <Search className="w-4 h-4" />
                 {t("training.lensTool.title")}
                 <Badge variant={lensComplete ? "default" : "secondary"} className="text-xs">
@@ -394,11 +394,11 @@ export function MessageDetail({
                       className="mt-0.5 pointer-events-none"
                     />
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-1.5">
+                      <div className="flex min-w-0 items-start gap-1.5">
                         <Icon className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
-                        <span className="text-xs font-medium truncate">{t(check.labelKey)}</span>
+                        <span className="min-w-0 break-words text-xs font-medium">{t(check.labelKey)}</span>
                       </div>
-                      <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">{t(check.descriptionKey)}</p>
+                      <p className="mt-0.5 break-words text-xs text-muted-foreground">{t(check.descriptionKey)}</p>
                     </div>
                   </div>
                 );
@@ -410,8 +410,8 @@ export function MessageDetail({
 
       <Card className="shrink-0 border border-black/5 dark:border-white/10 bg-card/60">
         <CardContent className="py-4">
-          <div className="flex items-center justify-between gap-2 mb-4">
-            <p className="text-sm text-muted-foreground">{t("training.actions.prompt")}</p>
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
+            <p className="min-w-0 text-sm text-muted-foreground">{t("training.actions.prompt")}</p>
             <Badge variant="outline" className="text-xs">
               {t("training.actions.verificationsLeft", { count: verificationsRemaining })}
             </Badge>
@@ -441,45 +441,49 @@ export function MessageDetail({
               </p>
             </div>
           )}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
             <Button
               variant="default"
               size="lg"
+              className="h-auto min-h-11 min-w-0 whitespace-normal px-2 py-2 text-center leading-tight"
               onClick={() => onAction("report")}
               disabled={actionDisabled}
               data-testid="button-action-report"
             >
-              <Shield className="w-4 h-4 mr-2" />
+              <Shield className="w-4 h-4 shrink-0 mr-1 sm:mr-2" />
               {t("training.actions.report")}
             </Button>
             <Button
               variant="outline"
               size="lg"
+              className="h-auto min-h-11 min-w-0 whitespace-normal px-2 py-2 text-center leading-tight"
               onClick={() => onAction("delete")}
               disabled={actionDisabled}
               data-testid="button-action-delete"
             >
-              <Trash2 className="w-4 h-4 mr-2" />
+              <Trash2 className="w-4 h-4 shrink-0 mr-1 sm:mr-2" />
               {t("training.actions.delete")}
             </Button>
             <Button
               variant="outline"
               size="lg"
+              className="h-auto min-h-11 min-w-0 whitespace-normal px-2 py-2 text-center leading-tight"
               onClick={() => onAction("verify")}
               disabled={actionDisabled || verificationsRemaining <= 0}
               data-testid="button-action-verify"
             >
-              <CheckCircle className="w-4 h-4 mr-2" />
+              <CheckCircle className="w-4 h-4 shrink-0 mr-1 sm:mr-2" />
               {t("training.actions.verify")}
             </Button>
             <Button
               variant="destructive"
               size="lg"
+              className="h-auto min-h-11 min-w-0 whitespace-normal px-2 py-2 text-center leading-tight"
               onClick={() => onAction("proceed")}
               disabled={actionDisabled}
               data-testid="button-action-proceed"
             >
-              <ArrowRight className="w-4 h-4 mr-2" />
+              <ArrowRight className="w-4 h-4 shrink-0 mr-1 sm:mr-2" />
               {t("training.actions.proceed")}
             </Button>
           </div>
