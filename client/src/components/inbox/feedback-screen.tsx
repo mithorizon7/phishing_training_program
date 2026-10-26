@@ -132,12 +132,12 @@ export function FeedbackScreen({
       <div className="min-h-full flex items-center justify-center p-4 py-8">
         <Card className="w-full max-w-2xl overflow-hidden glass-panel-strong">
           <div className={`p-4 ${outcomeConfig.bgClass} border-b ${outcomeConfig.borderClass}`}>
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-3">
               <div className={`w-12 h-12 rounded-full ${outcomeConfig.bgClass} flex items-center justify-center`}>
                 <Icon className={`w-6 h-6 ${outcomeConfig.textClass}`} />
               </div>
-              <div>
-                <h2 className={`text-xl font-bold ${outcomeConfig.textClass}`} data-testid="text-outcome">
+              <div className="min-w-0 flex-1 sm:flex-initial">
+                <h2 className={`break-words text-xl font-bold ${outcomeConfig.textClass}`} data-testid="text-outcome">
                   {outcomeConfig.label}
                 </h2>
                 <p className="text-sm text-muted-foreground">
@@ -146,7 +146,7 @@ export function FeedbackScreen({
                   })}
                 </p>
               </div>
-              <div className="ml-auto text-right">
+              <div className="ml-auto shrink-0 text-right">
                 <div className={`text-2xl font-bold ${pointsEarned >= 0 ? 'text-chart-2' : 'text-destructive'}`}>
                   {pointsEarned >= 0 ? '+' : ''}{pointsEarned}
                 </div>
@@ -163,20 +163,20 @@ export function FeedbackScreen({
               </h3>
               <Card className="border border-black/5 dark:border-white/10 bg-background/60">
                 <CardHeader className="pb-2">
-                  <div className="flex items-center gap-2">
-                    <span className="font-medium">{scenario.senderName}</span>
+                  <div className="flex min-w-0 flex-wrap items-start gap-2">
+                    <span className="min-w-0 break-words font-medium [overflow-wrap:anywhere]">{scenario.senderName}</span>
                     {scenario.senderEmail && (
-                      <code className="text-xs bg-background/60 border border-black/5 dark:border-white/10 px-2 py-0.5 rounded">
+                      <code className="min-w-0 break-all rounded border border-black/5 bg-background/60 px-2 py-0.5 text-xs dark:border-white/10">
                         {scenario.senderEmail}
                       </code>
                     )}
                   </div>
                   {scenario.subject && (
-                    <p className="text-sm text-muted-foreground">{scenario.subject}</p>
+                    <p className="break-words text-sm text-muted-foreground [overflow-wrap:anywhere]">{scenario.subject}</p>
                   )}
                 </CardHeader>
                 <CardContent className="pt-2">
-                  <p className="text-sm whitespace-pre-wrap leading-relaxed">
+                  <p className="break-words text-sm whitespace-pre-wrap leading-relaxed [overflow-wrap:anywhere]">
                     {highlightCues(scenario.body, scenario.cues, t)}
                   </p>
                 </CardContent>
@@ -189,7 +189,7 @@ export function FeedbackScreen({
                 {t("training.feedbackPanel.whyThisMatters")}
               </h3>
               <div className="p-4 rounded-2xl border border-black/5 dark:border-white/10 bg-background/60">
-                <p className="text-sm leading-relaxed" data-testid="text-explanation">
+                <p className="break-words text-sm leading-relaxed [overflow-wrap:anywhere]" data-testid="text-explanation">
                   {scenario.explanation}
                 </p>
               </div>
@@ -210,6 +210,7 @@ export function FeedbackScreen({
                       key={index}
                       variant={selectedCue === cue ? "default" : "outline"}
                       size="sm"
+                      className="max-w-full whitespace-normal break-words py-1 text-left"
                       onClick={() => handleCueSelect(cue)}
                       data-testid={`button-cue-${index}`}
                     >
@@ -248,7 +249,7 @@ export function FeedbackScreen({
                   <h3 className="font-semibold mb-3">{t("training.feedbackPanel.cuesToRemember")}</h3>
                   <div className="flex flex-wrap gap-2">
                     {scenario.cues.map((cue, index) => (
-                      <Badge key={index} variant="outline" className="text-xs">
+                      <Badge key={index} variant="outline" className="max-w-full whitespace-normal break-words text-xs">
                         {cue}
                       </Badge>
                     ))}
@@ -260,7 +261,7 @@ export function FeedbackScreen({
 
                 <Separator />
 
-                <div className="flex items-center justify-between gap-4">
+                <div className="flex flex-wrap items-center justify-between gap-4">
                   <div>
                     <p className="text-sm text-muted-foreground mb-1">{t("training.feedbackPanel.correctAction")}</p>
                     <Badge 
@@ -270,7 +271,7 @@ export function FeedbackScreen({
                       {t(`training.actions.${scenario.correctAction}`)}
                     </Badge>
                   </div>
-                  <Button onClick={onContinue} data-testid="button-continue">
+                  <Button onClick={onContinue} className="min-w-0 whitespace-normal" data-testid="button-continue">
                     {t("common.continue")}
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>

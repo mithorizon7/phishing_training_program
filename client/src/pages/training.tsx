@@ -275,8 +275,8 @@ export default function Training() {
         verificationsRemaining={verificationsRemaining}
       />
       
-      <main className="flex-1 px-6 pb-8 pt-6 overflow-auto lg:overflow-hidden">
-        <div className="max-w-7xl mx-auto h-full">
+      <main className="min-w-0 flex-1 px-3 pb-8 pt-6 overflow-auto sm:px-6 lg:overflow-hidden">
+        <div className="max-w-7xl mx-auto h-full min-w-0">
           {shiftLoading ? (
             <div className="grid lg:grid-cols-5 gap-6 h-full">
               <div className="lg:col-span-2">
@@ -304,7 +304,7 @@ export default function Training() {
           ) : (
             <div className="space-y-4 h-full">
               <div className="flex flex-wrap items-center justify-between gap-3">
-                <div className="min-w-[220px] flex-1">
+                <div className="min-w-0 flex-1">
                   <p className="text-sm font-medium">
                     {t("training.progress.message", { current: currentMessageNumber, total: scenarios.length })}
                   </p>
@@ -325,13 +325,13 @@ export default function Training() {
                 </Button>
               </div>
 
-              <Card className={isGuidedShift ? "border border-primary/30 bg-primary/5" : "border border-black/5 dark:border-white/10 bg-card/60"}>
+              <Card className={`min-w-0 ${isGuidedShift ? "border border-primary/30 bg-primary/5" : "border border-black/5 dark:border-white/10 bg-card/60"}`}>
                 <div className="flex flex-col gap-3 p-4 sm:flex-row sm:items-start sm:justify-between">
                   <div className="flex items-start gap-3">
                     <div className={`mt-0.5 flex h-10 w-10 items-center justify-center rounded-2xl ${isGuidedShift ? "bg-primary/10 text-primary" : "bg-background/70 text-foreground"}`}>
                       <NextStepIcon className="h-5 w-5" />
                     </div>
-                    <div>
+                    <div className="min-w-0">
                       <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
                         {t("training.nextStep.kicker")}
                       </p>
@@ -428,8 +428,8 @@ export default function Training() {
                 </Card>
               )}
 
-              <div className="grid gap-6 lg:grid-cols-5 lg:h-[calc(100vh-11.5rem)]">
-                <div className="lg:col-span-2 lg:overflow-hidden">
+              <div className="grid min-w-0 grid-cols-1 gap-6 lg:grid-cols-5 lg:h-[calc(100vh-11.5rem)]">
+                <div className="min-w-0 lg:col-span-2 lg:overflow-hidden">
                   <MessageList
                     scenarios={scenarios}
                     currentIndex={currentIndex}
@@ -439,7 +439,7 @@ export default function Training() {
                     recommendedIndex={recommendedIndex}
                   />
                 </div>
-                <div className="lg:col-span-3 lg:overflow-auto">
+                <div className="min-w-0 lg:col-span-3 lg:overflow-auto">
                   <MessageDetail
                     scenario={currentScenario}
                     verificationsRemaining={verificationsRemaining}

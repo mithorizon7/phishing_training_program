@@ -321,9 +321,9 @@ export default function RecoverDrill() {
     <div className="min-h-screen bg-background app-shell">
       <div className="max-w-2xl mx-auto p-6 space-y-6">
         <div className="flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <h1 className="text-2xl font-semibold">{t(selectedScenario.titleKey)}</h1>
-            <p className="text-muted-foreground text-sm">{t(selectedScenario.descriptionKey)}</p>
+          <div className="min-w-0">
+            <h1 className="break-words text-2xl font-semibold [overflow-wrap:anywhere]">{t(selectedScenario.titleKey)}</h1>
+            <p className="break-words text-sm text-muted-foreground [overflow-wrap:anywhere]">{t(selectedScenario.descriptionKey)}</p>
           </div>
           <Button variant="ghost" onClick={handleReset} data-testid="button-change-scenario">
             {t("recover.actions.changeScenario")}
@@ -360,7 +360,7 @@ export default function RecoverDrill() {
                   completed ? "border-chart-2/50 bg-chart-2/10" : "border-black/5 dark:border-white/10 bg-background/60 hover:bg-background/80"
                 } focus-within:outline-hidden focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2`}>
                   <CardContent className="py-4">
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-start gap-3 sm:items-center sm:gap-4">
                       <div className={`w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 ${
                         completed ? "bg-chart-2/20" : "bg-muted/60"
                       }`}>
@@ -370,14 +370,14 @@ export default function RecoverDrill() {
                           <Icon className="w-5 h-5 text-muted-foreground" />
                         )}
                       </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2">
-                          <span className="font-medium">{t(step.titleKey)}</span>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="min-w-0 break-words font-medium [overflow-wrap:anywhere]">{t(step.titleKey)}</span>
                           {step.critical && (
-                            <Badge variant="outline">{t("recover.labels.critical")}</Badge>
+                            <Badge variant="outline" className="shrink-0 whitespace-normal">{t("recover.labels.critical")}</Badge>
                           )}
                         </div>
-                        <p className="text-sm text-muted-foreground">{t(step.descriptionKey)}</p>
+                        <p className="break-words text-sm text-muted-foreground [overflow-wrap:anywhere]">{t(step.descriptionKey)}</p>
                       </div>
                     </div>
                   </CardContent>
@@ -388,7 +388,7 @@ export default function RecoverDrill() {
         </div>
 
         <div className="sticky bottom-0 z-50 bg-background/80 backdrop-blur-sm border-t border-black/5 dark:border-white/10 pt-4 pb-2">
-          <div className="flex items-center justify-between gap-4 mb-4">
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
             <span className="text-sm text-muted-foreground">
               {t("recover.footer.stepsSelected", {
                 selected: completedSteps.size,

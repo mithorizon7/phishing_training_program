@@ -36,9 +36,9 @@ export function ConfidenceRating({ action, onSubmit, onCancel }: ConfidenceRatin
     <div className="fixed inset-0 bg-background/70 backdrop-blur-md z-50 flex items-center justify-center p-4">
       <Card className="w-full max-w-md glass-panel-strong">
         <CardHeader>
-          <CardTitle className="text-lg flex items-center gap-2">
-            <AlertCircle className="w-5 h-5 text-primary" />
-            {t("training.confidencePanel.title")}
+          <CardTitle className="flex min-w-0 items-start gap-2 text-lg sm:items-center">
+            <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-primary sm:mt-0" />
+            <span className="min-w-0 break-words">{t("training.confidencePanel.title")}</span>
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -70,21 +70,21 @@ export function ConfidenceRating({ action, onSubmit, onCancel }: ConfidenceRatin
             </p>
           </div>
 
-          <div className="flex gap-3">
+          <div className="flex flex-col-reverse gap-3 sm:flex-row">
             <Button 
               variant="outline" 
-              className="flex-1"
+              className="h-auto min-h-10 min-w-0 flex-1 whitespace-normal px-2 py-2 sm:min-h-9 sm:px-4"
               onClick={onCancel}
               data-testid="button-cancel-confidence"
             >
               {t("training.confidencePanel.goBack")}
             </Button>
             <Button 
-              className="flex-1"
+              className="h-auto min-h-10 min-w-0 flex-1 whitespace-normal px-2 py-2 sm:min-h-9 sm:px-4"
               onClick={() => onSubmit(confidence)}
               data-testid="button-submit-confidence"
             >
-              <CheckCircle className="w-4 h-4 mr-2" />
+              <CheckCircle className="w-4 h-4 shrink-0 mr-2" />
               {t("training.confidencePanel.confirmDecision")}
             </Button>
           </div>

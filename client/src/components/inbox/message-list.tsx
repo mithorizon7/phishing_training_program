@@ -48,7 +48,7 @@ function MessageRow({
   return (
     <button
       type="button"
-      className={`relative w-full p-4 border-b border-black/5 dark:border-white/10 last:border-b-0 text-left transition-all ${
+      className={`relative w-full min-w-0 p-3 sm:p-4 border-b border-black/5 dark:border-white/10 last:border-b-0 text-left transition-all ${
         isActive 
           ? "bg-primary/10 before:content-[''] before:absolute before:left-2 before:top-3 before:bottom-3 before:w-1 before:rounded-full before:bg-primary/70"
           : isLocked
@@ -59,7 +59,7 @@ function MessageRow({
       disabled={isLocked}
       data-testid={`row-message-${scenario.id}`}
     >
-      <div className="flex items-start gap-3">
+      <div className="flex min-w-0 items-start gap-2 sm:gap-3">
         <div className={`w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 ${
           scenario.channel === 'email' ? 'bg-primary/10 text-primary' :
           scenario.channel === 'sms' ? 'bg-chart-2/10 text-chart-2' :
@@ -97,7 +97,7 @@ function MessageRow({
             {scenario.body.substring(0, 100)}...
           </p>
         </div>
-        <div className="flex items-center gap-1 text-xs text-muted-foreground shrink-0">
+        <div className="flex shrink-0 items-center gap-1 text-[0.65rem] text-muted-foreground sm:text-xs">
           <Clock className="w-3 h-3" />
           <span>{scenario.timestamp}</span>
         </div>
@@ -132,28 +132,28 @@ export function MessageList({
     <Card className="flex flex-col h-full border border-black/5 dark:border-white/10 bg-card/60 overflow-hidden">
       <Tabs defaultValue="all" className="flex flex-col h-full">
         <div className="border-b border-black/5 dark:border-white/10 px-2 sm:px-4 pt-4">
-          <TabsList className="w-full flex flex-wrap gap-1 rounded-full border border-black/5 dark:border-white/10 bg-background/60 p-1 h-auto">
-            <TabsTrigger value="all" className="flex-1 min-w-fit rounded-full text-xs font-semibold data-[state=active]:bg-primary/10 data-[state=active]:text-foreground data-[state=active]:shadow-[0_10px_20px_-16px_hsl(var(--primary)/0.6)]" data-testid="tab-all">
+          <TabsList className="flex h-auto w-full min-w-0 flex-wrap gap-1 rounded-full border border-black/5 dark:border-white/10 bg-background/60 p-1">
+            <TabsTrigger value="all" className="min-w-fit flex-none rounded-full px-2 text-xs font-semibold sm:flex-1 sm:px-4 data-[state=active]:bg-primary/10 data-[state=active]:text-foreground data-[state=active]:shadow-[0_10px_20px_-16px_hsl(var(--primary)/0.6)]" data-testid="tab-all">
               {t("training.inbox.all")} ({scenarios.length})
             </TabsTrigger>
-            <TabsTrigger value="email" className="flex-1 min-w-fit rounded-full text-xs font-semibold data-[state=active]:bg-primary/10 data-[state=active]:text-foreground data-[state=active]:shadow-[0_10px_20px_-16px_hsl(var(--primary)/0.6)]" data-testid="tab-email">
-              <Mail className="w-4 h-4 sm:mr-1" />
+            <TabsTrigger value="email" className="min-w-0 flex-1 rounded-full px-2 text-xs font-semibold sm:min-w-fit sm:px-4 data-[state=active]:bg-primary/10 data-[state=active]:text-foreground data-[state=active]:shadow-[0_10px_20px_-16px_hsl(var(--primary)/0.6)]" data-testid="tab-email">
+              <Mail className="h-4 w-4 shrink-0 sm:mr-1" />
               <span className="hidden sm:inline">{emailScenarios.length}</span>
             </TabsTrigger>
-            <TabsTrigger value="sms" className="flex-1 min-w-fit rounded-full text-xs font-semibold data-[state=active]:bg-primary/10 data-[state=active]:text-foreground data-[state=active]:shadow-[0_10px_20px_-16px_hsl(var(--primary)/0.6)]" data-testid="tab-sms">
-              <MessageSquare className="w-4 h-4 sm:mr-1" />
+            <TabsTrigger value="sms" className="min-w-0 flex-1 rounded-full px-2 text-xs font-semibold sm:min-w-fit sm:px-4 data-[state=active]:bg-primary/10 data-[state=active]:text-foreground data-[state=active]:shadow-[0_10px_20px_-16px_hsl(var(--primary)/0.6)]" data-testid="tab-sms">
+              <MessageSquare className="h-4 w-4 shrink-0 sm:mr-1" />
               <span className="hidden sm:inline">{smsScenarios.length}</span>
             </TabsTrigger>
-            <TabsTrigger value="call" className="flex-1 min-w-fit rounded-full text-xs font-semibold data-[state=active]:bg-primary/10 data-[state=active]:text-foreground data-[state=active]:shadow-[0_10px_20px_-16px_hsl(var(--primary)/0.6)]" data-testid="tab-call">
-              <Phone className="w-4 h-4 sm:mr-1" />
+            <TabsTrigger value="call" className="min-w-0 flex-1 rounded-full px-2 text-xs font-semibold sm:min-w-fit sm:px-4 data-[state=active]:bg-primary/10 data-[state=active]:text-foreground data-[state=active]:shadow-[0_10px_20px_-16px_hsl(var(--primary)/0.6)]" data-testid="tab-call">
+              <Phone className="h-4 w-4 shrink-0 sm:mr-1" />
               <span className="hidden sm:inline">{callScenarios.length}</span>
             </TabsTrigger>
-            <TabsTrigger value="teams" className="flex-1 min-w-fit rounded-full text-xs font-semibold data-[state=active]:bg-primary/10 data-[state=active]:text-foreground data-[state=active]:shadow-[0_10px_20px_-16px_hsl(var(--primary)/0.6)]" data-testid="tab-teams">
-              <Users className="w-4 h-4 sm:mr-1" />
+            <TabsTrigger value="teams" className="min-w-0 flex-1 rounded-full px-2 text-xs font-semibold sm:min-w-fit sm:px-4 data-[state=active]:bg-primary/10 data-[state=active]:text-foreground data-[state=active]:shadow-[0_10px_20px_-16px_hsl(var(--primary)/0.6)]" data-testid="tab-teams">
+              <Users className="h-4 w-4 shrink-0 sm:mr-1" />
               <span className="hidden sm:inline">{teamsScenarios.length}</span>
             </TabsTrigger>
-            <TabsTrigger value="slack" className="flex-1 min-w-fit rounded-full text-xs font-semibold data-[state=active]:bg-primary/10 data-[state=active]:text-foreground data-[state=active]:shadow-[0_10px_20px_-16px_hsl(var(--primary)/0.6)]" data-testid="tab-slack">
-              <Hash className="w-4 h-4 sm:mr-1" />
+            <TabsTrigger value="slack" className="min-w-0 flex-1 rounded-full px-2 text-xs font-semibold sm:min-w-fit sm:px-4 data-[state=active]:bg-primary/10 data-[state=active]:text-foreground data-[state=active]:shadow-[0_10px_20px_-16px_hsl(var(--primary)/0.6)]" data-testid="tab-slack">
+              <Hash className="h-4 w-4 shrink-0 sm:mr-1" />
               <span className="hidden sm:inline">{slackScenarios.length}</span>
             </TabsTrigger>
           </TabsList>
